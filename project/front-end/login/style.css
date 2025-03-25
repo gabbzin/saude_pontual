@@ -1,6 +1,8 @@
-html,
-body {
-  height: 100%;
+@import url('https://fonts.googleapis.com/css2?family=Passion+One:wght@400;700;900&display=swap');
+
+html, body {
+    background-color: #C4EBE9;
+    height: 100%;
 }
 
 .bd-placeholder-img {
@@ -81,22 +83,40 @@ body {
 }
 
 .form-signin {
-  max-width: 330px;
-  padding: 1rem;
+    max-width: 450px;
+    padding: 1rem;
 }
 
 .form-signin .form-floating:focus-within {
-  z-index: 2;
+    z-index: 2;
 }
 
-.form-signin input[type="email"] {
-  margin-bottom: -1px;
-  border-bottom-right-radius: 0;
-  border-bottom-left-radius: 0;
+#title {
+    font-family: Passion One, sans-serif;
+    font-weight: 400;
+    font-size: 3.8em;
+    text-align: center;
+    line-height: 100%;
+    letter-spacing: 0%;
 }
 
-.form-signin input[type="password"] {
-  margin-bottom: 10px;
-  border-top-left-radius: 0;
-  border-top-right-radius: 0;
+#box-form {
+    background-color: #11BDAF;
+    border-radius: 1em;
+}
+
+#login-button {
+    font-family: Passion One, sans-serif;
+    font-size: 1.3em;
+    background-color: #003C39;
+    border-radius: 0.5em;
+}
+
+#cadastro {
+    color: white;
+    text-align: center;
+}
+
+#cadastro > a{
+    color: white;
 }
