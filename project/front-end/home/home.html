@@ -4,16 +4,29 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Home</title>
+
+
     <link rel="stylesheet" href="../../assets/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@docsearch/css@3">
+
+    <!--Estilos-->
     <link rel="stylesheet" href="home_style.css">
+    <link rel="stylesheet" href="../variaveis.css">
+
+    <!--Fontes-->
+    <link href="https://fonts.googleapis.com/css2?family=Lilita+One&display=swap" rel="stylesheet">
+    
+
     <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.17/index.global.min.js'></script>
 </head>
 <body>    
-    <header class="header bg-primary">1</header>
+    <header class="header bg-white">
+        <p style="opacity: 0;">1</p>
+    </header>
     <main>
-        <section id="informacoes" class="bg-info">
-            <h2>Saúde Pontual</h2>
+        <section id="informacoes" class="p-3">
+            <img src="../../assets/images/logo_saude_pontual.png" alt="logo_saude_pontual" width="150" height="150">
+            <h2>SAÚDE PONTUAL</h2>
     
             <p>
                 Nosso propósito é simplificar sua jornada de cuidados, oferecendo
@@ -26,7 +39,7 @@
                 Obrigado por confiar em nós!
             </p>
     
-            <button id="history_button" class="btn btn-primary">
+            <button id="history_button" class="btn">
                 HISTORICO DE CONSULTAS
             </button>
         </section>
@@ -35,7 +48,7 @@
             <div id="calendar"></div>
         </div>
         <div id="agendar-consulta" class="">
-            AGENDAR CONSULTA
+            <button>AGENDAR<br>CONSULTA</button>
         </div>
     
         <div id="perfil" class="">
