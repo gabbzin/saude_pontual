@@ -10,13 +10,38 @@
     <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.17/index.global.min.js'></script>
 </head>
 <body>    
-    <header class="dropdown-header bg-primary">1</header>
-    <section class="bg-info">2</section>
-    <div class="div3">
-        <div id="calendar"></div>
-    </div>
-    <div class="div4">4</div>
-    <div class="div5">5</div>
+    <header class="header bg-primary">1</header>
+    <main>
+        <section id="informacoes" class="bg-info">
+            <h2>Saúde Pontual</h2>
+    
+            <p>
+                Nosso propósito é simplificar sua jornada de cuidados, oferecendo
+                acesso rápido a informações sobre medicamentos, agendamentos de consultas
+                e acompanhamento médico. Com nossa plataforma, conectamos você aos profissionais
+                de saúde de forma ágil e segura, sempre com apoio da UNICEPLAC.
+    
+                <br>
+    
+                Obrigado por confiar em nós!
+            </p>
+    
+            <button id="history_button" class="btn btn-primary">
+                HISTORICO DE CONSULTAS
+            </button>
+        </section>
+        <div id="calendario-area" class="">
+            <h2>Seja bem-vinda, fulana</h2>
+            <div id="calendar"></div>
+        </div>
+        <div id="agendar-consulta" class="">
+            AGENDAR CONSULTA
+        </div>
+    
+        <div id="perfil" class="">
+            IR AO PERFIL
+        </div>
+    </main>
 
     <script src="../../assets/dist/js/bootstrap.bundle.min.js"></script>
     <script src="calendar.js"></script>
