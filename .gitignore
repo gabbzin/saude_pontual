@@ -1,3 +1,22 @@
+# Dependências do Node.js
 node_modules/
+
+# Arquivos de build
 dist/
-*.txt
+build/
+
+# Arquivos de log
+*.log
+
+# Arquivos do editor (ex: VSCode)
+.vscode/
+
+# Arquivos temporários
+*.swp
+
+# Arquivos de ambiente
+.env
+
+# Arquivos de sistema
+.DS_Store
+Thumbs.db
