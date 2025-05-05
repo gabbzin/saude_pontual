@@ -99,9 +99,18 @@ html, body {
     letter-spacing: 0%;
 }
 
+
 #box-form {
     background-color: #11BDAF;
     border-radius: 1em;
+}
+
+.inputs {
+    background-color: #6FD7CB;
+}
+
+.inputs:focus {
+    background-color: #6FD7CB;
 }
 
 #login-button {
