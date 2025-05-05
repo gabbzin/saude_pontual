@@ -1,10 +1,13 @@
-// src/pages/Login.js
 import React from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
-import "./cadastro_style.css"; // Ajuste o caminho conforme a localização
-import FormInput from "../components/FormInput"; // Importando o componente
+import FormInput from "../components/FormInput"; // Importação do Input
+import Button from "../components/Button"; // Importação do Button
 
 export default function Login() {
+    const fazerLogin = () => {
+        console.log("Passou aqui");
+    }
+
     return (
         <main className="form-signin w-100 m-auto d-flex align-items-center py-2">
             <h1 id="title" className="mb-3 fw-normal">
@@ -28,13 +31,7 @@ export default function Login() {
                         placeholder="Password"
                     />
 
-                    <button
-                        id="login-button"
-                        className="btn btn-primary d-block w-50 py-2 m-auto my-2"
-                        type="submit"
-                    >
-                        ENTRAR
-                    </button>
+                    <Button text={"ENTRAR"} onClick={fazerLogin}/>
 
                     <div id="cadastro" className="mt-1 text-center">
                         Não tem uma conta?{" "}
@@ -47,3 +44,5 @@ export default function Login() {
         </main>
     );
 }
+
+
