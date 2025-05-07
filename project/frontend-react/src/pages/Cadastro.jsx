@@ -6,8 +6,8 @@ import Button from "../components/Button"; // Importação do Button
 import BackgroundGreen from "../components/BackgroundGreen";
 import FundoVerde from "../assets/background_green.jpg";
 
-export default function Login() {
-    const fazerLogin = () => {
+export default function Cadastro() {
+    const fazerCadastro = () => {
         console.log("Passou aqui");
     }
 
@@ -21,6 +21,28 @@ export default function Login() {
                 </h1>
                 <div id="box-form" className="flex justify-content-center align-items-center p-3">
                     <form>
+
+                        {/* Campo de nome */}
+                        <FormInput
+                            id="floatingName"
+                            label="Nome"
+                            type="text"
+                            required={true}
+                        />
+                        {/* Campo de Data de Nascimento */}
+                        <FormInput
+                            id="floatingDateOfBirth"
+                            label="Data de Nascimento"
+                            type="date"
+                            required={true}
+                        />
+                        <FormInput
+                            id="floatingPhoneNumber"
+                            label="Telefone"
+                            type="number"
+                            required={false}
+                            min="10000000000"
+                        />
                         {/* Campo de e-mail */}
                         <FormInput
                             id="floatingInput"
@@ -28,19 +50,21 @@ export default function Login() {
                             type="email"
                             required={true}
                         />
-                        {/* Campo de senha */}
+                        {/* Campo de Senha */}
                         <FormInput
                             id="floatingPassword"
                             label="Senha"
                             type="password"
                             required={true}
                         />
+
+
                         {/* Botão de Login */}
                         <div id="botao" className="flex text-center w-100">
                             <Button
                                 id={"login-button"} 
                                 text={"ENTRAR"} 
-                                onClick={fazerLogin}
+                                onClick={fazerCadastro}
                                 style={{
                                     padding: 16,
                                     margin: 8,
@@ -50,11 +74,13 @@ export default function Login() {
                                 }}
                             />
                         </div>
+
+
                         {/* Redirecionamento para fazer cadastro */}
-                        <div id="cadastro" className="mt-1 text-center">
-                            Não tem uma conta?{" "}
-                            <a href="/cadastro" className="fw-semibold">
-                                Cadastre-se
+                        <div id="login" className="mt-1 text-center text-white">
+                            Já tem uma conta?{" "}
+                            <a href="/login" className="fw-bold text-decoration-none text-white">
+                                Fazer login
                             </a>
                         </div>
                     </form>
