@@ -3,6 +3,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "../styles/login.css";
 import FormInput from "../components/FormInput"; // Importação do Input
 import Button from "../components/Button"; // Importação do Button
+import MoModal from "../components/MoModal";
 import BackgroundGreen from "../components/BackgroundGreen";
 import FundoVerde from "../assets/background_green.jpg";
 import Logo from "../assets/logo_saude_pontual.png";
@@ -71,6 +72,7 @@ export default function Login() {
                         </div>
                     </form>
                 </div>
+                <MoModal/>
             </main>
         </div>
     );

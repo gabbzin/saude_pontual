@@ -8,6 +8,7 @@ import FundoVerde from "../assets/background_green.jpg";
 import Logo from "../assets/logo_saude_pontual.png"
 
 export default function Cadastro() {
+
     const fazerCadastro = () => {
         console.log("Passou aqui");
     }
@@ -97,6 +98,9 @@ export default function Cadastro() {
                         </div>
                     </form>
                 </div>
+                <Modal>
+                    
+                </Modal>
             </main>
         </div>
     );
