@@ -5,6 +5,7 @@ import FormInput from "../components/FormInput"; // Importação do Input
 import Button from "../components/Button"; // Importação do Button
 import BackgroundGreen from "../components/BackgroundGreen";
 import FundoVerde from "../assets/background_green.jpg";
+import Logo from "../assets/logo_saude_pontual.png";
 
 export default function Login() {
     const fazerLogin = () => {
@@ -14,7 +15,17 @@ export default function Login() {
     return (
         <div id="background" className="d-flex align-items-center">
             <BackgroundGreen imageUrl={FundoVerde}/>
-            <img src="../assets/logo_saude_pontual.png" alt=""/>
+            <img 
+                src={Logo} 
+                alt="Foto da empresa"
+                width={75}
+                height={75}
+                className="position-absolute top-0"
+                style={{
+                    marginTop: 10,
+                    marginLeft: 15
+                }}
+            />
             <main className="form-signin w-100 m-auto d-flex flex-column align-items-center py-2">
                 <h1 id="title" className="mb-3 fw-normal">
                     SAÚDE PONTUAL
@@ -47,11 +58,12 @@ export default function Login() {
                                     fontSize: "1.5em",
                                     width: 150,
                                     borderRadius: 75,
+                                    border: "None"
                                 }}
                             />
                         </div>
                         {/* Redirecionamento para fazer cadastro */}
-                        <div id="cadastro" className="mt-1 text-center">
+                        <div id="link" className="mt-1 text-center">
                             Não tem uma conta?{" "}
                             <a href="/cadastro" className="fw-semibold">
                                 Cadastre-se

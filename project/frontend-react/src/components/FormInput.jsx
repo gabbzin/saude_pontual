@@ -1,4 +1,5 @@
 import React from 'react';
+import "../styles/login.css";
 
 export default function FormInput({ id, label, type, placeholder, required, ...restProps }) {
     return (
@@ -9,9 +10,16 @@ export default function FormInput({ id, label, type, placeholder, required, ...r
                 id={id}
                 placeholder={placeholder}
                 required={required}
+                style={{
+                    border: "None"
+                }}
                 {...restProps}
             />
-            <label htmlFor={id} style={{backgroundColor: 'transparent'}}>
+            <label
+                htmlFor={id} 
+                style={{
+                    backgroundColor: 'transparent',
+                }}>
                 {label}
             </label>
         </div>
