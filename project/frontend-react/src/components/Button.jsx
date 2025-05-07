@@ -1,8 +1,9 @@
 import React from "react";
+import "../styles/login.css";
 
-export default function Button({text, onClick}) {
+export default function Button({id, text, onClick}) {
     return (
-        <button className="btn btn-primary" onClick={onClick}>
+        <button id={id} className="btn btn-primary" onClick={onClick}>
             {text}
         </button>
     );
