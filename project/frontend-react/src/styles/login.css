@@ -101,11 +101,15 @@
 
 .inputs {
     background-color: #6FD7CB;
-    width: 500px;
+    width: 420px;
 }
 
 .inputs:focus {
     background-color: #6FD7CB;
+}
+
+label {
+    background-color: transparent;
 }
 
 #login-button {
