@@ -1,6 +1,7 @@
-import React from "react";
+import React, {useState} from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "../styles/login.css";
+import MoModal from "../components/MoModal";
 import FormInput from "../components/FormInput"; // Importação do Input
 import Button from "../components/Button"; // Importação do Button
 import BackgroundGreen from "../components/BackgroundGreen";
@@ -9,8 +10,11 @@ import Logo from "../assets/logo_saude_pontual.png"
 
 export default function Cadastro() {
 
+    const [modalVisible, setModalVisible] = useState(true);
+
     const fazerCadastro = () => {
         console.log("Passou aqui");
+        setModalVisible(true)
     }
 
     return (
@@ -98,9 +102,17 @@ export default function Cadastro() {
                         </div>
                     </form>
                 </div>
-                <Modal>
-                    
-                </Modal>
+                <MoModal 
+                    show={modalVisible}
+                    onClose={() => setModalVisible(false)}
+                    text={"Cadastro \n Finalizado"}
+                    styleBody={{
+                        fontFamily: "Passion One",
+                        fontWeight: 400,
+                        fontSize: 80,
+                        textAlign: "center"
+                    }}
+                />
             </main>
         </div>
     );
