@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "../styles/login.css";
 import FormInput from "../components/FormInput"; // Importação do Input
@@ -67,9 +68,9 @@ export default function Login() {
                         {/* Redirecionamento para fazer cadastro */}
                         <div id="link" className="mt-1 text-center">
                             Não tem uma conta?{" "}
-                            <a href="/cadastro" className="fw-semibold">
+                            <Link to="/cadastro" className="fw-semibold">
                                 Cadastre-se
-                            </a>
+                            </Link>
                         </div>
                     </form>
                 </div>

@@ -1,4 +1,5 @@
 import React, {useState} from "react";
+import { Link } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "../styles/login.css";
 import MoModal from "../components/MoModal";
@@ -10,7 +11,7 @@ import Logo from "../assets/logo_saude_pontual.png"
 
 export default function Cadastro() {
 
-    const [modalVisible, setModalVisible] = useState(true);
+    const [modalVisible, setModalVisible] = useState(false);
 
     const fazerCadastro = () => {
         console.log("Passou aqui");
@@ -96,9 +97,9 @@ export default function Cadastro() {
                         {/* Redirecionamento para fazer cadastro */}
                         <div id="link" className="mt-1 text-center text-white">
                             Já tem uma conta?{" "}
-                            <a href="/login" className="fw-bold text-decoration-none text-white">
+                            <Link to="/" className="fw-bold text-decoration-none text-white">
                                 Fazer login
-                            </a>
+                            </Link>
                         </div>
                     </form>
                 </div>
