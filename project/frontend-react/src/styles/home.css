@@ -1,0 +1,48 @@
+.container {
+  display: flex;
+  height: 100vh;
+  font-family: sans-serif;
+}
+
+.sidebar {
+  width: 25%;
+  background-color: #6d9a8d;
+  padding: 20px;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.main-content {
+  width: 75%;
+  background-color: #b6d9e1;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+}
+
+.cabecalho {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+#calendar {
+  flex: 1;
+  margin: 20px 0;
+}
+
+.acoes {
+  display: flex;
+  gap: 20px;
+}
+
+.agendar, .perfil, .historico {
+  background-color: #003333;
+  color: white;
+  padding: 15px;
+  border: none;
+  cursor: pointer;
+  font-weight: bold;
+}
