@@ -1,5 +1,4 @@
 import React from 'react';
-import "../styles/login.css";
 
 export default function FormInput({ id, label, type, placeholder, required, ...restProps }) {
     return (

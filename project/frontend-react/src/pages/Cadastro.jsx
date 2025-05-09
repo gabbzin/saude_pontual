@@ -1,7 +1,7 @@
 import React, {useState} from "react";
 import { Link } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
-import "../styles/login.css";
+import "../styles/login_cadastro.css";
 import MoModal from "../components/MoModal";
 import FormInput from "../components/FormInput"; // Importação do Input
 import Button from "../components/Button"; // Importação do Button
