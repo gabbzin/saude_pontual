@@ -1,6 +1,6 @@
 import React from "react";
 
-export default function BackgroundGreen({imageUrl}){
+export default function Background({imageUrl}){
 
     const BackgroundStyle = {
         position: 'fixed',

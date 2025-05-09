@@ -5,7 +5,7 @@ import "../styles/login.css";
 import FormInput from "../components/FormInput"; // Importação do Input
 import Button from "../components/Button"; // Importação do Button
 import MoModal from "../components/MoModal";
-import BackgroundGreen from "../components/BackgroundGreen";
+import Background from "../components/Background";
 import FundoVerde from "../assets/background_green.jpg";
 import Logo from "../assets/logo_saude_pontual.png";
 
@@ -17,7 +17,7 @@ export default function Login() {
 
     return (
         <div id="background" className="d-flex align-items-center">
-            <BackgroundGreen imageUrl={FundoVerde}/>
+            <Background imageUrl={FundoVerde}/>
             <img 
                 src={Logo} 
                 alt="Foto da empresa"

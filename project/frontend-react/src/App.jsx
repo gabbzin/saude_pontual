@@ -1,17 +1,8 @@
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom"
-import "./index.css"
-import Login from './pages/Login'
-import Cadastro from "./pages/Cadastro"
+import AppRoutes from "./routes/routes.jsx";
+import "./index.css";
 
 function App() {
-    return (
-        <Router>
-            <Routes>
-                <Route path="/" element={<Login/>} />
-                <Route path="/cadastro" element={<Cadastro/>} />
-            </Routes>
-        </Router>
-    )
+    return <AppRoutes />;
 }
 
-export default App
+export default App;
