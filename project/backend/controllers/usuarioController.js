@@ -24,7 +24,7 @@ exports.cadastrarUsuario = async (req, res) => {
         console.error('Erro ao cadastrar usuário:', error);
         res.status(500).json({ mensagem: 'Erro ao cadastrar usuário' });
     }
-}
+};
 
 exports.loginUsuario = async (req, res) => {
     const { email, senha } = req.body;
@@ -61,5 +61,5 @@ exports.loginUsuario = async (req, res) => {
         console.error('Erro ao fazer login:', err);
         res.status(500).json({ mensagem: 'Erro ao fazer login' });
     }
-}
+};
 
