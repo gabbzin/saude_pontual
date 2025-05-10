@@ -6,6 +6,8 @@ import Calendar from "../components/calendar";
 import FundoLaranja from "../assets/background_orange.jpg";
 import Logo from "../assets/logo_saude_pontual.png";
 import ProfileIcon from "../assets/profile_icon.png";
+import ProfileButton from "../assets/profile_button.png";
+import ButtonExit from "../assets/button_exit_1.jpeg";
 
 import "../styles/home.css";
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -20,17 +22,28 @@ export default function Home(){
             <Background imageUrl={FundoLaranja}/>
 
             <header id="caixabranca">
-                <Button />
+                <Button style={{
+                        backgroundColor: "#080808",
+                        border: "None",
+                        margin: 0,
+                        padding: 0
+                    }}
+                >
+
+                    <img src={ButtonExit} height={50} width={70}/>
+                </Button>
             </header>
 
             <div className="content">
-                <aside className="sidebar">
+                <aside className="sidebar p-4">
                 
                     <div className="d-grid">
-                        <img src={Logo} alt="Logo" width={resolucaoLogoXY} height={resolucaoLogoXY} style={{margin: "auto"}}/>
-                        <h2 className="text-center">SAÚDE PONTUAL</h2>
+                        <img src={Logo} alt="Logo" width={resolucaoLogoXY} height={resolucaoLogoXY}
+                            style={{margin: "auto", borderRadius: "50%"}}/>
+
+                        <h2 className="text-center mt-2 fs-1">SAÚDE PONTUAL</h2>
                     </div>
-                    <p className="description">
+                    <p className="description fs-5">
                         Nosso propósito é simplificar sua jornada de cuidados,
                         oferecendo acesso rápido a informações sobre medicamentos,
                         agendamentos de consultas e acompanhamento médico.
@@ -46,6 +59,10 @@ export default function Home(){
                             console.log("Abrir Histórico")
                         }}
                         style={{
+                            backgroundColor: "#016C6C",
+                            fontFamily: "Lilita One",
+                            fontSize: 32,
+                            borderRadius: "35px"
                         }}
                     />
                 </aside>
@@ -62,19 +79,30 @@ export default function Home(){
                     <div id="calendar" style={{maxHeight: "100vh"}}>
                         <Calendar/>
                     </div>
-                    <div className="actions">
-                        <Button
-                            id={"schedule"}
-                            text={"Agendar Consulta"}
-                            onClick={() => {console.log("Agendar Consulta")}}
-                        />
-                        <Button
-                            id={"profile"}
-                            text={"Ir ao perfil"}
-                            onClick={() => {console.log("Ir ao perfil")}}
-                        />
-                    </div>
                 </main>
+
+                <div className="actions">
+
+                    <Button
+                        id={"schedule"}
+                        text={"Agendar Consulta"}
+                        onClick={() => {console.log("Agendar Consulta")}}
+                    >
+                        <div id="schedule_button">
+                            Agendar Consulta
+                        </div>
+                    </Button>
+
+                    <Button
+                        id={"profile"}
+                        text={"Ir ao perfil"}
+                        onClick={() => {console.log("Ir ao perfil")}}
+                    >
+                        Ir ao perfil
+                        <img src={ProfileButton} width={resolucaoLogoXY} height={resolucaoLogoXY}/>
+                    </Button>
+
+                </div>
             </div>
         </div>
     );
