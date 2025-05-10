@@ -10,5 +10,6 @@ const db = new Pool({
   password: process.env.DB_SENHA,
   port: process.env.DB_PORT
 });
+
 module.exports = db;
 
