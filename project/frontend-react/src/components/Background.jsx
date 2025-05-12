@@ -9,7 +9,7 @@ export default function Background({imageUrl}){
         width: '100%',
         height: '100%',
         backgroundImage: `url(${imageUrl})`,
-        backgroundPosiiton: "center",
+        backgroundPosition: "center",
         backgroundSize: 'cover',
         backgroundRepeat: 'no-repeat',
         zIndex: -1,

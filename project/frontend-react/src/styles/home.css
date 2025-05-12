@@ -1,0 +1,101 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Lilita+One&display=swap');
+
+#container {
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    font-family: "Passion One";
+}
+
+#caixabranca {
+    width: 100%;
+    height: 50px;
+    background-color: white;
+    z-index: 10;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    display: flex;
+    justify-content: end;
+}
+
+.content {
+    display: flex;
+    flex: 1;
+}
+
+.sidebar, .main-content {
+    height: calc(100vh - 50px);
+}
+
+.sidebar {
+    width: 23%;
+    background-color: #89ABA6;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.description {
+    text-align: justify;
+    font-family: "Inter";
+    color: #fff;
+}
+
+.main-content {
+    display: flex;
+    flex-direction: column;
+    width: 50%;
+    background-color: transparent;
+    padding: 20px;
+}
+
+.header {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+#calendar {
+    flex: 1;
+    margin: 20px 0;
+}
+
+.actions {
+    width: 25%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-evenly;
+}
+
+#schedule, #profile, #historico {
+    background-color: #007B84;
+    color: white;
+    padding: 15px;
+    border: none;
+    cursor: pointer;
+    font-weight: 400;
+    font-size: 3em;
+    border-radius: 22.5px;
+}
+
+#schedule, #profile {
+    width: 350px;
+    height: 300px;
+}
+
+#schedule_button {
+    background-color: #002324;
+    margin: 0.5rem;
+    padding: 1em;
+    border-radius: 22.5px;
+}
+
+#profile {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
