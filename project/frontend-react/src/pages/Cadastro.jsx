@@ -97,7 +97,7 @@ export default function Cadastro() {
                         {/* Redirecionamento para fazer cadastro */}
                         <div id="link" className="mt-1 text-center text-white">
                             Já tem uma conta?{" "}
-                            <Link to="/" className="fw-bold text-decoration-none text-white">
+                            <Link to="/login" className="fw-bold text-decoration-none text-white">
                                 Fazer login
                             </Link>
                         </div>
