@@ -43,7 +43,7 @@ export default function Home(){
 
                         <h2 className="text-center mt-2 fs-1">SAÚDE PONTUAL</h2>
                     </div>
-                    <p className="description fs-5">
+                    <p className="description fs-6 p-4">
                         Nosso propósito é simplificar sua jornada de cuidados,
                         oferecendo acesso rápido a informações sobre medicamentos,
                         agendamentos de consultas e acompanhamento médico.
@@ -54,14 +54,14 @@ export default function Home(){
                     </p>
                     <Button
                         id={"historico"}
-                        text={"Histórico de Consultas"}
+                        text={"HISTÓRICO DE CONSULTAS"}
                         onClick={() => {
                             console.log("Abrir Histórico")
                         }}
                         style={{
                             backgroundColor: "#016C6C",
                             fontFamily: "Lilita One",
-                            fontSize: 24,
+                            fontSize: "1.4em",
                             borderRadius: "35px"
                         }}
                     />
