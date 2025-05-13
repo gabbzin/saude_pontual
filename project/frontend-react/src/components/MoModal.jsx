@@ -1,9 +1,17 @@
-import React from "react";
+import React, { Children } from "react";
 import { Modal } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 
-export default function MoModal({ show, onClose, text, styleBody }){
+export default function MoModal({ show, onClose, text, children, styleBody }){
     
+    const modalPadrao = 
+        <>
+            <Modal.Header closeButton />
+            <Modal.Body style={styleBody}>
+                {text}
+            </Modal.Body>
+        </>
+        
     return (
         <div>
             <Modal 
@@ -11,10 +19,7 @@ export default function MoModal({ show, onClose, text, styleBody }){
                 onHide={onClose}
                 centered
             >
-                <Modal.Header closeButton/>
-                <Modal.Body style={styleBody}>
-                    {text}
-                </Modal.Body>
+                {children ? children : modalPadrao}
             </Modal>
         </div>
     );
