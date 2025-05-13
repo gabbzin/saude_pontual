@@ -1,7 +1,7 @@
 import React from "react";
 import Background from "../components/Background";
 import Button from "../components/Button";
-import Calendar from "../components/calendar";
+import Calendar from "../components/Calendar";
 
 import FundoLaranja from "../assets/background_orange.jpg";
 import Logo from "../assets/logo_saude_pontual.png";
@@ -14,7 +14,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 
 export default function Home(){
 
-    const resolucaoLogoXY = 200;
+    const resolucaoLogoXY = 150;
     const resolucaoProfileXY = 85;
 
     return (
@@ -30,7 +30,7 @@ export default function Home(){
                     }}
                 >
 
-                    <img src={ButtonExit} height={50} width={70}/>
+                    <img src={ButtonExit} height={40} width={60}/>
                 </Button>
             </header>
 
@@ -61,7 +61,7 @@ export default function Home(){
                         style={{
                             backgroundColor: "#016C6C",
                             fontFamily: "Lilita One",
-                            fontSize: 32,
+                            fontSize: 24,
                             borderRadius: "35px"
                         }}
                     />
@@ -76,7 +76,7 @@ export default function Home(){
                         />
                         <h1>SEJA BEM-VINDA, THALITA KAMILLE!</h1>
                     </div>
-                    <div id="calendar" style={{maxHeight: "100vh"}}>
+                    <div id="calendar" style={{height: "100%"}}>
                         <Calendar/>
                     </div>
                 </main>

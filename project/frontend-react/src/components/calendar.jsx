@@ -10,6 +10,7 @@ export default function Calendar(){
         <FullCalendar 
             plugins={[dayGridPlugin]}
             initialView="dayGridMonth"
+            height="100%"
             weekends={true}
             events={[
                 { title: "Evento 1", date: today }

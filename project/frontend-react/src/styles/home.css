@@ -1,6 +1,10 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Lilita+One&display=swap');
 
+* {
+    box-sizing: border-box;
+}
+
 #container {
     margin: 0;
     padding: 0;
@@ -12,7 +16,7 @@
 
 #caixabranca {
     width: 100%;
-    height: 50px;
+    height: 40px;
     background-color: white;
     z-index: 10;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
@@ -26,11 +30,11 @@
 }
 
 .sidebar, .main-content {
-    height: calc(100vh - 50px);
+    height: calc(100vh - 40px);
 }
 
 .sidebar {
-    width: 23%;
+    width: 24%;
     background-color: #89ABA6;
     padding: 20px;
     display: flex;
@@ -39,15 +43,17 @@
 }
 
 .description {
+    font-size: 1em;
     text-align: justify;
-    font-family: "Inter";
+    font-family: "Inter", sans-serif;
     color: #fff;
 }
 
 .main-content {
     display: flex;
     flex-direction: column;
-    width: 50%;
+    flex: 1;
+    min-width: 0;
     background-color: transparent;
     padding: 20px;
 }
@@ -56,15 +62,19 @@
     display: flex;
     align-items: center;
     gap: 15px;
+    max-height: 100px;
 }
 
 #calendar {
+    width: 100%;
+    height: 100%;
     flex: 1;
-    margin: 20px 0;
+    min-height: 0;
+    margin: 10px 0;
 }
 
 .actions {
-    width: 25%;
+    width: 24%;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -78,7 +88,7 @@
     border: none;
     cursor: pointer;
     font-weight: 400;
-    font-size: 3em;
+    font-size: 2.5em;
     border-radius: 22.5px;
 }
 
