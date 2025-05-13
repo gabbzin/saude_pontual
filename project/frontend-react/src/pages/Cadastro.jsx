@@ -1,13 +1,16 @@
 import React, {useState} from "react";
 import { Link } from "react-router-dom";
-import "bootstrap/dist/css/bootstrap.min.css";
-import "../styles/login_cadastro.css";
-import MoModal from "../components/MoModal";
-import FormInput from "../components/FormInput"; // Importação do Input
-import Button from "../components/Button"; // Importação do Button
-import Background from "../components/Background";
+// Assets
 import FundoVerde from "../assets/background_green.jpg";
 import Logo from "../assets/logo_saude_pontual.png"
+// Components
+import Background from "../components/Background"; // Importação do Background
+import Button from "../components/Button"; // Importação do Button
+import FormInput from "../components/FormInput"; // Importação do Input
+import MoModal from "../components/MoModal"; // Importação do Modal
+
+import "bootstrap/dist/css/bootstrap.min.css";
+import "../styles/login_cadastro.css";
 
 export default function Cadastro() {
 
