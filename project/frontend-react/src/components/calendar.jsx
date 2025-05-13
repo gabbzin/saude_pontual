@@ -1,35 +1,16 @@
-import React, { useState } from "react";
+import React from "react";
 import FullCalendar from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
-import { Modal } from "react-bootstrap";
-import MoModal from "./MoModal";
 
-export default function Calendar(){
+// eslint-disable-next-line react-refresh/only-export-components
+export const today = new Date().toISOString().split('T')[0]
 
-    const today = new Date().toISOString().split('T')[0]
-    const [modalVisible, setModalVisible] = useState(false)
-
-    function showModal(){
-        setModalVisible(true)
-        console.log("Estado do Modal do Calendário" + modalVisible)
-    }
-
-    const ModalConsulta = <> {/* Modal para visualizar informações do evento */}
-            <Modal.Header closeButton/>
-            <Modal.Body>
-                Data: ${today}
-                Tipo de consulta: Ortopedia
-                Nome do Profissional: Pedro João
-                Horário: 08:35
-            </Modal.Body>
-        </>
-
-
+export default function Calendar({showModal}){
 
     return (
         <FullCalendar 
-            themeSystem={"bootstrap5"} // Tema do calendário
             plugins={[dayGridPlugin]} // Plugins
+            themeSystem={"bootstrap5"} // Tema do calendário
             headerToolbar={{
                 left: "prev next",
                 center: "title",

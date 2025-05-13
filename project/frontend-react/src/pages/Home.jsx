@@ -1,13 +1,17 @@
-import React from "react";
-import Background from "../components/Background";
-import Button from "../components/Button";
-import Calendar from "../components/Calendar";
-
+import React, { useState } from "react";
+import { Modal } from "react-bootstrap";
+// Assets
 import FundoLaranja from "../assets/background_orange.jpg";
 import Logo from "../assets/logo_saude_pontual.png";
 import ProfileIcon from "../assets/profile_icon.png";
 import ProfileButton from "../assets/profile_button.png";
 import ButtonExit from "../assets/button_exit_1.jpeg";
+// Components
+import Background from "../components/Background";
+import Button from "../components/Button";
+import Calendar from "../components/Calendar";
+// Variaveis
+import { today } from "../components/Calendar";
 
 import "../styles/home.css";
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -17,9 +21,28 @@ export default function Home(){
     const resolucaoLogoXY = 150;
     const resolucaoProfileXY = 85;
 
+    const [modalCalendarVisible, setModalCalendarVisible] = useState(false);
+    
+    function showModal(){
+        setModalCalendarVisible(true);
+        console.log("Estado do Modal do Calendário" + modalCalendarVisible);
+    }
+
     return (
         <div id="container">
             <Background imageUrl={FundoLaranja}/>
+
+            <Modal show={modalCalendarVisible} onHide={() => setModalCalendarVisible(false)} centered>
+                <Modal.Header closeButton style={{color: "#004D3E", fontFamily: "Passion One", fontSize: "2em"}}>
+                    Consulta Agendada
+                </Modal.Header>
+                <Modal.Body style={{fontFamily: "Inter"}}>
+                    Data: {today} <br />
+                    Tipo de consulta: Ortopedia <br />
+                    Nome do Profissional: Pedro João <br />
+                    Horário: 08:35
+                </Modal.Body>
+            </Modal>
 
             <header id="caixabranca">
                 <Button style={{
@@ -77,7 +100,7 @@ export default function Home(){
                         <h1>SEJA BEM-VINDA, THALITA KAMILLE!</h1>
                     </div>
                     <div id="calendar" style={{height: "100%"}}>
-                        <Calendar/>
+                        <Calendar showModal={showModal}/>
                     </div>
                 </main>
 
