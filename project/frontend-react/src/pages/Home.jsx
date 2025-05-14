@@ -1,11 +1,13 @@
 import React, { useState } from "react";
 import { Modal } from "react-bootstrap";
 // Assets
+import ButtonExit from "../assets/button_exit_1.jpeg";
 import FundoLaranja from "../assets/background_orange.jpg";
+import ImageParaPet from "../assets/image_para_pet.png";
+import ImageParaVoce from "../assets/image_para_voce.png";
 import Logo from "../assets/logo_saude_pontual.png";
 import ProfileIcon from "../assets/profile_icon.png";
 import ProfileButton from "../assets/profile_button.png";
-import ButtonExit from "../assets/button_exit_1.jpeg";
 // Components
 import Background from "../components/Background";
 import Button from "../components/Button";
@@ -20,12 +22,19 @@ export default function Home(){
 
     const resolucaoLogoXY = 150;
     const resolucaoProfileXY = 85;
+    const resolucaoAgendarXY = 200;
 
     const [modalCalendarVisible, setModalCalendarVisible] = useState(false);
+    const [modalButtons, setModalButtons] = useState(false);
     
     function showModal(){
         setModalCalendarVisible(true);
         console.log("Estado do Modal do Calendário" + modalCalendarVisible);
+    }
+
+    function showModalButtons(){
+        setModalButtons(true);
+        console.log("Mostrando botões de agendar consulta" + modalButtons);
     }
 
     return (
@@ -109,7 +118,7 @@ export default function Home(){
                     <Button
                         id={"schedule"}
                         text={"Agendar Consulta"}
-                        onClick={() => {console.log("Agendar Consulta")}}
+                        onClick={showModalButtons}
                     >
                         <div id="schedule_button">
                             Agendar Consulta
@@ -127,6 +136,30 @@ export default function Home(){
 
                 </div>
             </div>
+
+            <Modal show={modalButtons} onHide={() => {setModalButtons(false)}} centered>
+                <div id="modais" className="flex justify-content-around bg-opacity-100">
+                    <Button
+                        id={"para_voce"}
+                        onClick={() => {console.log("Agendar consulta para você")}}
+                    >
+                        Para Você
+                        <div className="button_consulta_image">
+                            <img src={ImageParaVoce} alt="Para Você" width={resolucaoAgendarXY} height={resolucaoAgendarXY}/>
+                        </div>
+                    </Button>
+
+                    <Button
+                        id={"para_pet"}
+                        onClick={() => {console.log("Agendar consulta para pet")}}
+                    >
+                        Para Pet
+                        <div className="button_consulta_image">
+                            <img src={ImageParaPet} alt="Para pet" width={resolucaoAgendarXY} height={resolucaoAgendarXY}/>
+                        </div>
+                    </Button>
+                </div>
+            </Modal>
         </div>
     );
 }

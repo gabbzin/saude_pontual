@@ -109,3 +109,12 @@
     flex-direction: column;
     align-items: center;
 }
+
+#para_voce, #para_pet {
+    background-color: #002324;
+    color: white;
+}
+
+.button_consulta_image {
+    background-color: white;
+}
