@@ -82,12 +82,13 @@ export default function Cadastro() {
                         />
 
 
-                        {/* Botão de Login */}
+                        {/* Botão de Cadastr9 */}
                         <div id="botao" className="flex text-center w-100">
                             <Button
-                                id={"login-button"} 
+                                id={"login-button"}  // Mesmo id do login por causa do estilo
                                 text={"CADASTRAR"} 
                                 onClick={fazerCadastro}
+                                type={"submit"}
                                 style={{
                                     padding: 16,
                                     margin: 8,

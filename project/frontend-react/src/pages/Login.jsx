@@ -36,7 +36,7 @@ export default function Login() {
                     SAÚDE PONTUAL
                 </h1>
                 <div id="box-form" className="flex justify-content-center align-items-center p-3">
-                    <form>
+                    <form action={"POST"}>
                         {/* Campo de e-mail */}
                         <FormInput
                             id="floatingInput"
@@ -57,6 +57,7 @@ export default function Login() {
                                 id={"login-button"} 
                                 text={"ENTRAR"} 
                                 onClick={fazerLogin}
+                                type={"submit"}
                                 style={{
                                     padding: 16,
                                     margin: 8,
