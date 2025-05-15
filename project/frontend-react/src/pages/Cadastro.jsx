@@ -48,6 +48,7 @@ export default function Cadastro() {
                             label="Nome"
                             type="text"
                             required={true}
+                            iconrequired={"*"}
                         />
                         {/* Campo de Data de Nascimento */}
                         <FormInput
@@ -55,13 +56,13 @@ export default function Cadastro() {
                             label="Data de Nascimento"
                             type="date"
                             required={true}
+                            iconrequired={"*"}
                         />
                         <FormInput
                             id="floatingPhoneNumber"
                             label="Telefone"
                             type="number"
                             required={false}
-                            min="10000000000"
                         />
                         {/* Campo de e-mail */}
                         <FormInput
@@ -69,6 +70,7 @@ export default function Cadastro() {
                             label="E-mail"
                             type="email"
                             required={true}
+                            iconrequired={"*"}
                         />
                         {/* Campo de Senha */}
                         <FormInput
@@ -76,6 +78,7 @@ export default function Cadastro() {
                             label="Senha"
                             type="password"
                             required={true}
+                            iconrequired={"*"}
                         />
 
 
@@ -113,7 +116,7 @@ export default function Cadastro() {
                     styleBody={{
                         fontFamily: "Passion One",
                         fontWeight: 400,
-                        fontSize: 80,
+                        fontSize: 60,
                         textAlign: "center"
                     }}
                 />
