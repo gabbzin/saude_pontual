@@ -1,0 +1,28 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
+
+#container_ficha {
+    height: 100vh;
+    background-color: #007B84;
+}
+
+#ficha {
+    width: 51%;
+    height: 100vh;
+    background-color: #E3E3E3;
+    margin: auto;
+    padding: 1em 2em;
+}
+
+h1 {
+    font-family: "Passion One";
+}
+
+#peso_altura_sangue {
+    display: flex;
+    justify-content: space-between;
+}
+
+#area_medica_e_horarios {
+    display: flex;
+    justify-content: space-around;
+}
