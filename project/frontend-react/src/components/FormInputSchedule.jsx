@@ -1,17 +1,23 @@
 import React from 'react';
 
-export default function FormInput({ id, label, type, placeholder, required=false, iconrequired, options, ...restProps }) {
+export default function FormInput({ id, idDiv=null, label, type, placeholder, required=false, iconrequired, options, ...restProps }) {
+
+    const paddingPadrao = 10;
+    const borderRadiusPadrao = 15;
     
     const renderInput = () => {
         return (
             <input
                 type={type}
-                className="inputs form-control mb-3"
+                className={"inputs form-control w-100"}
                 id={id}
                 placeholder={placeholder}
                 required={required}
                 style={{
-                    border: "None"
+                    backgroundColor: "#97B5AB",
+                    border: "None",
+                    borderRadius: borderRadiusPadrao,
+                    padding: paddingPadrao
                 }}
                 {...restProps}
             />
@@ -22,37 +28,56 @@ export default function FormInput({ id, label, type, placeholder, required=false
         return (
             <select
                 id={id}
-                className={"form-select mb-2"}
+                className={"form-select"}
                 required={required}
-                iconrequired={iconrequired}
                 style={{
                     backgroundColor: "#97B5AB",
                     border: "None",
-                    borderRadius: 15,
-                    padding: 10
+                    borderRadius: borderRadiusPadrao,
+                    padding: paddingPadrao,
                 }}
                 {...restProps}
             >
-                {options && options.map((option) => {
+                {options && options.map((option) => (
                     <option key={option.value} value={option.value}>
                         {option.label}
                     </option>
-                })}
+                ))}
             </select>
         );
     }
 
+    const renderTextArea = () => {
+        return (
+            <textarea
+                id={id}
+                className={"form-text mb-1 w-100"}
+                placeholder={placeholder}
+                required={required}
+                rows="3"
+                style={{
+                    backgroundColor: "#97B5AB",
+                    border: "None",
+                    borderRadius: borderRadiusPadrao,
+                    padding: paddingPadrao,
+                }}
+                {...restProps}
+            />
+        );
+    }
+
     return (
-        <div className="form-label my-2">
+        <div id={idDiv} className="form-label my-2">
             <label
                 htmlFor={id}
                 style={{
                     backgroundColor: 'transparent',
-                    fontSize: 18
+                    fontSize: 18,
+                    display: 'block'
                 }}>
                 {label} <span style={{color: "#F00"}}>{iconrequired}</span>
             </label>
-            {type === 'select' ? renderSelect() : renderInput()}
+            {type === 'select' ? renderSelect() : type === 'textarea' ? renderTextArea() : renderInput()}
         </div>
     );
 }

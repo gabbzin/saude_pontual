@@ -10,7 +10,7 @@
     height: 100vh;
     background-color: #E3E3E3;
     margin: auto;
-    padding: 1em 2em;
+    padding: 1em 4em;
 }
 
 h1 {
@@ -25,4 +25,13 @@ h1 {
 #area_medica_e_horarios {
     display: flex;
     justify-content: space-around;
+}
+
+#input_caixa {
+    width: 50%;
+}
+
+#container_button_submit {
+    display: flex;
+    justify-content: center;
 }

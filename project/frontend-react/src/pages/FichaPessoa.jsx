@@ -3,6 +3,8 @@ import React from "react";
 import Button from "../components/Button"
 import FormInputSchedule from "../components/FormInputSchedule";
 
+import Dados from "../dados.json";
+
 import "../styles/fichas.css";
 
 export default function FichaPessoa(){
@@ -17,6 +19,7 @@ export default function FichaPessoa(){
                         iconrequired={"*"}
                         label={"Nome Completo:"}
                         type={"text"}
+                        placeholder={"Digite seu nome"}
                     />
                     <FormInputSchedule
                         id={"idade"}
@@ -24,6 +27,7 @@ export default function FichaPessoa(){
                         iconrequired={"*"}
                         label={"Idade:"}
                         type={"text"}
+                        placeholder={"Digite sua idade"}
                     />
                     <div id="peso_altura_sangue">
                         <FormInputSchedule
@@ -32,6 +36,7 @@ export default function FichaPessoa(){
                             iconrequired={"*"}
                             label={"Peso:"}
                             type={"text"}
+                            placeholder={"Digite seu peso"}
                         />
                         <FormInputSchedule
                             id={"altura"}
@@ -39,6 +44,7 @@ export default function FichaPessoa(){
                             iconrequired={"*"}
                             label={"Altura:"}
                             type={"text"}
+                            placeholder={"Digite sua altura"}
                         />
                         <FormInputSchedule
                             id={"tipo_sanguineo"}
@@ -46,8 +52,10 @@ export default function FichaPessoa(){
                             iconrequired={"*"}
                             label={"Tipo Sanguíneo:"}
                             type={"text"}
+                            placeholder={"Digite seu tipo sanguíneo"}
                         />
                     </div>
+
                     <FormInputSchedule
                         id={"historico_de_saude"}
                         iconrequired={"*"}
@@ -56,35 +64,52 @@ export default function FichaPessoa(){
                         type={"text"}
                         placeholder={"Possuo Doença/Condição X, e tomo remédio Y"}
                     />
+
                     <div id="area_medica_e_horarios">
                         <FormInputSchedule
+                            idDiv={"input_caixa"}
                             id={"area_medica_desejada"}
                             iconrequired={"*"}
                             label={"Área médica desejada:"}
                             required={true}
-                            type={"text"}
+                            type={"select"}
+                            options={Dados.areasMedicas}
                         />
+                        <div style={{margin: 15}}/>
                         <FormInputSchedule
+                            idDiv={"input_caixa"}
                             id={"horarios_disponiveis"}
                             iconrequired={"*"}
                             label={"Horários disponíveis:"}
                             required={true}
                             type={"select"}
-                            options={{
-                    
+                            options={Dados.horarios}
+                        />
+                    </div>
+                    <div style={{display: "flex", flexDirection: "column"}}>
+                        <FormInputSchedule
+                            id={"motivo_da_consulta"}
+                            iconrequired={"*"}
+                            label={"Motivo da consulta:"}
+                            required={true}
+                            type={"textarea"}
+                            placeholder={"Digite o motivo da consulta"}
+                        />
+                    </div>
+                    <div id="container_button_submit">
+                        <Button
+                            text={"PROSSEGUIR"}
+                            type={"submit"}
+                            style={{
+                                backgroundColor: "#043C40",
+                                border: "None",
+                                borderRadius: 37.5,
+                                fontFamily: "Passion One",
+                                fontSize: "1.5em",
+                                width: "50%"
                             }}
                         />
                     </div>
-                    <FormInputSchedule
-                        id={"motivo_da_consulta"}
-                        iconrequired={"*"}
-                        label={"Motivo da consulta:"}
-                        required={true}
-                        type={"text"}
-                    />
-                    <Button
-                        text={"Prosseguir"}
-                    />
                 </form>
             </main>
         </div>

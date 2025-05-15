@@ -1,6 +1,6 @@
 {
     "horarios": [
-        { "value": null, "label": "Escolha um horário" },
+        { "value": null, "label": "Selecione um horário" },
         { "value": "09:00", "label": "09:00" },
         { "value": "09:30", "label": "09:30" },
         { "value": "10:00", "label": "10:00" },
@@ -35,8 +35,6 @@
         { "value": "reumatologia", "label": "Reumatologia" },
         { "value": "pneumologia", "label": "Pneumologia" },
         { "value": "nefrologia", "label": "Nefrologia" },
-        { "value": "hematologia", "label": "Hematologia" },
-        { "value": "oncologia", "label": "Oncologia" },
-        { "value": "alergologia", "label": "Alergologia e Imunologia" }
+        { "value": "hematologia", "label": "Hematologia" }
     ]
 }
