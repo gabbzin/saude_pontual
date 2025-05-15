@@ -1,27 +1,31 @@
 import React from 'react';
 
-export default function FormInput({ method, id, label, type, placeholder, required=Boolean, iconrequired, ...restProps }) {
+export default function FormInput({ id, label, type, placeholder, required=Boolean, iconrequired, ...restProps }) {
     
     return (
-        <form className="form-label my-2" method={method}>
+        <div className="form-label my-2">
             <label
                 htmlFor={id}
                 style={{
                     backgroundColor: 'transparent',
+                    fontSize: 18
                 }}>
                 {label} <span style={{color: "#F00"}}>{iconrequired}</span>
             </label>
             <input
                 type={type}
-                className="inputs form-control mb-3 w-100"
+                className="inputs form-control mb-2 w-100"
                 id={id}
                 placeholder={placeholder}
                 required={required}
                 style={{
-                    border: "None"
+                    backgroundColor: "#97B5AB",
+                    border: "None",
+                    borderRadius: 15,
+                    padding: 10
                 }}
                 {...restProps}
             />
-        </form>
+        </div>
     );
 }
