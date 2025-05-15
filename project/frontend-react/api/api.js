@@ -15,3 +15,10 @@ export async function loginUsuario(dados) {
   });
   return res.json();
 }
+
+export async function buscarPerfil(token) {
+  const res = await fetch('http://localhost:3001/api/perfil', {
+    headers: { Authorization: `Bearer ${token}` }
+  });
+  return res.json();
+}
