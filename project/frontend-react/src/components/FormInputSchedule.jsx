@@ -1,6 +1,6 @@
 import React from 'react';
 
-export default function FormInput({ id, idDiv=null, label, type, placeholder, required=false, iconrequired, options, ...restProps }) {
+export default function FormInput({ id, idDiv=null, label, type, placeholder, required=false, iconrequired="", options, rows=3, ...restProps }) {
 
     const paddingPadrao = 10;
     const borderRadiusPadrao = 15;
@@ -51,15 +51,16 @@ export default function FormInput({ id, idDiv=null, label, type, placeholder, re
         return (
             <textarea
                 id={id}
-                className={"form-text mb-1 w-100"}
+                className={"form-text w-100"}
                 placeholder={placeholder}
                 required={required}
-                rows="3"
+                rows={rows}
                 style={{
                     backgroundColor: "#97B5AB",
                     border: "None",
                     borderRadius: borderRadiusPadrao,
                     padding: paddingPadrao,
+                    resize: "None"
                 }}
                 {...restProps}
             />

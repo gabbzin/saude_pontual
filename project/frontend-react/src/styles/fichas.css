@@ -17,12 +17,12 @@ h1 {
     font-family: "Passion One";
 }
 
-#peso_altura_sangue {
+#three_inputs {
     display: flex;
     justify-content: space-between;
 }
 
-#area_medica_e_horarios {
+#two_inputs {
     display: flex;
     justify-content: space-around;
 }
