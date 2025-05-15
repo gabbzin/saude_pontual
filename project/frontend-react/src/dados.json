@@ -1,0 +1,42 @@
+{
+    "horarios": [
+        { "value": null, "label": "Escolha um horário" },
+        { "value": "09:00", "label": "09:00" },
+        { "value": "09:30", "label": "09:30" },
+        { "value": "10:00", "label": "10:00" },
+        { "value": "10:30", "label": "10:30" },
+        { "value": "11:00", "label": "11:00" },
+        { "value": "11:30", "label": "11:30" },
+        { "value": "13:00", "label": "13:00" },
+        { "value": "13:30", "label": "13:30" },
+        { "value": "14:00", "label": "14:00" },
+        { "value": "14:30", "label": "14:30" },
+        { "value": "15:00", "label": "15:00" },
+        { "value": "15:30", "label": "15:30" },
+        { "value": "16:00", "label": "16:00" },
+        { "value": "16:30", "label": "16:30" },
+        { "value": "17:00", "label": "17:00" }
+    ],
+    "areasMedicas": [
+        { "value": null, "label": "Selecione uma área médica" },
+        { "value": "clinica_geral", "label": "Clínica Geral" },
+        { "value": "cardiologia", "label": "Cardiologia" },
+        { "value": "dermatologia", "label": "Dermatologia" },
+        { "value": "gastroenterologia", "label": "Gastroenterologia" },
+        { "value": "ginecologia", "label": "Ginecologia" },
+        { "value": "neurologia", "label": "Neurologia" },
+        { "value": "oftalmologia", "label": "Oftalmologia" },
+        { "value": "ortopedia", "label": "Ortopedia" },
+        { "value": "pediatria", "label": "Pediatria" },
+        { "value": "psiquiatria", "label": "Psiquiatria" },
+        { "value": "urologia", "label": "Urologia" },
+        { "value": "otorrinolaringologia", "label": "Otorrinolaringologia" },
+        { "value": "endocrinologia", "label": "Endocrinologia" },
+        { "value": "reumatologia", "label": "Reumatologia" },
+        { "value": "pneumologia", "label": "Pneumologia" },
+        { "value": "nefrologia", "label": "Nefrologia" },
+        { "value": "hematologia", "label": "Hematologia" },
+        { "value": "oncologia", "label": "Oncologia" },
+        { "value": "alergologia", "label": "Alergologia e Imunologia" }
+    ]
+}
