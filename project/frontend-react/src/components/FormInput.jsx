@@ -1,17 +1,17 @@
 import React from 'react';
 
-export default function FormInput({ id, label, type, placeholder, required=Boolean, iconrequired, ...restProps }) {
-    
+export default function FormInput({ id, label, type, placeholder, required=false, iconrequired, ...restProps }) {
+
     return (
         <div className="form-floating my-2">
             <input
                 type={type}
-                className="inputs form-control mb-3"
+                className="inputs form-control mb-2"
                 id={id}
                 placeholder={placeholder}
                 required={required}
                 style={{
-                    border: "None"
+                    border: "None",
                 }}
                 {...restProps}
             />
