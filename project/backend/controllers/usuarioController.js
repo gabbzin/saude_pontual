@@ -1,6 +1,10 @@
 const bcrypt = require('bcrypt');
 const db = require('../db');
 
+const jwt = require('jsonwebtoken');
+
+const gerarToken = (id) => jwt.sign({ id }, process.env.JWT_SECRET, { expiresIn: '1h' });
+
 //função para criar um novo usuário
 exports.cadastrarUsuario = async (req, res) => {
     const { nome, email, telefone, data_nascimento, senha } = req.body;
@@ -19,7 +23,13 @@ exports.cadastrarUsuario = async (req, res) => {
             'INSERT INTO usuarios (nome, email, telefone, data_nascimento, senha) VALUES ($1, $2, $3, $4, $5)',
             [nome, email, telefone, data_nascimento, senha_hash]
         );
-        res.status(201).json({ mensagem: 'Usuário cadastrado com sucesso' });
+        
+        // busca o id do usuário recém-criado
+        const userId = result.rows[0].id;
+        // gera um token JWT para o usuário
+        const token = gerarToken(userId);
+        res.status(201).json({ mensagem: 'Usuário cadastrado com sucesso', token, usuario: { id: userId, nome, email } });
+
     } catch (err) {
         console.error('Erro ao cadastrar usuário:', error);
         res.status(500).json({ mensagem: 'Erro ao cadastrar usuário' });
@@ -51,11 +61,8 @@ exports.loginUsuario = async (req, res) => {
             return res.status(401).json({ mensagem: 'Email ou senha inválidos' });
         }
 
-        res.status(200).json({ mensagem: 'Login realizado com sucesso', usuario: { id: usuario.id, nome: usuario.nome, email: usuario.email } });
-
-
-        // PARA FAZER DPS: Login com JWT
-        // const token = jwt.sign({ id: usuario.id }, process.env.JWT_SECRET, { expiresIn: '1h' });
+        const token = gerarToken(usuario.id);
+        res.status(200).json({ mensagem: 'Login realizado com sucesso', token, usuario: { id: usuario.id, nome: usuario.nome, email: usuario.email } });
 
     } catch (err) {
         console.error('Erro ao fazer login:', err);
@@ -63,3 +70,22 @@ exports.loginUsuario = async (req, res) => {
     }
 };
 
+// verificar JWT em rotas protegidas
+exports.verificarToken = (req, res, next) => {
+  
+    // verifica se o token foi fornecido no header da requisição
+    const authHeader = req.headers.authorization;
+    if (!authHeader) return res.status(401).json({ mensagem: 'Token não fornecido' });
+
+  // confere o formato do token pq o header costuma vir no formato "Bearer <token>"
+    const [, token] = authHeader.split(' ');
+    if (!token) return res.status(401).json({ mensagem: 'Token inválido' });
+
+    try {
+        const payload = jwt.verify(token, process.env.JWT_CHAVE);
+        req.userId = payload.id;
+        next();
+    } catch {
+    return res.status(401).json({ mensagem: 'Token expirado ou inválido' });
+  }
+};
