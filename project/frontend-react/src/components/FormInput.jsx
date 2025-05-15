@@ -1,8 +1,9 @@
 import React from 'react';
 
-export default function FormInput({ id, label, type, placeholder, required, iconrequired, ...restProps }) {
+export default function FormInput({ method, id, label, type, placeholder, required=Boolean, iconrequired, ...restProps }) {
+    
     return (
-        <div className="form-floating my-2">
+        <form className="form-floating my-2" method={method}>
             <input
                 type={type}
                 className="inputs form-control mb-3"
@@ -21,6 +22,6 @@ export default function FormInput({ id, label, type, placeholder, required, icon
                 }}>
                 {label} <span style={{color: "#F00"}}>{iconrequired}</span>
             </label>
-        </div>
+        </form>
     );
 }
