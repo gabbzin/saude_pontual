@@ -24,6 +24,7 @@ export default function Cadastro() {
   // Envia dados de cadastro
   const handleSubmit = async (e) => {
     e.preventDefault();
+    console.log("disparado", form);
     const result = await cadastrarUsuario(form);
     if (result.token) {
       localStorage.setItem("token", result.token);
