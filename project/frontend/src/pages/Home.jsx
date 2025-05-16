@@ -20,8 +20,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import { AuthContext } from "../contexts/AuthContext";
 
 export default function Home(){
-
-    // eslint-disable-next-line no-unused-vars
+     
     const {usuario} = useContext(AuthContext);
 
     const resolucaoLogoXY = 150;
