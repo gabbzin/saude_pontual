@@ -20,93 +20,93 @@ export default function Login() {
 
   // Atualiza campo do formulário
   const handleChange = (e) => {
-    const { name, value } = e.target;
-    setForm((prev) => ({ ...prev, [name]: value }));
+	const { name, value } = e.target;
+	setForm((prev) => ({ ...prev, [name]: value }));
   };
 
   // Envia dados de login
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    const result = await loginUsuario(form);
-    if (result.token) {
-      localStorage.setItem("token", result.token);
-      navigate("/");
-    } else {
-      setError(result.mensagem || "Falha no login");
-    }
+	e.preventDefault();
+	const result = await loginUsuario(form);
+	if (result.token) {
+	  localStorage.setItem("token", result.token);
+	  navigate("/");
+	} else {
+	  setError(result.mensagem || "Falha no login");
+	}
   };
 
   return (
-    <div id="background" className="d-flex align-items-center">
-      <Background imageUrl={FundoVerde}/>
-      <img
-        src={Logo}
-        alt="Foto da empresa"
-        width={75}
-        height={75}
-        className="position-absolute top-0"
-        style={{
-            marginTop: 10, 
-            marginLeft: 15
-         }}
-      />
-      <main className="form-signin w-100 m-auto d-flex flex-column align-items-center py-2">
-        <h1 id="title" className="mb-3 fw-normal">
-            SAÚDE PONTUAL
-            </h1>
-        <div id="box-form" className="flex justify-content-center align-items-center p-3">
-          <form onSubmit={handleSubmit}>
-            {/* Campo de e-mail */}
-            <FormInput
-              id="floatingInput"
-              name="email"
-              label="E-mail"
-              type="email"
-              value={form.email}
-              onChange={handleChange}
-              required={true}
-            />
-            {/* Campo de senha */}
-            <FormInput
-              id="floatingPassword"
-              name="senha"
-              label="Senha"
-              type="password"
-              value={form.senha}
-              onChange={handleChange}
-              required={true}
-            />
-            {/* Exibe mensagem de erro */}
-            {error && <div className="text-danger mb-2">{error}</div>}
-            {/* Botão de Login */}
-            <div id="botao" className="flex text-center w-100">
-              <Button
-                id={"login-button"}
-                text={"ENTRAR"}
-                type="submit"
-                style={{ 
-                    padding: 16, 
-                    margin: 8, 
-                    fontSize: "1.5em", 
-                    width: 150, 
-                    borderRadius: 75, 
-                    border: "None"
-                 }}
-              />
-            </div>
-            {/* Redirecionamento para fazer cadastro */}
-            <div id="link" className="mt-1 text-center text-white">
-              Não tem uma conta?{' '}
-              <Link to="/cadastro" className="fw-bold text-decoration-none text-white">Cadastre-se</Link>
-            </div>
-          </form>
-        </div>
-        <MoModal
-          show={!!error}
-          onClose={() => setError("")}
-          text={error}
-        />
-      </main>
-    </div>
+	<div id="background" className="d-flex align-items-center">
+	  <Background imageUrl={FundoVerde}/>
+	  <img
+		src={Logo}
+		alt="Foto da empresa"
+		width={75}
+		height={75}
+		className="position-absolute top-0"
+		style={{
+			marginTop: 10, 
+			marginLeft: 15
+		 }}
+	  />
+	  <main className="form-signin w-100 m-auto d-flex flex-column align-items-center py-2">
+		<h1 id="title" className="mb-3 fw-normal">
+			SAÚDE PONTUAL
+			</h1>
+		<div id="box-form" className="flex justify-content-center align-items-center p-3">
+		  <form onSubmit={handleSubmit}>
+			{/* Campo de e-mail */}
+			<FormInput
+			  id="floatingInput"
+			  name="email"
+			  label="E-mail"
+			  type="email"
+			  value={form.email}
+			  onChange={handleChange}
+			  required={true}
+			/>
+			{/* Campo de senha */}
+			<FormInput
+			  id="floatingPassword"
+			  name="senha"
+			  label="Senha"
+			  type="password"
+			  value={form.senha}
+			  onChange={handleChange}
+			  required={true}
+			/>
+			{/* Exibe mensagem de erro */}
+			{error && <div className="text-danger mb-2">{error}</div>}
+			{/* Botão de Login */}
+			<div id="botao" className="flex text-center w-100">
+			  <Button
+				id={"login-button"}
+				text={"ENTRAR"}
+				type="submit"
+				style={{ 
+					padding: 16, 
+					margin: 8, 
+					fontSize: "1.5em", 
+					width: 150, 
+					borderRadius: 75, 
+					border: "None"
+				}}
+			  />
+			</div>
+			{/* Redirecionamento para fazer cadastro */}
+			<div id="link" className="mt-1 text-center text-white">
+			  Não tem uma conta?{' '}
+			  <Link to="/cadastro" className="fw-bold text-decoration-none text-white">Cadastre-se</Link>
+			</div>
+		  </form>
+		</div>
+		<MoModal
+		  show={!!error}
+		  onClose={() => setError("")}
+		  text={error}
+		/>
+	  </main>
+	</div>
   );
 }
