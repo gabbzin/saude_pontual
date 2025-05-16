@@ -9,7 +9,7 @@ dotenv.config();
 const app = express();
 
 // Define a porta onde o servidor vai rodar
-const port = process.env.PORT;
+const port = 3001;
 
 app.use(cors());
 app.use(express.json());
