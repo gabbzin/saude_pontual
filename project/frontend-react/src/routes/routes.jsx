@@ -1,20 +1,22 @@
 import React from "react";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import Login from "../pages/Login";
 import Cadastro from "../pages/Cadastro";
-import Home from "../pages/Home"
+import Home from "../pages/Home";
 
 const AppRoutes = () => {
-    console.log("Rotas renderizadas");
-    return (
-        <BrowserRouter>
-            <Routes>
-                <Route path="/login" element={<Login />} />
-                <Route path="/cadastro" element={<Cadastro />} />
-                <Route path="/" element={<Home />} />
-            </Routes>
-        </BrowserRouter>
-    );
+  const isAuth = !!localStorage.getItem('token');
+
+  return (
+    <Router>
+      <Routes>
+        <Route path="/login" element={<Login />} />
+        <Route path="/cadastro" element={<Cadastro />} />
+        <Route path="/" element={isAuth ? <Home /> : <Navigate to="/login" replace />} />
+        <Route path="*" element={<Navigate to={isAuth ? '/' : '/login'} replace />} />
+      </Routes>
+    </Router>
+  );
 };
 
 export default AppRoutes;
