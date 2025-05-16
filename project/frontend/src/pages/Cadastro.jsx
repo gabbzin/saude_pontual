@@ -70,6 +70,8 @@ export default function Cadastro() {
               value={form.nome}
               onChange={handleChange}
               required={true}
+              iconrequired={"*"}
+
             />
             {/* Campo de Data de Nascimento */}
             <FormInput
@@ -80,6 +82,7 @@ export default function Cadastro() {
               value={form.data_nascimento}
               onChange={handleChange}
               required={true}
+              iconrequired={"*"}
             />
             <FormInput
               id="floatingPhoneNumber"
@@ -100,6 +103,7 @@ export default function Cadastro() {
               value={form.email}
               onChange={handleChange}
               required={true}
+              iconrequired={"*"}
             />
             {/* Campo de Senha */}
             <FormInput
@@ -110,6 +114,7 @@ export default function Cadastro() {
               value={form.senha}
               onChange={handleChange}
               required={true}
+              iconrequired={"*"}
             />
 
             {/* Botão de Cadastro */}
@@ -130,15 +135,15 @@ export default function Cadastro() {
             </div>
 
 
-                        {/* Redirecionamento para fazer cadastro */}
-                        <div id="link" className="mt-1 text-center text-white">
-                            Já tem uma conta?{" "}
-                            <Link to="/login" className="fw-bold text-decoration-none text-white">
-                                Fazer login
-                            </Link>
-                        </div>
-                    </form>
+                {/* Redirecionamento para fazer cadastro */}
+                <div id="link" className="mt-1 text-center text-white">
+                  Já tem uma conta?{" "}
+                  <Link to="/login" className="fw-bold text-decoration-none text-white">
+                    Fazer login
+                  </Link>
                 </div>
+              </form>
+            </div>
                 <MoModal 
                     show={modalVisible}
                     onClose={() => setModalVisible(false)}
