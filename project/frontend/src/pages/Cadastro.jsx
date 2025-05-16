@@ -40,8 +40,7 @@ export default function Cadastro() {
                     SAÚDE PONTUAL
                 </h1>
                 <div id="box-form" className="flex justify-content-center align-items-center p-3">
-                    <form>
-
+                    <form action={"POST"}>
                         {/* Campo de nome */}
                         <FormInput
                             id="floatingName"
