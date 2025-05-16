@@ -16,6 +16,7 @@ build/
 
 # Arquivos de ambiente
 .env
+.env.db
 
 # Arquivos de sistema
 .DS_Store

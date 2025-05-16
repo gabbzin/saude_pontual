@@ -1,0 +1,42 @@
+version: '1.0'
+services:
+  db:
+    image: postgres:15-alpine
+    env_file:
+      - ./backend/.env.db
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    networks:
+      - app-network
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    depends_on:
+      - db
+    env_file:
+      - ./backend/.env
+    ports:
+      - '3001:3001'
+    networks:
+      - app-network
+
+  frontend:
+    build:
+      context: ./frontend-react
+      dockerfile: Dockerfile
+    depends_on:
+      - backend
+    ports:
+      - '8080:80'
+    networks:
+      - app-network
+
+volumes:
+  db_data:
+    driver: local
+
+networks:
+  app-network:
+    driver: bridge
