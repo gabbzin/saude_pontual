@@ -30,7 +30,6 @@ export default function Cadastro() {
     console.log("disparado", form);
 
     const result = await cadastrarUsuario(form);
-    console.log(result.token)
     if (result.token) {
       localStorage.setItem("token", result.token);
       setModalVisible(true);
