@@ -3,7 +3,7 @@ const db = require('../db');
 
 const jwt = require('jsonwebtoken');
 
-const gerarToken = (id) => jwt.sign({ id }, process.env.JWT_SECRET, { expiresIn: '1h' });
+const gerarToken = (id) => jwt.sign({ id }, process.env.JWT_CHAVE, { expiresIn: '1h' });
 
 //função para criar um novo usuário
 exports.cadastrarUsuario = async (req, res) => {
@@ -20,7 +20,7 @@ exports.cadastrarUsuario = async (req, res) => {
 
         //insere o novo usuário no banco de dados
         await db.query(
-            'INSERT INTO usuarios (nome, email, telefone, data_nascimento, senha) VALUES ($1, $2, $3, $4, $5)',
+            'INSERT INTO usuarios (nome, email, telefone, data_nascimento, senha) VALUES ($1, $2, $3, $4, $5) RETURNING id',
             [nome, email, telefone, data_nascimento, senha_hash]
         );
         
@@ -55,7 +55,7 @@ exports.loginUsuario = async (req, res) => {
         }
 
         //verifica se a senha está correta        
-        const senhaCorreta = await bcrypt.compare(senha, usuario.senha_hash);
+        const senhaCorreta = await bcrypt.compare(senha, usuario.senha);
 
         if (!senhaCorreta) {
             return res.status(401).json({ mensagem: 'Email ou senha inválidos' });
@@ -85,7 +85,7 @@ exports.verificarToken = (req, res, next) => {
         const payload = jwt.verify(token, process.env.JWT_CHAVE);
         req.userId = payload.id;
         next();
-    } catch {
-    return res.status(401).json({ mensagem: 'Token expirado ou inválido' });
+    } catch (err){
+        return res.status(401).json({ mensagem: 'Token expirado ou inválido' });
   }
 };
