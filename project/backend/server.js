@@ -4,7 +4,7 @@ const dotenv = require('dotenv');
 const usuarioRoutes = require('./routes/usuarioRoutes');
 const db = require('./db');
 
-dotenv.config();
+require('dotenv').config();
 
 const app = express();
 
