@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { Modal } from "react-bootstrap";
 // Assets
 import ButtonExit from "../assets/button_exit_1.jpeg";
@@ -17,8 +17,12 @@ import { today } from "../components/Calendar";
 
 import "../styles/home.css";
 import "bootstrap/dist/css/bootstrap.min.css";
+import { AuthContext } from "../contexts/AuthContext";
 
 export default function Home(){
+
+    // eslint-disable-next-line no-unused-vars
+    const {usuario} = useContext(AuthContext);
 
     const resolucaoLogoXY = 150;
     const resolucaoProfileXY = 85;
@@ -106,7 +110,7 @@ export default function Home(){
                                 borderRadius: "50%"
                             }}
                         />
-                        <h1>SEJA BEM-VINDA, THALITA KAMILLE!</h1>
+                        <h1>SEJA BEM-VINDA, {usuario?.nome}</h1>
                     </div>
                     <div id="calendar" style={{height: "100%"}}>
                         <Calendar showModal={showModal}/>

@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { AuthContext } from "../contexts/AuthContext";
 // Assets
 import FundoVerde from "../assets/background_green.jpg";
 import Logo from "../assets/logo_saude_pontual.png";
@@ -17,6 +18,7 @@ export default function Login() {
   const [form, setForm] = useState({ email: "", senha: "" });
   const [error, setError] = useState("");
   const navigate = useNavigate();
+  const {login} = useContext(AuthContext)
 
   // Atualiza campo do formulário
   const handleChange = (e) => {
@@ -29,8 +31,8 @@ export default function Login() {
 	e.preventDefault();
 	const result = await loginUsuario(form);
 	if (result.token) {
-	  localStorage.setItem("token", result.token);
-	  navigate("/");
+	  login(result.usuario, result.token); // Atualiza o contexto aqui
+	  navigate("/"); // Navegando pra Home
 	} else {
 	  setError(result.mensagem || "Falha no login");
 	}
