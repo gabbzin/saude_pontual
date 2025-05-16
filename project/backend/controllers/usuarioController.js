@@ -19,9 +19,9 @@ exports.cadastrarUsuario = async (req, res) => {
         const senha_hash = await bcrypt.hash(senha, 10);
 
         //insere o novo usuário no banco de dados
-        await db.query(
+        const result = await db.query(
             'INSERT INTO usuarios (nome, email, telefone, data_nascimento, senha) VALUES ($1, $2, $3, $4, $5) RETURNING id',
-            [nome, email, telefone, data_nascimento, senha_hash]
+            [nome, email, telefone || null, data_nascimento, senha_hash]
         );
         
         // busca o id do usuário recém-criado
