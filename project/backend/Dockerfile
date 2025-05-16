@@ -1,5 +1,10 @@
 # imagem base Node.js
-FROM node:18-alpine
+FROM node:18-slim
+
+RUN apt-get update && \
+    apt-get install -y python3 build-essential --no-install-recommends && \
+    rm -rf /var/lib/apt/lists/*
+
 WORKDIR /app
 
 # instala dependências
