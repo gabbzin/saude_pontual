@@ -11,12 +11,12 @@ import ProfileButton from "../assets/profile_button.png";
 // Components
 import Background from "../components/Background";
 import Button from "../components/Button";
-import Calendar from "../components/Calendar";
-// Variaveis
 import { today } from "../components/Calendar";
-
+// Styles
 import "../styles/home.css";
 import "bootstrap/dist/css/bootstrap.min.css";
+// Variaveis
+import Calendar from "../components/Calendar";
 
 export default function Home(){
 

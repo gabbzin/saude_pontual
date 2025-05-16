@@ -16,8 +16,8 @@ const AppRoutes = () => {
         <Route path="/cadastro" element={<Cadastro />} />
         <Route path="/" element={isAuth ? <Home /> : <Navigate to="/login" replace />} />
         <Route path="*" element={<Navigate to={isAuth ? '/' : '/login'} replace />} />
-                <Route path="/fichapessoa" element={<FichaPessoa />}/>
-                <Route path="/fichapet" element={<FichaPet />}/>
+        <Route path="/fichapessoa" element={<FichaPessoa />}/>
+        <Route path="/fichapet" element={<FichaPet />}/>
       </Routes>
     </Router>
   );
