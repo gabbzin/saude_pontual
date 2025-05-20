@@ -145,6 +145,7 @@ export default function Home(){
                 <div id="modais">
                     <Link
                         id={"para_voce"}
+                        to={"/fichapessoa"}
                     >
                         <div className="button_container_navigate_schedule">
                             Para Você
@@ -156,7 +157,7 @@ export default function Home(){
                     <div style={{width: 50, backgroundColor: "white"}}/>
                     <Link
                         id={"para_pet"}
-                        onClick={() => {console.log("Agendar consulta para pet")}}
+                        to={"/fichapet"}
                     >
                         <div className="button_container_navigate_schedule">
                             Para Pet
