@@ -111,10 +111,82 @@
 }
 
 #para_voce, #para_pet {
-    background-color: #002324;
+    font-family: "Inter";
+    font-weight: bold;
+    text-align: center;
+    text-decoration: none;
+    text-transform: uppercase;
     color: white;
+    font-size: 1.7em;
+}
+
+.button_container_navigate_schedule {
+    background-color: #002324;
+    text-decoration: none;
+    padding: 1em;
 }
 
 .button_consulta_image {
     background-color: white;
+    border-radius: 25px;
+}
+
+.modal.modal_buttons .modal-backdrop {
+  background-color: transparent !important;
+}
+
+.modal.modal_buttons .modal-dialog {
+  display: flex;
+  align-items: center; /* Centraliza verticalmente o conteúdo do modal */
+  justify-content: center; /* Centraliza horizontalmente o conteúdo do modal */
+  min-height: 100vh; /* Garante que o diálogo ocupe a altura total para centralização */
+  margin: 0; /* Remove margens padrão */
+  width: 100%; /* Ocupa a largura total */
+  max-width: none; /* Garante que não haja limite de largura */
+  pointer-events: none; /* Permite cliques através do diálogo, se não houver conteúdo clicável nele */
+}
+
+.modal.modal_buttons .modal-content {
+  background-color: transparent; /* Remove o fundo branco do modal */
+  border: none; /* Remove a borda do modal */
+  box-shadow: none; /* Remove qualquer sombra */
+  display: flex;
+  justify-content: center; /* Centraliza o conteúdo horizontalmente */
+  align-items: center; /* Centraliza o conteúdo verticalmente */
+  width: auto; /* A largura se ajustará ao conteúdo */
+  pointer-events: all; /* Redefine pointer-events para o conteúdo interativo */
+}
+
+#modais {
+  display: flex;
+  gap: 20px; /* Espaço entre os botões */
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap; /* Permite que os botões quebrem a linha em telas menores */
+  width: 100%; /* Ocupa a largura total para ajudar na centralização */
+}
+
+.button_container_navigate_schedule {
+  display: flex;
+  flex-direction: column; /* Coloca o texto e a imagem em coluna */
+  align-items: center; /* Centraliza o conteúdo dentro do botão */
+  justify-content: center;
+  padding: 15px 30px;
+  border-radius: 15px;
+  background-color: #002324; /* Cor de fundo para os botões */
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); /* Sombra suave */
+  transition: transform 0.2s ease-in-out;
+  cursor: pointer;
+  text-decoration: none; /* Remove sublinhado dos links */
+  color: white; /* Cor do texto */
+  font-weight: bold;
+}
+
+.button_container_navigate_schedule:hover {
+  transform: translateY(-3px); /* Efeito de elevação ao passar o mouse */
+  background-color: #007B84;
+}
+
+.button_consulta_image {
+  margin-top: 10px; /* Espaço entre o texto e a imagem */
 }

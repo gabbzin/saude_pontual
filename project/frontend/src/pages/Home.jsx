@@ -16,6 +16,7 @@ import Calendar from "../components/Calendar";
 import "../styles/home.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { AuthContext } from "../contexts/AuthContext";
+import { Link } from "react-router-dom";
 
 export default function Home(){
      
@@ -23,7 +24,7 @@ export default function Home(){
 
     const resolucaoLogoXY = 150;
     const resolucaoProfileXY = 85;
-    const resolucaoAgendarXY = 200;
+    const resolucaoAgendarXY = 150;
 
     const [modalCalendarVisible, setModalCalendarVisible] = useState(false);
     const [modalButtons, setModalButtons] = useState(false);
@@ -140,27 +141,30 @@ export default function Home(){
                 </div>
             </div>
 
-            <Modal show={modalButtons} onHide={() => {setModalButtons(false)}} centered>
-                <div id="modais" className="flex justify-content-around bg-opacity-100">
-                    <Button
+            <Modal className="modal_buttons" show={modalButtons} onHide={() => {setModalButtons(false)}} centered>
+                <div id="modais">
+                    <Link
                         id={"para_voce"}
-                        onClick={() => {console.log("Agendar consulta para você")}}
                     >
-                        Para Você
-                        <div className="button_consulta_image">
-                            <img src={ImageParaVoce} alt="Para Você" width={resolucaoAgendarXY} height={resolucaoAgendarXY}/>
+                        <div className="button_container_navigate_schedule">
+                            Para Você
+                            <div className="button_consulta_image">
+                                <img src={ImageParaVoce} alt="Para Você" width={resolucaoAgendarXY} height={resolucaoAgendarXY}/>
+                            </div>
                         </div>
-                    </Button>
-
-                    <Button
+                    </Link>
+                    <div style={{width: 50, backgroundColor: "white"}}/>
+                    <Link
                         id={"para_pet"}
                         onClick={() => {console.log("Agendar consulta para pet")}}
                     >
-                        Para Pet
-                        <div className="button_consulta_image">
-                            <img src={ImageParaPet} alt="Para pet" width={resolucaoAgendarXY} height={resolucaoAgendarXY}/>
+                        <div className="button_container_navigate_schedule">
+                            Para Pet
+                            <div className="button_consulta_image">
+                                <img src={ImageParaPet} alt="Para pet" width={resolucaoAgendarXY} height={resolucaoAgendarXY}/>
+                            </div>
                         </div>
-                    </Button>
+                    </Link>
                 </div>
             </Modal>
         </div>
