@@ -8,7 +8,7 @@ import Logo from "../assets/logo_saude_pontual.png";
 import Background from "../components/Background"; // Importação do Background
 import Button from "../components/Button"; // Importação do Button
 import FormInput from "../components/FormInput"; // Importação do Input
-import MoModal from "../components/MoModal";
+import MoModal from "../components/MoModal"; // Importação do MoModal
 // Styles
 import "bootstrap/dist/css/bootstrap.min.css";
 import "../styles/login_cadastro.css";

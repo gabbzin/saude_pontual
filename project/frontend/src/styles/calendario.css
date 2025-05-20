@@ -1,0 +1,35 @@
+:root {
+    --fc-border-color: #005C4D;
+    --fc-text-color: white;
+}
+
+.fc .fc-daygrid {
+    background-color: #007B84;
+    color: white;
+}
+
+.fc-daygrid-day {
+    border: 3px solid #005C4D;
+    color: white;
+}
+
+tbody, td, tfoot, th, thead, tr{
+    border: 2px solid #005C4D;
+}
+
+.fc-day-today {
+    background-color: transparent !important;
+}
+
+.fc-day-today .fc-daygrid-day-number {
+    border: 2px solid orange;
+    border-radius: 50%;
+    color: orange;
+    padding: 2px 6px;
+}
+
+.fc-daygrid-day-number {
+    color: white;
+    text-decoration: none;
+    
+}

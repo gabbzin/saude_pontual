@@ -12,9 +12,7 @@ import ProfileButton from "../assets/profile_button.png";
 import Background from "../components/Background";
 import Button from "../components/Button";
 import Calendar from "../components/Calendar";
-// Variaveis
-import { today } from "../components/Calendar";
-
+// Styles
 import "../styles/home.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { AuthContext } from "../contexts/AuthContext";
@@ -29,8 +27,10 @@ export default function Home(){
 
     const [modalCalendarVisible, setModalCalendarVisible] = useState(false);
     const [modalButtons, setModalButtons] = useState(false);
+    const [selectedDate, setSelectedDate] = useState("");
     
-    function showModal(){
+    function showModal(dateStr){
+        setSelectedDate(dateStr)
         setModalCalendarVisible(true);
         console.log("Estado do Modal do Calendário" + modalCalendarVisible);
     }
@@ -49,10 +49,10 @@ export default function Home(){
                     Consulta Agendada
                 </Modal.Header>
                 <Modal.Body style={{fontFamily: "Inter"}}>
-                    Data: {today} <br />
-                    Tipo de consulta: Ortopedia <br />
-                    Nome do Profissional: Pedro João <br />
-                    Horário: 08:35
+                    Data: {selectedDate} <br />
+                    Tipo de consulta: Ortopedia <br /> {/* Alimentar esse campo */}
+                    Nome do Profissional: Pedro João <br /> {/* Alimentar esse campo */}
+                    Horário: 08:35 {/* Alimentar esse campo */}
                 </Modal.Body>
             </Modal>
 

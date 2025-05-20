@@ -1,16 +1,14 @@
 import React from "react";
 import FullCalendar from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
-
-// eslint-disable-next-line react-refresh/only-export-components
-export const today = new Date().toISOString().split('T')[0]
+import InteractionPlugin from "@fullcalendar/interaction";
+import "../styles/calendario.css";
 
 export default function Calendar({showModal}){
 
     return (
         <FullCalendar 
-            plugins={[dayGridPlugin]} // Plugins
-            themeSystem={"bootstrap5"} // Tema do calendário
+            plugins={[dayGridPlugin, InteractionPlugin]} // Plugins
             headerToolbar={{
                 left: "prev next",
                 center: "title",
@@ -24,12 +22,11 @@ export default function Calendar({showModal}){
             fixedWeekCount={false} // Números de semanas fixos
             nowIndicator={true} // Indicador do dia atual
 
-            // Eventos
-            events={[
-                { title: "Consulta", date: today }
-            ]}
+            dateClick={(arg) => {showModal(arg.dateStr)}}
 
-            eventClick={showModal}
+            // Eventos
+            events={[]}
+
         />
         
     );
