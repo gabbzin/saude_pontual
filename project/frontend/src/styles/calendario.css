@@ -17,6 +17,13 @@ tbody, td, tfoot, th, thead, tr{
     border: 2px solid #005C4D;
 }
 
+.fc-col-header-cell-cushion {
+    color: white;
+    text-decoration: none;
+    text-transform: uppercase;
+    font-weight: 400;
+}
+
 .fc-day-today {
     background-color: transparent !important;
 }
