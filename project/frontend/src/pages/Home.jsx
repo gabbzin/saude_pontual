@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { Modal } from "react-bootstrap";
 // Assets
 import ButtonExit from "../assets/button_exit_1.jpeg";
@@ -11,23 +11,27 @@ import ProfileButton from "../assets/profile_button.png";
 // Components
 import Background from "../components/Background";
 import Button from "../components/Button";
-import { today } from "../components/Calendar";
+import Calendar from "../components/Calendar";
 // Styles
 import "../styles/home.css";
 import "bootstrap/dist/css/bootstrap.min.css";
-// Variaveis
-import Calendar from "../components/Calendar";
+import { AuthContext } from "../contexts/AuthContext";
+import { Link } from "react-router-dom";
 
 export default function Home(){
+     
+    const {usuario} = useContext(AuthContext);
 
     const resolucaoLogoXY = 150;
     const resolucaoProfileXY = 85;
-    const resolucaoAgendarXY = 200;
+    const resolucaoAgendarXY = 150;
 
     const [modalCalendarVisible, setModalCalendarVisible] = useState(false);
     const [modalButtons, setModalButtons] = useState(false);
+    const [selectedDate, setSelectedDate] = useState("");
     
-    function showModal(){
+    function showModal(dateStr){
+        setSelectedDate(dateStr)
         setModalCalendarVisible(true);
         console.log("Estado do Modal do Calendário" + modalCalendarVisible);
     }
@@ -46,10 +50,10 @@ export default function Home(){
                     Consulta Agendada
                 </Modal.Header>
                 <Modal.Body style={{fontFamily: "Inter"}}>
-                    Data: {today} <br />
-                    Tipo de consulta: Ortopedia <br />
-                    Nome do Profissional: Pedro João <br />
-                    Horário: 08:35
+                    Data: {selectedDate} <br />
+                    Tipo de consulta: Ortopedia <br /> {/* Alimentar esse campo */}
+                    Nome do Profissional: Pedro João <br /> {/* Alimentar esse campo */}
+                    Horário: 08:35 {/* Alimentar esse campo */}
                 </Modal.Body>
             </Modal>
 
@@ -106,7 +110,7 @@ export default function Home(){
                                 borderRadius: "50%"
                             }}
                         />
-                        <h1>SEJA BEM-VINDA, THALITA KAMILLE!</h1>
+                        <h1>SEJA BEM-VINDA, {usuario?.nome}</h1>
                     </div>
                     <div id="calendar" style={{height: "100%"}}>
                         <Calendar showModal={showModal}/>
@@ -137,27 +141,31 @@ export default function Home(){
                 </div>
             </div>
 
-            <Modal show={modalButtons} onHide={() => {setModalButtons(false)}} centered>
-                <div id="modais" className="flex justify-content-around bg-opacity-100">
-                    <Button
+            <Modal className="modal_buttons" show={modalButtons} onHide={() => {setModalButtons(false)}} centered>
+                <div id="modais">
+                    <Link
                         id={"para_voce"}
-                        onClick={() => {console.log("Agendar consulta para você")}}
+                        to={"/fichapessoa"}
                     >
-                        Para Você
-                        <div className="button_consulta_image">
-                            <img src={ImageParaVoce} alt="Para Você" width={resolucaoAgendarXY} height={resolucaoAgendarXY}/>
+                        <div className="button_container_navigate_schedule">
+                            Para Você
+                            <div className="button_consulta_image">
+                                <img src={ImageParaVoce} alt="Para Você" width={resolucaoAgendarXY} height={resolucaoAgendarXY}/>
+                            </div>
                         </div>
-                    </Button>
-
-                    <Button
+                    </Link>
+                    <div style={{width: 50, backgroundColor: "white"}}/>
+                    <Link
                         id={"para_pet"}
-                        onClick={() => {console.log("Agendar consulta para pet")}}
+                        to={"/fichapet"}
                     >
-                        Para Pet
-                        <div className="button_consulta_image">
-                            <img src={ImageParaPet} alt="Para pet" width={resolucaoAgendarXY} height={resolucaoAgendarXY}/>
+                        <div className="button_container_navigate_schedule">
+                            Para Pet
+                            <div className="button_consulta_image">
+                                <img src={ImageParaPet} alt="Para pet" width={resolucaoAgendarXY} height={resolucaoAgendarXY}/>
+                            </div>
                         </div>
-                    </Button>
+                    </Link>
                 </div>
             </Modal>
         </div>

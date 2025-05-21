@@ -1,0 +1,59 @@
+:root {
+    --fc-border-color: #005C4D;
+    --fc-text-color: white;
+}
+
+.fc .fc-daygrid {
+    background-color: #007B84;
+    color: white;
+}
+
+.fc-daygrid-day {
+    border: 3px solid #005C4D;
+    color: white;
+}
+
+tbody, td, tfoot, th, thead, tr{
+    border: 2px solid #005C4D;
+}
+
+.fc-col-header-cell-cushion {
+    color: white;
+    text-decoration: none;
+    text-transform: uppercase;
+    font-weight: 400;
+}
+
+.fc-day-today {
+    background-color: transparent !important;
+}
+
+.fc-day-today .fc-daygrid-day-number {
+    border: 2px solid orange;
+    border-radius: 50%;
+    color: orange;
+    padding: 0px 6px;
+}
+
+.fc-daygrid-day-number {
+    font-size: 1.4em;
+    color: white;
+    text-decoration: none;
+    margin: auto;
+    margin-top: 5px;
+}
+
+.fc-daygrid-day-events {
+    display: none;
+}
+
+.fc-daygrid-day-top {
+    height: 100%;
+}
+
+.fc-daygrid-day-frame.fc-scrollgrid-sync-inner {
+    display: flex;
+    flex: 1;
+    align-items: center;
+    justify-content: center;
+}
