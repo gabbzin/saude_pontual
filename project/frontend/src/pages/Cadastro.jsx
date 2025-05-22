@@ -29,6 +29,18 @@ export default function Cadastro() {
     e.preventDefault();
     console.log("disparado", form);
 
+    try {
+      await cadastrarUsuario(form);
+      // mostra modal de sucesso sem verificar token
+      setModalVisible(true);
+      setTimeout(() => {
+        setModalVisible(false);
+        navigate("/");
+      }, 1500);
+    } catch (err) {
+      alert(err.mensage || "Erro ao cadastrar")
+    }
+    /*
     const result = await cadastrarUsuario(form);
     if (result.token) {
       localStorage.setItem("token", result.token);
@@ -40,6 +52,8 @@ export default function Cadastro() {
     } else {
       alert(result.mensagem || "Erro ao cadastrar");
     }
+  };
+  */
   };
 
   return (
