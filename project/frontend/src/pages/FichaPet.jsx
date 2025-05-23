@@ -15,6 +15,7 @@ export default function FichaPessoa(){
                 <form action="POST">
                     <FormInputSchedule
                         id={"name"}
+                        name={"name"}
                         required={true}
                         iconrequired={"*"}
                         label={"Nome do animal:"}
@@ -24,6 +25,7 @@ export default function FichaPessoa(){
                     <div id="three_inputs">
                         <FormInputSchedule
                             id={"especie"}
+                            name={"especie"}
                             required={true}
                             iconrequired={"*"}
                             label={"Espécie:"}
@@ -32,6 +34,7 @@ export default function FichaPessoa(){
                         />
                         <FormInputSchedule
                             id={"raca"}
+                            name={"raca"}
                             required={true}
                             iconrequired={"*"}
                             label={"Raça:"}
@@ -40,6 +43,7 @@ export default function FichaPessoa(){
                         />
                         <FormInputSchedule
                             id={"sexo"}
+                            name={"sexo"}
                             required={true}
                             iconrequired={"*"}
                             label={"Sexo:"}
@@ -51,6 +55,7 @@ export default function FichaPessoa(){
                     <div id="three_inputs">
                         <FormInputSchedule
                             id={"esterilizacao"}
+                            name={"esterilizacao"}
                             required={true}
                             iconrequired={"*"}
                             label={"Esterilização:"}
@@ -59,6 +64,7 @@ export default function FichaPessoa(){
                         />
                         <FormInputSchedule
                             id={"cor"}
+                            name={"cor"}
                             required={true}
                             iconrequired={"*"}
                             label={"Cor:"}
@@ -67,6 +73,7 @@ export default function FichaPessoa(){
                         />
                         <FormInputSchedule
                             id={"peso"}
+                            name={"peso"}
                             required={true}
                             iconrequired={"*"}
                             label={"Peso:"}
@@ -79,6 +86,7 @@ export default function FichaPessoa(){
                         <FormInputSchedule
                             idDiv={"input_caixa"}
                             id={"identificacao"}
+                            name={"identificacao"}
                             label={"Identificação:"}
                             type={"text"}
                             placeholder={"Digite a identificacao"}
@@ -87,6 +95,7 @@ export default function FichaPessoa(){
                         <FormInputSchedule
                             idDiv={"input_caixa"}
                             id={"horarios"}
+                            name={"horarios"}
                             iconrequired={"*"}
                             label={"Horários Disponíveis:"}
                             required={true}
@@ -98,6 +107,7 @@ export default function FichaPessoa(){
                     <div style={{display: "flex", flexDirection: "column"}}>
                         <FormInputSchedule
                             id={"historico_de_saude"}
+                            name={"historico_de_saude"}
                             iconrequired={"*"}
                             label={"Histórico de Saúde:"}
                             placeholder={"Histórico de doenças, vacinas, remédios"}
@@ -109,6 +119,7 @@ export default function FichaPessoa(){
                     <div style={{display: "flex", flexDirection: "column"}}>
                         <FormInputSchedule
                             id={"motivo_consulta"}
+                            name={"motivo_consulta"}
                             iconrequired={"*"}
                             label={"Motivo da Consulta:"}
                             placeholder={"Digite o motivo da consulta"}

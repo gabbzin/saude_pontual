@@ -1,6 +1,6 @@
 import React from 'react';
 
-export default function FormInput({ id, idDiv=null, label, type, placeholder, required=false, iconrequired="", options, rows=3, ...restProps }) {
+export default function FormInput({ id, idDiv=null, name, label, type, placeholder, required=false, iconrequired="", options, rows=3, ...restProps }) {
 
     const paddingPadrao = 10;
     const borderRadiusPadrao = 15;
@@ -11,6 +11,7 @@ export default function FormInput({ id, idDiv=null, label, type, placeholder, re
                 type={type}
                 className={"inputs form-control w-100"}
                 id={id}
+                name={name}
                 placeholder={placeholder}
                 required={required}
                 style={{
@@ -28,6 +29,7 @@ export default function FormInput({ id, idDiv=null, label, type, placeholder, re
         return (
             <select
                 id={id}
+                name={name}
                 className={"form-select"}
                 required={required}
                 style={{
@@ -51,6 +53,7 @@ export default function FormInput({ id, idDiv=null, label, type, placeholder, re
         return (
             <textarea
                 id={id}
+                name={name}
                 className={"form-text w-100"}
                 placeholder={placeholder}
                 required={required}

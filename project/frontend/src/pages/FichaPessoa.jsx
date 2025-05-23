@@ -15,6 +15,7 @@ export default function FichaPessoa(){
                 <form action="POST">
                     <FormInputSchedule
                         id={"name"}
+                        name={"name"} 
                         required={true}
                         iconrequired={"*"}
                         label={"Nome Completo:"}
@@ -23,6 +24,7 @@ export default function FichaPessoa(){
                     />
                     <FormInputSchedule
                         id={"idade"}
+                        name={"idade"} 
                         required={true}
                         iconrequired={"*"}
                         label={"Idade:"}
@@ -31,7 +33,8 @@ export default function FichaPessoa(){
                     />
                     <div id="three_inputs">
                         <FormInputSchedule
-                            id={"Peso"}
+                            id={"peso"} 
+                            name={"peso"} 
                             required={true}
                             iconrequired={"*"}
                             label={"Peso:"}
@@ -40,6 +43,7 @@ export default function FichaPessoa(){
                         />
                         <FormInputSchedule
                             id={"altura"}
+                            name={"altura"} 
                             required={true}
                             iconrequired={"*"}
                             label={"Altura:"}
@@ -48,6 +52,7 @@ export default function FichaPessoa(){
                         />
                         <FormInputSchedule
                             id={"tipo_sanguineo"}
+                            name={"tipo_sanguineo"} 
                             required={true}
                             iconrequired={"*"}
                             label={"Tipo Sanguíneo:"}
@@ -58,6 +63,7 @@ export default function FichaPessoa(){
 
                     <FormInputSchedule
                         id={"historico_de_saude"}
+                        name={"historico_de_saude"} 
                         iconrequired={"*"}
                         label={"Histórico de Saúde:"}
                         required={true}
@@ -69,6 +75,7 @@ export default function FichaPessoa(){
                         <FormInputSchedule
                             idDiv={"input_caixa"}
                             id={"area_medica_desejada"}
+                            name={"area_medica_desejada"} 
                             iconrequired={"*"}
                             label={"Área médica desejada:"}
                             required={true}
@@ -79,6 +86,7 @@ export default function FichaPessoa(){
                         <FormInputSchedule
                             idDiv={"input_caixa"}
                             id={"horarios_disponiveis"}
+                            name={"horarios_disponiveis"} 
                             iconrequired={"*"}
                             label={"Horários disponíveis:"}
                             required={true}
@@ -89,6 +97,7 @@ export default function FichaPessoa(){
                     <div style={{display: "flex", flexDirection: "column"}}>
                         <FormInputSchedule
                             id={"motivo_da_consulta"}
+                            name={"motivo_da_consulta"} 
                             iconrequired={"*"}
                             label={"Motivo da consulta:"}
                             required={true}
