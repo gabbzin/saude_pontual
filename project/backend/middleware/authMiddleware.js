@@ -4,7 +4,7 @@ require("dotenv").config()
 
 const SECRET_KEY = process.env.JWT_CHAVE
 
-exports.verifyToken(req, res, next){
+exports.verifyToken = function(req, res, next){
     const token = req.header('Authorization');
     if (!token) return res.status(401).json({error: "Access denied"}); // Sem token Sem Acesso
 
