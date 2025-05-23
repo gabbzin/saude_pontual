@@ -15,115 +15,129 @@ import "../styles/login_cadastro.css";
 import { loginUsuario } from "../../api/api";
 
 export default function Login() {
-  const [form, setForm] = useState({ email: "", senha: "" });
-  const [error, setError] = useState("");
-  const navigate = useNavigate();
-  const {login} = useContext(AuthContext)
+    const [form, setForm] = useState({ email: "", senha: "" });
+    const [error, setError] = useState("");
+    const navigate = useNavigate();
+    const { login } = useContext(AuthContext);
 
-  // Atualiza campo do formulário
-  const handleChange = (e) => {
-	const { name, value } = e.target;
-	setForm((prev) => ({ ...prev, [name]: value }));
-  };
+    // Atualiza campo do formulário
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        setForm((prev) => ({ ...prev, [name]: value }));
+    };
 
-  // Envia dados de login
-  const handleSubmit = async (e) => {
-	e.preventDefault();
-	const result = await loginUsuario(form);
-	console.log(result);
-	if (result.token) {
-	  login(result.usuario, result.token); // Atualiza o contexto aqui
-	  navigate("/"); // Navegando pra Home
-	} else {
-	  setError(result.mensagem || "Falha no login");
-	}
-  };
+    // Envia dados de login
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        const result = await loginUsuario(form);
+        console.log(result);
+        if (result.token) {
+            login(result.usuario, result.token); // Atualiza o contexto aqui
+            setError("") // Limpa o erro antes de navegar
+            setTimeout( () => {
+                navigate("/");
+            }, 200); // Navegando pra Home
+        } else {
+            setError(result.mensagem || "Falha no login");
+        }
+    };
 
-//   const handleSubmit = async (e) => {
-//     e.preventDefault();
-//     try {
-//       const result = await loginUsuario(form);
-//       if (result.usuario) {
-//         navigate("/");
-//       } else {
-//         setError(result.mensagem || "Erro no login");
-//       }
-//     } catch (err) {
-//       setError(err.message || "Erro no login");
-//     }
-//   };
+    //   const handleSubmit = async (e) => {
+    //     e.preventDefault();
+    //     try {
+    //       const result = await loginUsuario(form);
+    //       if (result.usuario) {
+    //         navigate("/");
+    //       } else {
+    //         setError(result.mensagem || "Erro no login");
+    //       }
+    //     } catch (err) {
+    //       setError(err.message || "Erro no login");
+    //     }
+    //   };
 
-  return (
-	<div id="background" className="d-flex align-items-center">
-	  <Background imageUrl={FundoVerde}/>
-	  <img
-		src={Logo}
-		alt="Foto da empresa"
-		width={75}
-		height={75}
-		className="position-absolute top-0"
-		style={{
-			marginTop: 10, 
-			marginLeft: 15
-		 }}
-	  />
-	  <main className="form-signin w-100 m-auto d-flex flex-column align-items-center py-2">
-		<h1 id="title" className="mb-3 fw-normal">
-			SAÚDE PONTUAL
-			</h1>
-		<div id="box-form" className="flex justify-content-center align-items-center p-3">
-		  <form onSubmit={handleSubmit}>
-			{/* Campo de e-mail */}
-			<FormInput
-			  id="floatingInput"
-			  name="email"
-			  label="E-mail"
-			  type="email"
-			  value={form.email}
-			  onChange={handleChange}
-			  required={true}
-			/>
-			{/* Campo de senha */}
-			<FormInput
-			  id="floatingPassword"
-			  name="senha"
-			  label="Senha"
-			  type="password"
-			  value={form.senha}
-			  onChange={handleChange}
-			  required={true}
-			/>
-			{/* Exibe mensagem de erro */}
-			{error && <div className="text-danger mb-2">{error}</div>}
-			{/* Botão de Login */}
-			<div id="botao" className="flex text-center w-100">
-			  <Button
-				id={"login-button"}
-				text={"ENTRAR"}
-				type="submit"
-				style={{ 
-					padding: 16, 
-					margin: 8, 
-					fontSize: "1.5em", 
-					width: 150, 
-					borderRadius: 75, 
-					border: "none"
-				}}
-			  />
-			</div>
-			{/* Redirecionamento para fazer cadastro */}
-			<div id="link" className="mt-1 text-center text-white">
-			  Não tem uma conta?{' '}
-			  <Link to="/cadastro" className="fw-bold text-decoration-none text-white">Cadastre-se</Link>
-			</div>
-		  </form>
-		</div>
-		<MoModal
-		  show={!!error}
-		  onClose={() => setError("")}
-		  text={error}
-		/>
-	  </main>
-	</div>
-  );
+    return (
+        <div id="background" className="d-flex align-items-center">
+            <Background imageUrl={FundoVerde} />
+            <img
+                src={Logo}
+                alt="Foto da empresa"
+                width={75}
+                height={75}
+                className="position-absolute top-0"
+                style={{
+                    marginTop: 10,
+                    marginLeft: 15,
+                }}
+            />
+            <main className="form-signin w-100 m-auto d-flex flex-column align-items-center py-2">
+                <h1 id="title" className="mb-3 fw-normal">
+                    SAÚDE PONTUAL
+                </h1>
+                <div
+                    id="box-form"
+                    className="flex justify-content-center align-items-center p-3"
+                >
+                    <form onSubmit={handleSubmit}>
+                        {/* Campo de e-mail */}
+                        <FormInput
+                            id="floatingInput"
+                            name="email"
+                            label="E-mail"
+                            type="email"
+                            value={form.email}
+                            onChange={handleChange}
+                            required={true}
+                        />
+                        {/* Campo de senha */}
+                        <FormInput
+                            id="floatingPassword"
+                            name="senha"
+                            label="Senha"
+                            type="password"
+                            value={form.senha}
+                            onChange={handleChange}
+                            required={true}
+                        />
+                        {/* Obseto, porque já tem PopUp */}
+                        {/* Exibe mensagem de erro
+                        {error && (
+                            <div className="text-danger mb-2">{error}</div>
+                        )} */}
+                        {/* Botão de Login */}
+                        <div id="botao" className="flex text-center w-100">
+                            <Button
+                                id={"login-button"}
+                                text={"ENTRAR"}
+                                type="submit"
+                                style={{
+                                    padding: 16,
+                                    margin: 8,
+                                    fontSize: "1.5em",
+                                    width: 150,
+                                    borderRadius: 75,
+                                    border: "none",
+                                }}
+                            />
+                        </div>
+                        {/* Redirecionamento para fazer cadastro */}
+                        <div id="link" className="mt-1 text-center text-white">
+                            Não tem uma conta?{" "}
+                            <Link
+                                to="/cadastro"
+                                className="fw-bold text-decoration-none text-white"
+                            >
+                                Cadastre-se
+                            </Link>
+                        </div>
+                    </form>
+                </div>
+                <MoModal
+                    show={!!error}
+                    onClose={() => setError("")}
+                    text={error}
+                />
+            </main>
+        </div>
+    );
 }
