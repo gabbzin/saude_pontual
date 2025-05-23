@@ -116,3 +116,44 @@ exports.pegarPerfil = async (req, res) => {
         return res.status(500).json({ mensagem: "Erro interno ao buscar perfil" });
     }
 };
+
+exports.cadastrarConsulta = async (req, res) => {
+    const {
+        nome,
+        idade,
+        peso,
+        altura,
+        tipo_sanguineo,
+        historico_de_saude,
+        area_medica_desejada,
+        data_e_hora,
+        motivo,
+    } = req.body;
+
+    const usuario_id = req.userId;
+
+    try {
+        await db.query (
+            `INSERT INTO consultas 
+            (usuario_id, nome, idade, peso, altura, tipo_sanguineo, historico_de_saude, area_medica_desejada, data_e_hora, motivo) 
+        VALUES 
+            ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)`,
+            [
+                usuario_id,
+                nome,
+                idade,
+                peso,
+                altura,
+                tipo_sanguineo,
+                historico_de_saude,
+                area_medica_desejada,
+                data_e_hora,
+                motivo,
+            ]
+        );
+        res.status(201).json({mensagem: "Consulta cadastrada com sucesso!"});
+    } catch (error) {
+        console.error("Erro ao cadastrar consulta: ", error);
+        res.status(500).json({mensagem: "Erro ao cadastrar esta consulta"})
+    }
+}
