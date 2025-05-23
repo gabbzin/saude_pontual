@@ -14,10 +14,22 @@ const db = new Pool({
 async function createTables() {
     try {
         const client = await db.connect();
+
+        await client.query(`
+            CREATE TABLE IF NOT EXISTS usuarios (
+                id SERIAL PRIMARY KEY,
+                nome VARCHAR(255) NOT NULL,
+                email VARCHAR(255) UNIQUE NOT NULL,
+                telefone VARCHAR(20),
+                data_nascimento DATE,
+                senha VARCHAR(255) NOT NULL
+            );
+        `);
+
         await client.query(`
             CREATE TABLE IF NOT EXISTS consultas (
                 id SERIAL PRIMARY KEY,
-                usuario_id INTEGER NOT NULL,
+                usuario_id INTEGER NOT NULL REFERENCES usuarios(id),
                 nome VARCHAR(255) NOT NULL,
                 idade INTEGER NOT NULL,
                 peso DECIMAL(5, 2) NOT NULL,
@@ -25,19 +37,17 @@ async function createTables() {
                 tipo_sanguineo VARCHAR(5) NOT NULL,
                 historico_de_saude TEXT NOT NULL,
                 area_medica_desejada VARCHAR(255) NOT NULL,
-                data_e_hora TIMESTAMP NOT NULL
+                data_e_hora TIMESTAMP NOT NULL,
                 motivo TEXT NOT NULL,
                 created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
             );
         `);
+
         client.release();
-        console.log('Tabela "consultas" verificada/criada com sucesso!');
+        console.log("Tabelas verificadas/criadas com sucesso!");
     } catch (err) {
-        console.error('Erro ao criar a tabela "consultas":', err);
+        console.error("Erro ao criar tabelas:", err);
     }
 }
 
-module.exports = {
-    db,
-    createTables,
-};
+module.exports = {db, createTables};

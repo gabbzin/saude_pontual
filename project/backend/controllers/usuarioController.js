@@ -1,5 +1,5 @@
 const bcrypt = require("bcryptjs");
-const db = require("../db");
+const {db} = require("../db");
 const jwt = require("jsonwebtoken");
 
 require("dotenv").config(); // Carregando as variáveis de ambiente

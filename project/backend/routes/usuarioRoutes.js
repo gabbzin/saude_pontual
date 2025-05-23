@@ -5,10 +5,10 @@ const {
     loginUsuario,
     pegarPerfil
 } = require("../controllers/usuarioController");
-const verifytoken = require("../middleware/authMiddleware");
+const {verifyToken} = require("../middleware/authMiddleware");
 
 router.post("/usuarios", cadastrarUsuario);
 router.post("/login", loginUsuario);
-router.get("/perfil", verifytoken, pegarPerfil);
+router.get("/perfil", verifyToken, pegarPerfil);
 
 module.exports = router;
