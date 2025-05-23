@@ -71,7 +71,7 @@ export default function FichaPessoa(){
                         placeholder={"Possuo Doença/Condição X, e tomo remédio Y"}
                     />
 
-                    <div id="two_inputs">
+                    <div id="three_inputs">
                         <FormInputSchedule
                             idDiv={"input_caixa"}
                             id={"area_medica_desejada"}
@@ -82,16 +82,24 @@ export default function FichaPessoa(){
                             type={"select"}
                             options={Dados.areasMedicas}
                         />
-                        <div style={{margin: 15}}/>
                         <FormInputSchedule
                             idDiv={"input_caixa"}
                             id={"horarios_disponiveis"}
-                            name={"horarios_disponiveis"} 
+                            name={"horario"}
                             iconrequired={"*"}
                             label={"Horários disponíveis:"}
                             required={true}
                             type={"select"}
                             options={Dados.horarios}
+                        />
+                        <FormInputSchedule
+                            idDiv={"input_caixa"}
+                            id={"data_agendamento"}
+                            name={"data_agendamento"}
+                            iconrequired={"*"}
+                            label={"Data do Agendamento:"}
+                            required={true}
+                            type={"date"}
                         />
                     </div>
                     <div style={{display: "flex", flexDirection: "column"}}>

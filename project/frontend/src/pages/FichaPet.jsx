@@ -82,7 +82,7 @@ export default function FichaPessoa(){
                         />
                     </div>
 
-                    <div id="two_inputs">
+                    <div id="three_inputs">
                         <FormInputSchedule
                             idDiv={"input_caixa"}
                             id={"identificacao"}
@@ -91,11 +91,19 @@ export default function FichaPessoa(){
                             type={"text"}
                             placeholder={"Digite a identificacao"}
                         />
-                        <div style={{margin: 15}} />
+                        <FormInputSchedule
+                            idDiv={"input_caixa"}
+                            id={"data_agendamento"}
+                            name={"data_agendamento"}
+                            iconrequired={"*"}
+                            label={"Data do Agendamento:"}
+                            required={true}
+                            type={"date"}
+                        />
                         <FormInputSchedule
                             idDiv={"input_caixa"}
                             id={"horarios"}
-                            name={"horarios"}
+                            name={"horario"}
                             iconrequired={"*"}
                             label={"Horários Disponíveis:"}
                             required={true}
