@@ -27,7 +27,6 @@ export default function Login() {
   };
 
   // Envia dados de login
-  /*
   const handleSubmit = async (e) => {
 	e.preventDefault();
 	const result = await loginUsuario(form);
@@ -38,21 +37,20 @@ export default function Login() {
 	  setError(result.mensagem || "Falha no login");
 	}
   };
-  */
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    try {
-      const result = await loginUsuario(form);
-      if (result.usuario) {
-        navigate("/");
-      } else {
-        setError(result.mensagem || "Erro no login");
-      }
-    } catch (err) {
-      setError(err.message || "Erro no login");
-    }
-  };
 
+//   const handleSubmit = async (e) => {
+//     e.preventDefault();
+//     try {
+//       const result = await loginUsuario(form);
+//       if (result.usuario) {
+//         navigate("/");
+//       } else {
+//         setError(result.mensagem || "Erro no login");
+//       }
+//     } catch (err) {
+//       setError(err.message || "Erro no login");
+//     }
+//   };
 
   return (
 	<div id="background" className="d-flex align-items-center">
@@ -108,7 +106,7 @@ export default function Login() {
 					fontSize: "1.5em", 
 					width: 150, 
 					borderRadius: 75, 
-					border: "None"
+					border: "none"
 				}}
 			  />
 			</div>
