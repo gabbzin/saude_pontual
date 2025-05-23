@@ -118,7 +118,7 @@ export default function Home(){
                                 borderRadius: "50%"
                             }}
                         />
-                        <h1>SEJA BEM-VINDA, {usuario?.nome}</h1>
+                        <h1>SEJA BEM-VINDO(A), {usuario?.nome}</h1>
                     </div>
                     <div id="calendar" style={{height: "100%"}}>
                         <Calendar showModal={showModal}/>
