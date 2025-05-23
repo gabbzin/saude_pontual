@@ -1,116 +1,189 @@
-import React from "react";
+import React, { useState } from "react";
 
-import Button from "../components/Button"
+import Button from "../components/Button";
 import FormInputSchedule from "../components/FormInputSchedule";
 
 import Dados from "../dados.json";
 
 import "../styles/fichas.css";
+import { cadastrarConsulta } from "../../api/api";
+import { useNavigate } from "react-router-dom";
 
-export default function FichaPessoa(){
+export default function FichaPessoa() {
+    const [formData, setFormData] = useState({
+        nome: "",
+        idade: "",
+        peso: "",
+        altura: "",
+        tipo_sanguineo: "",
+        historico_de_saude: "",
+        area_medica_desejada: "",
+        horario: "",
+        data_e_hora: "", // Para data + hora combinadas
+        motivo: "",
+    });
+
+    const navigate = useNavigate();
+
+    function handleChange(e) {
+        let { name, value } = e.target;
+
+        if(name === "peso" || name === "altura"){ // Pode dar erro, caso os números flutuantes venham com virgula
+            value = value.replace(",", ".");
+        }
+
+        setFormData((prev) => ({ ...prev, [name]: value }));
+    }
+
+    async function handleSubmit(e) {
+        e.preventDefault();
+
+        const dataHora = formData.data_e_hora || "";
+        const horario = formData.horario || "";
+        const dataHoraCompleta = horario ? `${dataHora}T${horario}` : dataHora;
+
+        try {
+            const result = await cadastrarConsulta({
+                ...formData,
+                data_e_hora: dataHoraCompleta,
+            });
+
+            if (result.mensagem) {
+                alert(result.mensagem);
+                navigate("/"); // Navega para a home (ou onde quiser)
+            } else {
+                alert("Erro ao cadastrar a consulta");
+            }
+        } catch (error) {
+            alert("Erro na requisição: " + error.message);
+        }
+    }
+
     return (
         <div id="container_ficha">
             <main id="ficha">
                 <h1>PREENCHA A FICHA:</h1>
-                <form action="POST">
+                <form method="POST" onSubmit={handleSubmit}>
                     <FormInputSchedule
-                        id={"name"}
-                        name={"name"} 
+                        id={"nome"}
+                        name={"nome"}
                         required={true}
                         iconrequired={"*"}
                         label={"Nome Completo:"}
                         type={"text"}
                         placeholder={"Digite seu nome"}
+                        value={formData.nome}
+                        onChange={handleChange}
                     />
                     <FormInputSchedule
                         id={"idade"}
-                        name={"idade"} 
+                        name={"idade"}
                         required={true}
                         iconrequired={"*"}
                         label={"Idade:"}
                         type={"text"}
                         placeholder={"Digite sua idade"}
+                        value={formData.idade}
+                        onChange={handleChange}
                     />
                     <div id="three_inputs">
                         <FormInputSchedule
-                            id={"peso"} 
-                            name={"peso"} 
+                            id={"peso"}
+                            name={"peso"}
                             required={true}
                             iconrequired={"*"}
                             label={"Peso:"}
                             type={"text"}
                             placeholder={"Digite seu peso"}
+                            value={formData.peso}
+                            onChange={handleChange}
                         />
                         <FormInputSchedule
                             id={"altura"}
-                            name={"altura"} 
+                            name={"altura"}
                             required={true}
                             iconrequired={"*"}
                             label={"Altura:"}
                             type={"text"}
                             placeholder={"Digite sua altura"}
+                            value={formData.altura}
+                            onChange={handleChange}
                         />
                         <FormInputSchedule
                             id={"tipo_sanguineo"}
-                            name={"tipo_sanguineo"} 
+                            name={"tipo_sanguineo"}
                             required={true}
                             iconrequired={"*"}
                             label={"Tipo Sanguíneo:"}
                             type={"text"}
                             placeholder={"Digite seu tipo sanguíneo"}
+                            value={formData.tipo_sanguineo}
+                            onChange={handleChange}
                         />
                     </div>
 
                     <FormInputSchedule
                         id={"historico_de_saude"}
-                        name={"historico_de_saude"} 
+                        name={"historico_de_saude"}
                         iconrequired={"*"}
                         label={"Histórico de Saúde:"}
                         required={true}
                         type={"text"}
-                        placeholder={"Possuo Doença/Condição X, e tomo remédio Y"}
+                        placeholder={
+                            "Possuo Doença/Condição X, e tomo remédio Y"
+                        }
+                        value={formData.historico_de_saude}
+                        onChange={handleChange}
                     />
 
                     <div id="three_inputs">
                         <FormInputSchedule
                             idDiv={"input_caixa"}
                             id={"area_medica_desejada"}
-                            name={"area_medica_desejada"} 
+                            name={"area_medica_desejada"}
                             iconrequired={"*"}
-                            label={"Área médica desejada:"}
+                            label={"Área médica:"}
                             required={true}
                             type={"select"}
                             options={Dados.areasMedicas}
+                            value={formData.area_medica_desejada}
+                            onChange={handleChange}
                         />
                         <FormInputSchedule
                             idDiv={"input_caixa"}
-                            id={"horarios_disponiveis"}
+                            id={"horario"}
                             name={"horario"}
                             iconrequired={"*"}
                             label={"Horários disponíveis:"}
                             required={true}
                             type={"select"}
                             options={Dados.horarios}
+                            value={formData.horario}
+                            onChange={handleChange}
                         />
                         <FormInputSchedule
                             idDiv={"input_caixa"}
-                            id={"data_agendamento"}
-                            name={"data_agendamento"}
+                            id={"data_e_hora"}
+                            name={"data_e_hora"}
                             iconrequired={"*"}
                             label={"Data do Agendamento:"}
                             required={true}
                             type={"date"}
+                            value={formData.data_e_hora}
+                            onChange={handleChange}
                         />
                     </div>
-                    <div style={{display: "flex", flexDirection: "column"}}>
+                    <div style={{ display: "flex", flexDirection: "column" }}>
                         <FormInputSchedule
-                            id={"motivo_da_consulta"}
-                            name={"motivo_da_consulta"} 
+                            id={"motivo"}
+                            name={"motivo"}
                             iconrequired={"*"}
                             label={"Motivo da consulta:"}
                             required={true}
                             type={"textarea"}
                             placeholder={"Digite o motivo da consulta"}
+                            value={formData.motivo}
+                            onChange={handleChange}
                         />
                     </div>
                     <div id="container_button_submit">
@@ -123,7 +196,7 @@ export default function FichaPessoa(){
                                 borderRadius: 37.5,
                                 fontFamily: "Passion One",
                                 fontSize: "1.5em",
-                                width: "50%"
+                                width: "50%",
                             }}
                         />
                     </div>

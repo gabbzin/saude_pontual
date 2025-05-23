@@ -1,17 +1,22 @@
 const db = require("../db");
 
 exports.criarConsulta = async (req, res) => {
-    const { usuario_id, nome, idade, peso, altura, tipo_sanguineo,
+    const { nome, idade, peso, altura, tipo_sanguineo,
             historico_de_saude, area_medica_desejada, data_agendamento, horario, motivo: motivo_da_consulta } = req.body;
 
+    const usuario_id = req.userId;
+
+    if(!usuario_id){
+        return res.status(401).json({error: "Bloqueado chefe"})
+    }
+
     //campos "obrigatórios"
-    if (!usuario_id || !nome || !idade || !peso || !altura || !tipo_sanguineo ||
+    if (!nome || !idade || !peso || !altura || !tipo_sanguineo ||
     !historico_de_saude || !area_medica_desejada || !data_agendamento || !horario || !motivo_da_consulta) {
         return res
             .status(400)
             .json({ error: "Preencha todos os campos obrigatórios." });
         }
-    
     
     const data_e_hora_combinada = `${data_agendamento} ${horario}`
 
@@ -37,10 +42,10 @@ exports.criarConsulta = async (req, res) => {
                 tipo_sanguineo,
                 historico_de_saude,
                 area_medica_desejada,
-                data_e_hora
+                data_e_hora,
                 motivo_da_consulta
             )
-            VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)
+            VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)
             RETURNING *`,
             [
                 usuario_id,
