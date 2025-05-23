@@ -14,23 +14,23 @@ export const AuthProvider = ({ children }) => {
         const usuarioSalvo = localStorage.getItem("usuario");
 
         if (token && usuarioSalvo){
-            setUsuario(JSON.parse(usuarioSalvo))
+            setUsuario(JSON.parse(usuarioSalvo));
         }
     
 
-        setCarregando(false)
+        setCarregando(false);
     }, []);
 
     const login = (usuario, token) => {
-        localStorage.getItem("token", token)
-        localStorage.getItem("usuario", usuario)
+        localStorage.setItem("token", token);
+        localStorage.setItem("usuario", JSON.stringify(usuario));
         setUsuario(usuario);
     }
 
     const logout = () => {
         localStorage.removeItem("token");
         localStorage.removeItem("usuario");
-        setUsuario(null)
+        setUsuario(null);
     }
 
     return (

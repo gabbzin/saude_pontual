@@ -30,6 +30,7 @@ export default function Login() {
   const handleSubmit = async (e) => {
 	e.preventDefault();
 	const result = await loginUsuario(form);
+	console.log(result);
 	if (result.token) {
 	  login(result.usuario, result.token); // Atualiza o contexto aqui
 	  navigate("/"); // Navegando pra Home

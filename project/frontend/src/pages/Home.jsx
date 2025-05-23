@@ -16,11 +16,14 @@ import Calendar from "../components/Calendar";
 import "../styles/home.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { AuthContext } from "../contexts/AuthContext";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 export default function Home(){
      
     const {usuario} = useContext(AuthContext);
+    const {logout} = useContext(AuthContext);
+
+    const navigate = useNavigate();
 
     const resolucaoLogoXY = 150;
     const resolucaoProfileXY = 85;
@@ -39,6 +42,11 @@ export default function Home(){
     function showModalButtons(){
         setModalButtons(true);
         console.log("Mostrando botões de agendar consulta" + modalButtons);
+    }
+
+    function fazerLogout(){
+        logout();
+        navigate("/login");
     }
 
     return (
@@ -63,7 +71,7 @@ export default function Home(){
                         border: "None",
                         margin: 0,
                         padding: 0
-                    }}
+                    }} onClick={fazerLogout}
                 >
 
                     <img src={ButtonExit} height={40} width={60}/>
