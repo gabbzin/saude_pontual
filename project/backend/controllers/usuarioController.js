@@ -5,6 +5,13 @@ const jwt = require("jsonwebtoken");
 require("dotenv").config(); // Carregando as variáveis de ambiente
 
 const SECRET_KEY = process.env.JWT_CHAVE;
+
+// Função para validar força da senha
+const validarSenha = (senha) => {
+  const regex = /^(?=.*[A-Z])(?=.*[!@#$%^&*])(?=.{8,})/;
+  return regex.test(senha);
+};
+
 //função para criar um novo usuário
 exports.cadastrarUsuario = async (req, res) => {
     const { nome, email, telefone, data_nascimento, senha } = req.body;
@@ -15,6 +22,14 @@ exports.cadastrarUsuario = async (req, res) => {
             .status(400)
             .json({ mensagem: "Nome, email e senha são obrigatórios" });
     }
+
+    // Validação da força da senha
+    if (!validarSenha(senha)) {
+        return res.status(400).json({
+            mensagem: "Senha deve conter: 8+ caracteres, 1 letra maiúscula e 1 caractere especial"
+        });
+    }
+
     try {
         //criptografa a senha
         const senha_hash = await bcrypt.hash(senha, 10);
@@ -83,7 +98,6 @@ exports.loginUsuario = async (req, res) => {
         const token = jwt.sign(
             {id: user.id, email: user.email, nome: user.nome}, SECRET_KEY, {expiresIn: "20min"}
         )
-
 
         // retorna dados do usuário autenticado
         return res
