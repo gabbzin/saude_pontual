@@ -1,5 +1,5 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Lilita+One&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Lilita+One&display=swap");
 
 * {
     box-sizing: border-box;
@@ -24,19 +24,20 @@
     justify-content: end;
 }
 
-.content {
+.content-wrapper {
     display: flex;
     flex: 1;
 }
 
-.sidebar, .main-content {
-    height: calc(100vh - 40px);
+.sidebar,
+.main-content {
+    max-height: calc(100vh - 40px);
 }
 
 .sidebar {
-    width: 24%;
-    background-color: #89ABA6;
-    padding: 20px;
+    width: 22%;
+    background-color: #89aba6;
+    padding: 5px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -47,6 +48,18 @@
     text-align: justify;
     font-family: "Inter", sans-serif;
     color: #fff;
+}
+
+#historico {
+    background-color: #016C6C;
+    font-family: "Lilita One";
+    font-size: 1em;
+    border-radius: 35px;
+    transition: background-color 0.3s ease-in-out;
+}
+
+#historico:hover {
+    background-color: #002324;
 }
 
 .main-content {
@@ -74,27 +87,39 @@
 }
 
 .actions {
-    width: 24%;
+    width: 20%;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: space-evenly;
 }
 
-#schedule, #profile, #historico {
-    background-color: #007B84;
+#schedule,
+#profile,
+#historico {
+    background-color: #007b84;
     color: white;
     padding: 15px;
     border: none;
     cursor: pointer;
     font-weight: 400;
-    font-size: 2.5em;
+    font-size: clamp(1.8em, 5vw, 2.5em);
     border-radius: 22.5px;
 }
 
-#schedule, #profile {
-    width: 300px;
-    height: 250px;
+#schedule,
+#profile {
+    width: clamp(
+        200px,
+        80%,
+        300px
+    ); /* Mínimo de 200px, ideal de 80% do contêiner, máximo de 300px */
+    height: clamp(
+        180px,
+        65%,
+        250px
+    ); /* Mínimo de 180px, ideal de 65% do contêiner, máximo de 250px */
+    transition: background-color 0.3s ease-in-out;
 }
 
 #schedule_button {
@@ -102,6 +127,15 @@
     margin: 0.5rem;
     padding: 1em;
     border-radius: 22.5px;
+    transition: background-color 0.3s ease-in-out;
+}
+
+#schedule:hover {
+    background-color: #002324;
+}
+
+#schedule:hover #schedule_button {
+    background-color: #007b84;
 }
 
 #profile {
@@ -110,7 +144,12 @@
     align-items: center;
 }
 
-#para_voce, #para_pet {
+#profile:hover {
+    background-color: #002324;
+}
+
+#para_voce,
+#para_pet {
     font-family: "Inter";
     font-weight: bold;
     text-align: center;
@@ -132,61 +171,106 @@
 }
 
 .modal.modal_buttons .modal-backdrop {
-  background-color: transparent !important;
+    background-color: transparent !important;
 }
 
 .modal.modal_buttons .modal-dialog {
-  display: flex;
-  align-items: center; /* Centraliza verticalmente o conteúdo do modal */
-  justify-content: center; /* Centraliza horizontalmente o conteúdo do modal */
-  min-height: 100vh; /* Garante que o diálogo ocupe a altura total para centralização */
-  margin: 0; /* Remove margens padrão */
-  width: 100%; /* Ocupa a largura total */
-  max-width: none; /* Garante que não haja limite de largura */
-  pointer-events: none; /* Permite cliques através do diálogo, se não houver conteúdo clicável nele */
+    display: flex;
+    align-items: center; /* Centraliza verticalmente o conteúdo do modal */
+    justify-content: center; /* Centraliza horizontalmente o conteúdo do modal */
+    min-height: 100vh; /* Garante que o diálogo ocupe a altura total para centralização */
+    margin: 0; /* Remove margens padrão */
+    width: 100%; /* Ocupa a largura total */
+    max-width: none; /* Garante que não haja limite de largura */
+    pointer-events: none; /* Permite cliques através do diálogo, se não houver conteúdo clicável nele */
 }
 
 .modal.modal_buttons .modal-content {
-  background-color: transparent; /* Remove o fundo branco do modal */
-  border: none; /* Remove a borda do modal */
-  box-shadow: none; /* Remove qualquer sombra */
-  display: flex;
-  justify-content: center; /* Centraliza o conteúdo horizontalmente */
-  align-items: center; /* Centraliza o conteúdo verticalmente */
-  width: auto; /* A largura se ajustará ao conteúdo */
-  pointer-events: all; /* Redefine pointer-events para o conteúdo interativo */
+    background-color: transparent; /* Remove o fundo branco do modal */
+    border: none; /* Remove a borda do modal */
+    box-shadow: none; /* Remove qualquer sombra */
+    display: flex;
+    justify-content: center; /* Centraliza o conteúdo horizontalmente */
+    align-items: center; /* Centraliza o conteúdo verticalmente */
+    width: auto; /* A largura se ajustará ao conteúdo */
+    pointer-events: all; /* Redefine pointer-events para o conteúdo interativo */
 }
 
 #modais {
-  display: flex;
-  gap: 20px; /* Espaço entre os botões */
-  justify-content: center;
-  align-items: center;
-  flex-wrap: wrap; /* Permite que os botões quebrem a linha em telas menores */
-  width: 100%; /* Ocupa a largura total para ajudar na centralização */
+    display: flex;
+    gap: 20px; /* Espaço entre os botões */
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap; /* Permite que os botões quebrem a linha em telas menores */
+    width: 100%; /* Ocupa a largura total para ajudar na centralização */
 }
 
 .button_container_navigate_schedule {
-  display: flex;
-  flex-direction: column; /* Coloca o texto e a imagem em coluna */
-  align-items: center; /* Centraliza o conteúdo dentro do botão */
-  justify-content: center;
-  padding: 15px 30px;
-  border-radius: 15px;
-  background-color: #002324; /* Cor de fundo para os botões */
-  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); /* Sombra suave */
-  transition: transform 0.2s ease-in-out;
-  cursor: pointer;
-  text-decoration: none; /* Remove sublinhado dos links */
-  color: white; /* Cor do texto */
-  font-weight: bold;
+    display: flex;
+    flex-direction: column; /* Coloca o texto e a imagem em coluna */
+    align-items: center; /* Centraliza o conteúdo dentro do botão */
+    justify-content: center;
+    padding: 15px 30px;
+    border-radius: 15px;
+    background-color: #002324; /* Cor de fundo para os botões */
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); /* Sombra suave */
+    transition: transform 0.2s ease-in-out;
+    cursor: pointer;
+    text-decoration: none; /* Remove sublinhado dos links */
+    color: white; /* Cor do texto */
+    font-weight: bold;
 }
 
 .button_container_navigate_schedule:hover {
-  transform: translateY(-3px); /* Efeito de elevação ao passar o mouse */
-  background-color: #007B84;
+    transform: translateY(-3px); /* Efeito de elevação ao passar o mouse */
+    background-color: #007b84;
 }
 
 .button_consulta_image {
-  margin-top: 10px; /* Espaço entre o texto e a imagem */
+    margin-top: 10px; /* Espaço entre o texto e a imagem */
+}
+
+@media (max-width: 768px) {
+    .content-wrapper {
+        flex-direction: column; /* Sua ideia! Empilha os elementos */
+        gap: 20px;
+    }
+
+    .sidebar,
+    .main-content,
+    .actions {
+        width: 100%; /* Cada seção ocupa a largura total */
+        height: auto; /* Altura se ajusta ao conteúdo */
+    }
+
+    .sidebar {
+        order: 3; /* Sidebar por último */
+        text-align: center;
+        background-color: transparent; /* Com fundo transparente */
+        backdrop-filter: blur(20px);
+    }
+
+    .main-content {
+        order: 1; /* Conteúdo principal aparece no topo */
+    }
+
+    .actions {
+        order: 2; /* Ações em segundo */
+        flex-direction: row; /* Botões lado a lado, se houver espaço */
+        flex-wrap: wrap; /* Quebra a linha se não couber */
+        justify-content: center;
+        gap: 20px;
+    }
+
+    #schedule,
+    #profile {
+        width: 45%; /* Ajusta a largura dos botões */
+        min-width: 200px; /* Largura mínima */
+        height: auto;
+    }
+
+    #calendar {
+        flex-grow: 1;
+        min-height: 450px;
+    }
 }

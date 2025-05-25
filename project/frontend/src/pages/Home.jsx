@@ -78,7 +78,7 @@ export default function Home(){
                 </Button>
             </header>
 
-            <div className="content">
+            <div className="content-wrapper">
                 <aside className="sidebar p-4">
                 
                     <div className="d-grid">
@@ -103,10 +103,7 @@ export default function Home(){
                             console.log("Abrir Histórico")
                         }}
                         style={{
-                            backgroundColor: "#016C6C",
-                            fontFamily: "Lilita One",
-                            fontSize: "1.4em",
-                            borderRadius: "35px"
+                            fontSize: "1em"
                         }}
                     />
                 </aside>
