@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 
+import BackButton from "../assets/back_button.png";
+
 import Button from "../components/Button";
 import FormInputSchedule from "../components/FormInputSchedule";
 
@@ -61,6 +63,19 @@ export default function FichaPessoa() {
 
     return (
         <div id="container_ficha">
+            <div id="back">
+                <Button 
+                    style={{
+                        backgroundColor: "transparent",
+                        border: "none"
+                    }}
+                    onClick={ () => {
+                        navigate("/")
+                    }}
+                >
+                    <img src={BackButton} width={40} height={40}/>
+                </Button>
+            </div>
             <main id="ficha">
                 <h1>PREENCHA A FICHA:</h1>
                 <form method="POST" onSubmit={handleSubmit}>

@@ -1,15 +1,35 @@
 import React from "react";
 
+import BackButton from "../assets/back_button.png";
+
 import Button from "../components/Button"
 import FormInputSchedule from "../components/FormInputSchedule";
 
 import Dados from "../dados.json";
 
 import "../styles/fichas.css";
+import { useNavigate } from "react-router-dom";
 
 export default function FichaPessoa(){
+
+    const navigate = useNavigate();
+
+
     return (
         <div id="container_ficha">
+            <div id="back">
+                <Button 
+                    style={{
+                        backgroundColor: "transparent",
+                        border: "none"
+                    }}
+                    onClick={ () => {
+                        navigate("/")
+                    }}
+                >
+                    <img src={BackButton} width={40} height={40}/>
+                </Button>
+            </div>
             <main id="ficha">
                 <h1>PREENCHA A FICHA:</h1>
                 <form action="POST">
