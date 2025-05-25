@@ -19,6 +19,7 @@ h1 {
 
 #three_inputs {
     display: flex;
+    gap: 20px;
     justify-content: space-between;
 }
 

@@ -1,6 +1,6 @@
 {
     "horarios": [
-        { "value": null, "label": "Selecione um horário" },
+        { "value": null, "label": "Selecione o horário" },
         { "value": "09:00", "label": "09:00" },
         { "value": "09:30", "label": "09:30" },
         { "value": "10:00", "label": "10:00" },
@@ -18,7 +18,7 @@
         { "value": "17:00", "label": "17:00" }
     ],
     "areasMedicas": [
-        { "value": null, "label": "Selecione uma área médica" },
+        { "value": null, "label": "Selecione a área" },
         { "value": "clinica_geral", "label": "Clínica Geral" },
         { "value": "cardiologia", "label": "Cardiologia" },
         { "value": "dermatologia", "label": "Dermatologia" },
