@@ -4,19 +4,215 @@
     display: flex;
     flex-direction: column;
     height: 100vh;
-    font-family: "Passion One";
+    font-family: "Passion One", sans-serif;
 }
 
 #profile_box {
     width: 100%;
-    height: 40px;
+    height: 50px;
     background-color: white;
     z-index: 10;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     display: flex;
-    justify-content: start;
+    align-items: center;
+    padding-left: 15px;
+    flex-shrink: 0;
 }
 
-#information_profile_container {
+#profile_container_wrapper {
+    max-height: calc(100vh - 50px);
+    display: flex;
+    flex-wrap: nowrap;
+    flex-grow: 1;
+    padding: 2rem;
+    gap: 2rem;
+    z-index: 1;
+}
+
+#main_content_container {
+    flex: 3;
+    display: flex;
+    flex-direction: column;
+    gap: 1.8rem;
+    min-width: 0;
+}
+
+#informations_container {
     background-color: #007B84;
+    color: white;
+    padding: 1.5rem;
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+#avatar img {
+    border-radius: 50%;
+    width: 200px;
+    height: 200px;
+    border: 3px solid white;
+    flex-shrink: 0;
+}
+
+#informations_profile {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    flex-grow: 1;
+}
+
+#informations_profile h2 {
+    margin: 0;
+    font-size: 2em;
+    text-align: center;
+    font-weight: bold;
+    word-break: break-word;
+}
+
+#informations {
+    background-color: #002324;
+    border-radius: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    font-size: 1.2em;
+    line-height: 1.5;
+    word-break: break-word;
+    padding: 1rem;
+}
+
+#informations_profile button {
+    background: transparent;
+    position: absolute;
+    border: none;
+    cursor: pointer;
+    align-self: flex-end;
+    padding: 0;
+}
+
+.redirect-section {
+    background-color: #007B84;
+    padding: 1rem;
+    border-radius: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+}
+
+.redirect-section h3 {
+    color: white;
+    font-size: 1.5em;
+    text-align: center;
+}
+
+.redirect_profile_buttons {
+    background-color: #002324;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    padding: 0.5rem;
+    font-size: 1em;
+    font-family: "Passion One", sans-serif;
+    cursor: pointer;
+    text-align: center;
+    transition: background-color 0.3s ease;
+}
+
+.redirect_profile_buttons:hover {
+    background-color: #014f4f;
+}
+
+#profile_aside {
+    flex: 1;
+    background-color: #A0C9C3;
+    padding: 1.5rem;
+    border-radius: 20px;
+    color: #333;
+    display: flex;
+    flex-direction: column;
+    min-width: 280px;
+}
+
+#profile_aside h2 {
+    text-align: center;
+    margin: 0 0 1.5rem 0;
+    font-size: 1.5em;
+    color: #003C39;
+    font-weight: bold;
+}
+
+#profile_aside p {
+    margin: 0 0 1rem 0;
+    font-size: 1em;
+    font-family: Arial, sans-serif;
+}
+
+#profile_aside button {
+    background-color: #016C6C !important;
+    color: white !important;
+    border: none !important;
+    border-radius: 10px !important;
+    padding: 1rem !important;
+    font-size: 1.4em !important;
+    font-family: "Passion One", sans-serif !important;
+    cursor: pointer !important;
+    margin-top: auto;
+    transition: background-color 0.3s ease !important;
+}
+
+#profile_aside button:hover {
+    background-color: #014f4f !important;
+}
+
+@media (max-width: 768px) {
+    #informations_container {
+        flex-direction: column; /* Coloca o avatar em cima das informações */
+        text-align: center;
+        gap: 1rem;
+    }
+
+    #informations_profile {
+        align-items: center; /* Centraliza o conteúdo do perfil */
+    }
+
+    #informations_profile button {
+        align-self: center; /* Centraliza o botão de editar */
+    }
+
+    #avatar img {
+        width: 100px; /* Diminui um pouco o avatar */
+        height: 100px;
+    }
+
+    #informations_profile h2 {
+        font-size: 1.8em; /* Ajusta o tamanho da fonte do nome */
+    }
+
+    .redirect_profile_buttons {
+        font-size: 1.1em; /* Ajusta o tamanho da fonte dos botões */
+        padding: 0.8rem;
+    }
+
+    aside h2 {
+        font-size: 1.3em;
+    }
+
+    aside button {
+        font-size: 1.2em !important;
+    }
+}
+
+@media (max-width: 520px) {
+    #profile_container_wrapper {
+        padding: 1rem; /* Diminui o espaçamento geral */
+    }
+
+    #informations_container, .redirect-section, aside {
+        padding: 1rem; /* Diminui o padding interno dos cards */
+    }
+
+    #informations_profile h2 {
+        font-size: 1.6em;
+    }
 }

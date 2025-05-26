@@ -13,92 +13,90 @@ import ScheduleButtons from "../components/ScheduleButtons";
 // Styles
 import "../styles/perfil.css";
 
-export default function Perfil(){
-    
-    const usuario = useContext(AuthContext);
-    const logout = useContext(AuthContext);
+export default function Perfil() {
+
+    const { usuario, logout } = useContext(AuthContext); // Simplificado
 
     const [modalButtons, setModalButtons] = useState(false);
     const navigate = useNavigate();
 
-    function showModalButtons(){
+    function showModalButtons() {
         setModalButtons(true);
     }
 
-    function fazerLogout(){
-        logout();
+    function fazerLogout() {
+        if (logout) logout(); // Verificação se logout existe
         navigate("/login")
     }
 
-    function redirectToHome(){
+    function redirectToHome() {
         navigate("/")
     }
 
     return (
         <div id="profile_container">
-            <Background imageUrl={FundoLaranja}/>
+            <Background imageUrl={FundoLaranja} />
 
             <header id="profile_box">
                 <Button style={{
-                        backgroundColor: "transparent",
-                        border: "none",
-                        margin: 0,
-                        padding: 0
-                    }} onClick={redirectToHome}
+                    backgroundColor: "transparent",
+                    border: "none",
+                    margin: 0,
+                    padding: 0,
+                    display: 'flex',
+                    alignItems: 'center'
+                }} onClick={redirectToHome}
                 >
-
-                    <img src={BackButton} height={35} width={35}/>
+                    <img src={BackButton} height={35} width={35} alt="Voltar"/>
                 </Button>
             </header>
+
             <div id="profile_container_wrapper">
-                <main id="informations_container">
-                    <div id="avatar">
-                        <img src={ProfileIcon} alt="Avatar" style={{
-                            borderRadius: "50%",
-                            width: 100,
-                            height: 100
-                        }}/>
-                    </div>
-                    <div id="informations_profile">
-                        <h2>{usuario?.nome}Thalita</h2>
-                        <div id="informations">
-                            email: thalita12@email.com
-                            telefone: (61) 99999-9999
-                            matrícula: 40028922
-                            data de nascimento: 31/12/2000
+                <div id="main_content_container">
+                    <main id="informations_container">
+                        <div id="avatar">
+                            <img src={ProfileIcon} alt="Avatar" />
                         </div>
-                        <Button>
-                            <img src={ButtonEdit} />
-                        </Button>
-                    </div>
-                </main>
-                <section>
-                    <h3>Redirecionamento</h3>
-                    <Button className={"redirect_profile_buttons"} onClick={redirectToHome}>INíCIO</Button>
-                    <Button className={"redirect_profile_buttons"}>HISTÓRICO</Button>
-                    <Button className={"redirect_profile_buttons"} onClick={showModalButtons}>AGENDAMENTO</Button>
-                    <Button className={"redirect_profile_buttons"} onClick={fazerLogout}>SAIR</Button>
-                </section>
-                <aside>
-                    <h2>Informações Adicionais</h2>
+                        <div id="informations_profile">
+                            <h2>{"Thalita Kamille Silva"}</h2>
+                            <div id="informations">
+                                
+                                <span>email: { "thalita12hufdhus@gmail.com"}</span>
+                                <span>telefone: {usuario?.telefone || "(61) 99999-9999"}</span>
+                                <span>matrícula única: {usuario?.matricula || "12124635234"}</span>
+                                <span>cpf: {usuario?.cpf || "000.000.000-00"}</span>
+                                <span>data nascimento: {usuario?.dataNascimento || "15/05/1998"}</span>
+                            </div>
+                            <Button>
+                                <img src={ButtonEdit} alt="Editar"/>
+                            </Button>
+                        </div>
+                    </main>
+
+                    <section className="redirect-section">
+                        <h3>Redirecionamento</h3>
+                        <Button className={"redirect_profile_buttons"} onClick={redirectToHome}>INÍCIO</Button>
+                        <Button className={"redirect_profile_buttons"}>HISTÓRICO</Button>
+                        <Button className={"redirect_profile_buttons"} onClick={showModalButtons}>AGENDAMENTO</Button>
+                        <Button className={"redirect_profile_buttons"} onClick={fazerLogout}>SAIR</Button>
+                    </section>
+                </div>
+
+                <aside id="profile_aside">
+                    <h2>INFORMAÇÕES ADICIONAIS</h2>
                     <p>Idade: {/* Preencha este campo */}</p>
                     <p>Altura: {/* Preencha este campo */}</p>
                     <p>Peso: {/* Preencha este campo */}</p>
-                    <p>Tipo Sanguíneo: {/* Preencha este campo */}</p>
+                    <p>Tipo sanguíneo: {/* Preencha este campo */}</p>
                     <p>Alergias conhecidas: {/* Preencha este campo */}</p>
-                    <p>Remédio Contínuo: {/* Preencha este campo */}</p>
+                    <p>Remédio contínuo: {/* Preencha este campo */}</p>
 
-                    <Button 
-                        text={"EDITAR FICHA"}
-                        onClick={console.log("Editando ficha")}
-                        style={{
-                            backgroundColor: "#016C6C",
-                            border: "none",
-                            fontSize: "1.4em"
-                        }}
-                    />
+                    <Button>
+                        EDITAR FICHA
+                    </Button>
                 </aside>
-                <ScheduleButtons 
+
+                <ScheduleButtons
                     modalButtons={modalButtons}
                     setModalButtons={setModalButtons}
                 />
