@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import BackButton from "../assets/back_button.png";
 import ButtonEdit from "../assets/button_edit.png";
 import FundoLaranja from "../assets/background_orange.jpg";
+import ProfileIcon from "../assets/profile_icon.png";
 // Componentes
 import Background from "../components/Background";
 import Button from "../components/Button";
@@ -52,7 +53,11 @@ export default function Perfil(){
             <div id="profile_container_wrapper">
                 <main id="informations_container">
                     <div id="avatar">
-
+                        <img src={ProfileIcon} alt="Avatar" style={{
+                            borderRadius: "50%",
+                            width: 100,
+                            height: 100
+                        }}/>
                     </div>
                     <div id="informations_profile">
                         <h2>{usuario?.nome}Thalita</h2>
