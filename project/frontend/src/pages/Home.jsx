@@ -137,7 +137,7 @@ export default function Home(){
                     <Button
                         id={"profile"}
                         text={"Ir ao perfil"}
-                        onClick={() => {console.log("Ir ao perfil")}}
+                        onClick={() => {navigate("/perfil")}}
                     >
                         Ir ao perfil
                         <img src={ProfileButton} width={resolucaoLogoXY} height={resolucaoLogoXY}/>
