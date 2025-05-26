@@ -16,3 +16,7 @@
     display: flex;
     justify-content: start;
 }
+
+#information_profile_container {
+    background-color: #007B84;
+}

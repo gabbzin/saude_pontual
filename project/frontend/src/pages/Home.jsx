@@ -12,6 +12,7 @@ import ProfileButton from "../assets/profile_button.png";
 import Background from "../components/Background";
 import Button from "../components/Button";
 import Calendar from "../components/Calendar";
+import ScheduleButtons from "../components/ScheduleButtons";
 // Styles
 import "../styles/home.css";
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -27,7 +28,6 @@ export default function Home(){
 
     const resolucaoLogoXY = 150;
     const resolucaoProfileXY = 85;
-    const resolucaoAgendarXY = 150;
 
     const [modalCalendarVisible, setModalCalendarVisible] = useState(false);
     const [modalButtons, setModalButtons] = useState(false);
@@ -142,37 +142,12 @@ export default function Home(){
                         Ir ao perfil
                         <img src={ProfileButton} width={resolucaoLogoXY} height={resolucaoLogoXY}/>
                     </Button>
-
                 </div>
+                <ScheduleButtons 
+                    modalButtons={modalButtons}
+                    setModalButtons={setModalButtons}
+                />
             </div>
-
-            <Modal className="modal_buttons" show={modalButtons} onHide={() => {setModalButtons(false)}} centered>
-                <div id="modais">
-                    <Link
-                        id={"para_voce"}
-                        to={"/fichapessoa"}
-                    >
-                        <div className="button_container_navigate_schedule">
-                            Para Você
-                            <div className="button_consulta_image">
-                                <img src={ImageParaVoce} alt="Para Você" width={resolucaoAgendarXY} height={resolucaoAgendarXY}/>
-                            </div>
-                        </div>
-                    </Link>
-                    <div style={{width: 50, backgroundColor: "white"}}/>
-                    <Link
-                        id={"para_pet"}
-                        to={"/fichapet"}
-                    >
-                        <div className="button_container_navigate_schedule">
-                            Para Pet
-                            <div className="button_consulta_image">
-                                <img src={ImageParaPet} alt="Para pet" width={resolucaoAgendarXY} height={resolucaoAgendarXY}/>
-                            </div>
-                        </div>
-                    </Link>
-                </div>
-            </Modal>
         </div>
     );
 }
