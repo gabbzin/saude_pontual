@@ -68,7 +68,7 @@ export default function Home(){
             <header id="caixabranca">
                 <Button style={{
                         backgroundColor: "#080808",
-                        border: "None",
+                        border: "none",
                         margin: 0,
                         padding: 0
                     }} onClick={fazerLogout}
