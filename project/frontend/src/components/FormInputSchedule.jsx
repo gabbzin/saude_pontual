@@ -1,5 +1,5 @@
 import React from 'react';
-
+// idDiv serve para encapsular o input e estilizar (como alterar o tamanho)
 export default function FormInput({ id, idDiv=null, name, label, type, placeholder, required=false, iconrequired="", options, rows=3, ...restProps }) {
 
     const paddingPadrao = 10;
