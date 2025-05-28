@@ -36,5 +36,16 @@
         { "value": "pneumologia", "label": "Pneumologia" },
         { "value": "nefrologia", "label": "Nefrologia" },
         { "value": "hematologia", "label": "Hematologia" }
+    ],
+    "tiposSanguineos": [
+        { "value": "Selecione um tipo sanguíneo", "label": "Selecione o tipo sanguíneo"},
+        { "value": "A+", "label": "A+" },
+        { "value": "A-", "label": "A-" },
+        { "value": "B+", "label": "B+" },
+        { "value": "B-", "label": "B-" },
+        { "value": "AB+", "label": "AB+" },
+        { "value": "AB-", "label": "AB-" },
+        { "value": "O+", "label": "O+" },
+        { "value": "O-", "label": "O-" }
     ]
 }
