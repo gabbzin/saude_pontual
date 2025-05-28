@@ -22,11 +22,10 @@ export default function Calendar({showModal}){
             fixedWeekCount={false} // Números de semanas fixos
             nowIndicator={true} // Indicador do dia atual
 
-            dateClick={(arg) => {showModal(arg.dateStr)}}
+            dateClick={(arg) => {showModal(arg.dateStr)}} // Mostra o modal após clicar na data
 
             // Eventos
             events={[]}
-
         />
         
     );

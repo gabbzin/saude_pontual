@@ -2,6 +2,7 @@ import React, { useContext, useState } from "react";
 import { AuthContext } from "../contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
 import { Modal, ModalFooter } from "react-bootstrap";
+import Dados from "../dados.json";
 // Assets
 import BackButton from "../assets/back_button.png";
 import ButtonEdit from "../assets/button_edit.png";
@@ -40,6 +41,26 @@ export default function Perfil() {
         navigate("/");
     }
 
+    async function handleSubmit(e) {
+        e.preventDefault();
+
+        // try {
+        //     const result = await cadastrarConsulta({
+        //         ...formData,
+        //         data_e_hora: dataHoraCompleta,
+        //     });
+
+        //     if (result.mensagem) {
+        //         alert(result.mensagem);
+        //         navigate("/"); // Navega para a home (ou onde quiser)
+        //     } else {
+        //         alert("Erro ao cadastrar a consulta");
+        //     }
+        // } catch (error) {
+        //     alert("Erro na requisição: " + error.message);
+        // }
+    }
+
     return (
         <div id="profile_container">
             <Background imageUrl={FundoLaranja} />
@@ -70,16 +91,20 @@ export default function Perfil() {
                             <h2>{usuario?.nome}</h2>
                             <div id="informations">
                                 <span>
-                                    Email: {usuario?.email || "thalita12hufdhus@gmail.com"}
+                                    Email:{" "}
+                                    {usuario?.email ||
+                                        "thalita12hufdhus@gmail.com"}
                                 </span>
                                 <span>
-                                    Telefone: {usuario?.telefone || "(61) 4002-8922"}
+                                    Telefone:{" "}
+                                    {usuario?.telefone || "(61) 4002-8922"}
                                 </span>
                                 <span>
                                     Matrícula: {usuario?.matricula || "0021598"}
                                 </span>
                                 <span>
-                                    Data de Nascimento: {usuario?.dataNascimento || "15/05/1998"}
+                                    Data de Nascimento:{" "}
+                                    {usuario?.dataNascimento || "15/05/1998"}
                                 </span>
                             </div>
                             <Button>
@@ -131,58 +156,64 @@ export default function Perfil() {
                         setModalForm(false);
                     }}
                 >
-                    <Modal.Header closeButton style={{fontFamily: "Passion One"}}>
+                    <Modal.Header
+                        closeButton
+                        style={{ fontFamily: "Passion One" }}
+                    >
                         <h2>Complete as informações</h2>
                     </Modal.Header>
-                    <Modal.Body>
-                        <div id="two_inputs">
+                    <form onSubmit={handleSubmit}>
+                        <Modal.Body>
+                            <div id="two_inputs">
+                                <FormInputSchedule
+                                    name={"altura_profile"}
+                                    label={"Altura:"}
+                                    type={"text"}
+                                />
+                                <FormInputSchedule
+                                    name={"peso_profile"}
+                                    label={"Peso:"}
+                                    type={"text"}
+                                />
+                            </div>
                             <FormInputSchedule
-                                name={"altura_profile"}
-                                label={"Altura:"}
-                                type={"text"}
+                                name={"tipo_sanguineo_profile"}
+                                label={"Tipo Sanguíneo:"}
+                                type={"select"}
+                                options={Dados.tiposSanguineos}
                             />
                             <FormInputSchedule
-                                name={"peso_profile"}
-                                label={"Peso:"}
-                                type={"text"}
+                                name={"alergias_profile"}
+                                label={"Alergias Conhecidas:"}
+                                type={"textarea"}
+                                rows={2}
                             />
-                        </div>
-                        <FormInputSchedule
-                            name={"tipo_sanguineo_profile"}
-                            label={"Tipo Sanguíneo:"}
-                            type={"text"}
-                        />
-                        <FormInputSchedule
-                            name={"alergias_profile"}
-                            label={"Alergias Conhecidas:"}
-                            type={"textarea"}
-                            rows={2}
-                        />
-                        <FormInputSchedule
-                            name={"remedio_continuo_profile"}
-                            label={"Remedio Contínuo:"}
-                            type={"textarea"}
-                            rows={2}
-                        />
-                    </Modal.Body>
-                    <Modal.Footer
-                        style={{
-                            justifyContent: "center",
-                        }}
-                    >
-                        <Button
-                            text={"PROSSEGUIR"}
-                            type={"submit"}
+                            <FormInputSchedule
+                                name={"remedio_continuo_profile"}
+                                label={"Remedio Contínuo:"}
+                                type={"textarea"}
+                                rows={2}
+                            />
+                        </Modal.Body>
+                        <Modal.Footer
                             style={{
-                                backgroundColor: "#043C40",
-                                border: "None",
-                                borderRadius: 37.5,
-                                fontFamily: "Passion One",
-                                fontSize: "1.5em",
-                                width: "50%",
+                                justifyContent: "center",
                             }}
-                        />
-                    </Modal.Footer>
+                        >
+                            <Button
+                                text={"PROSSEGUIR"}
+                                type={"submit"}
+                                style={{
+                                    backgroundColor: "#043C40",
+                                    border: "none",
+                                    borderRadius: 37.5,
+                                    fontFamily: "Passion One",
+                                    fontSize: "1.5em",
+                                    width: "50%",
+                                }}
+                            />
+                        </Modal.Footer>
+                    </form>
                 </Modal>
 
                 <ScheduleButtons
