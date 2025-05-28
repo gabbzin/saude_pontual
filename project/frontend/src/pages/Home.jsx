@@ -3,8 +3,7 @@ import { Modal } from "react-bootstrap";
 // Assets
 import ButtonExit from "../assets/button_exit_1.jpeg";
 import FundoLaranja from "../assets/background_orange.jpg";
-import ImageParaPet from "../assets/image_para_pet.png";
-import ImageParaVoce from "../assets/image_para_voce.png";
+import GatoIcon from "../assets/gato_icon.jpeg";
 import Logo from "../assets/logo_saude_pontual.png";
 import ProfileIcon from "../assets/profile_icon.png";
 import ProfileButton from "../assets/profile_button.png";
@@ -109,7 +108,7 @@ export default function Home(){
                 </aside>
                 <main className="main-content">
                     <div className="header flex">
-                        <img className="avatar" src={ProfileIcon} alt="Foto de Perfil"
+                        <img className="avatar" src={GatoIcon} alt="Foto de Perfil"
                             width={resolucaoProfileXY} height={resolucaoProfileXY}
                             style={{
                                 borderRadius: "50%"

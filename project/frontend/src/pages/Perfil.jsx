@@ -6,6 +6,7 @@ import { Modal, ModalFooter } from "react-bootstrap";
 import BackButton from "../assets/back_button.png";
 import ButtonEdit from "../assets/button_edit.png";
 import FundoLaranja from "../assets/background_orange.jpg";
+import GatoIcon from "../assets/gato_icon.jpeg";
 import ProfileIcon from "../assets/profile_icon.png";
 // Componentes
 import Background from "../components/Background";
@@ -63,28 +64,22 @@ export default function Perfil() {
                 <div id="main_content_container">
                     <main id="informations_container">
                         <div id="avatar">
-                            <img src={ProfileIcon} alt="Avatar" />
+                            <img src={GatoIcon} alt="Avatar" />
                         </div>
                         <div id="informations_profile">
-                            <h2>{"Thalita Kamille Silva"}</h2>
+                            <h2>{usuario?.nome}</h2>
                             <div id="informations">
                                 <span>
-                                    email: {"thalita12hufdhus@gmail.com"}
+                                    Email: {usuario?.email || "thalita12hufdhus@gmail.com"}
                                 </span>
                                 <span>
-                                    telefone:{" "}
-                                    {usuario?.telefone || "(61) 99999-9999"}
+                                    Telefone: {usuario?.telefone || "(61) 4002-8922"}
                                 </span>
                                 <span>
-                                    matrícula única:{" "}
-                                    {usuario?.matricula || "12124635234"}
+                                    Matrícula: {usuario?.matricula || "0021598"}
                                 </span>
                                 <span>
-                                    cpf: {usuario?.cpf || "000.000.000-00"}
-                                </span>
-                                <span>
-                                    data nascimento:{" "}
-                                    {usuario?.dataNascimento || "15/05/1998"}
+                                    Data de Nascimento: {usuario?.dataNascimento || "15/05/1998"}
                                 </span>
                             </div>
                             <Button>
@@ -121,7 +116,6 @@ export default function Perfil() {
 
                 <aside id="profile_aside">
                     <h2>INFORMAÇÕES ADICIONAIS</h2>
-                    <p>Idade: {/* Preencha este campo */}</p>
                     <p>Altura: {/* Preencha este campo */}</p>
                     <p>Peso: {/* Preencha este campo */}</p>
                     <p>Tipo sanguíneo: {/* Preencha este campo */}</p>
@@ -138,19 +132,21 @@ export default function Perfil() {
                     }}
                 >
                     <Modal.Header closeButton style={{fontFamily: "Passion One"}}>
-                        <h2>Preencha a ficha:</h2>
+                        <h2>Complete as informações</h2>
                     </Modal.Header>
                     <Modal.Body>
-                        <FormInputSchedule
-                            name={"altura_profile"}
-                            label={"Altura:"}
-                            type={"text"}
-                        />
-                        <FormInputSchedule
-                            name={"peso_profile"}
-                            label={"Peso:"}
-                            type={"text"}
-                        />
+                        <div id="two_inputs">
+                            <FormInputSchedule
+                                name={"altura_profile"}
+                                label={"Altura:"}
+                                type={"text"}
+                            />
+                            <FormInputSchedule
+                                name={"peso_profile"}
+                                label={"Peso:"}
+                                type={"text"}
+                            />
+                        </div>
                         <FormInputSchedule
                             name={"tipo_sanguineo_profile"}
                             label={"Tipo Sanguíneo:"}
