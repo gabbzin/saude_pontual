@@ -47,5 +47,20 @@
         { "value": "AB-", "label": "AB-" },
         { "value": "O+", "label": "O+" },
         { "value": "O-", "label": "O-" }
+    ],
+
+    "consultas": [
+        {
+            "tipo": "Cardiologia",
+            "profissional": "Dr. Pedro Henrique",
+            "data": "15/06/2025",
+            "protocolo": "40028922"
+        },
+        {
+            "tipo": "Dermatologia",
+            "profissional": "Dra. Ana Costa",
+            "data": "20/06/2025",
+            "protocolo": "50039876"
+        }
     ]
 }

@@ -9,6 +9,7 @@ import Home from "../pages/Home";
 import FichaPessoa from "../pages/FichaPessoa";
 import FichaPet from "../pages/FichaPet";
 import Perfil from "../pages/Perfil";
+import Historico from "../pages/Historico";
 
 const AppRoutes = () => {
     const {usuario, carregando} = useContext(AuthContext);
@@ -31,6 +32,7 @@ const AppRoutes = () => {
                 <Route path="/fichapessoa" element={usuario ? <FichaPessoa /> : redirectToLogin} />
                 <Route path="/fichapet" element={usuario ? <FichaPet /> : redirectToLogin} />
                 <Route path="/perfil" element={usuario ? <Perfil /> : redirectToLogin} />
+                <Route path="/historico" element={usuario ? <Historico /> : redirectToLogin} />
 
                 {/* Rota genérica */}
                 <Route path="*" element={redirectToLogin} />
