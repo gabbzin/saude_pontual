@@ -35,3 +35,15 @@ export async function cadastrarConsulta(data) {
     });
     return res.json();
 }
+
+export async function atualizarInfoPerfil(dados, token) {
+    const res = await fetch(`http://localhost:3001/api/perfil/info`, {
+        method: "PUT",
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${token}`,
+        },
+        body: JSON.stringify(dados),
+    });
+    return res.json();
+}
