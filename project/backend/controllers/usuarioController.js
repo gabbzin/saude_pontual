@@ -172,7 +172,7 @@ exports.cadastrarConsulta = async (req, res) => {
     }
 }
 
-exports.adcionarInfoPerfil = async (req, res) => {
+exports.adicionarInfoPerfil = async (req, res) => {
     const { id, altura, peso, tipo_sanguineo, alergias_conhecidas, remedio_continuo } = req.body;
 
     if (!id) {
