@@ -92,12 +92,11 @@ export default function Perfil() {
                             <div id="informations">
                                 <span>
                                     Email:{" "}
-                                    {usuario?.email ||
-                                        "thalita12hufdhus@gmail.com"}
+                                    {usuario?.email}
                                 </span>
                                 <span>
                                     Telefone:{" "}
-                                    {usuario?.telefone || "(61) 4002-8922"}
+                                    {usuario?.telefone}
                                 </span>
                                 <span>
                                     Matrícula: {usuario?.matricula || "0021598"}

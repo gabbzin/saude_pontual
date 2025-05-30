@@ -22,7 +22,12 @@ async function createTables() {
                 email VARCHAR(255) UNIQUE NOT NULL,
                 telefone VARCHAR(20),
                 data_nascimento DATE,
-                senha VARCHAR(255) NOT NULL
+                senha VARCHAR(255) NOT NULL,
+                altura DECIMAL(3, 2) NULL,
+                peso DECIMAL(5, 2) NULL,
+                tipo_sanguineo VARCHAR(5) NULL,
+                alergias_conhecidas TEXT NULL,
+                remedio_continuo TEXT NULL
             );
         `);
 
