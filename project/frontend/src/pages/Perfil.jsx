@@ -1,9 +1,10 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import { AuthContext } from "../contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
 import { Modal, ModalFooter } from "react-bootstrap";
 import Dados from "../dados.json";
 // Assets
+import { buscarPerfil, atualizarInfoPerfil } from "../../api/api";
 import BackButton from "../assets/back_button.png";
 import ButtonEdit from "../assets/button_edit.png";
 import FundoLaranja from "../assets/background_orange.jpg";
@@ -18,11 +19,30 @@ import ScheduleButtons from "../components/ScheduleButtons";
 import "../styles/perfil.css";
 
 export default function Perfil() {
-    const { usuario, logout } = useContext(AuthContext); // Simplificado
+    const { usuario, login, logout } = useContext(AuthContext);
 
     const [modalButtons, setModalButtons] = useState(false);
     const [modalForm, setModalForm] = useState(false);
+    const [additionalInfo, setAdditionalInfo] = useState({
+        altura: "",
+        peso: "",
+        tipo_sanguineo: "",
+        alergias_conhecidas: "",
+        remedio_continuo: "",
+    });
     const navigate = useNavigate();
+
+    useEffect(() => {
+        if (usuario) {
+            setAdditionalInfo({
+                altura: usuario.altura || "",
+                peso: usuario.peso || "",
+                tipo_sanguineo: usuario.tipo_sanguineo || "",
+                alergias_conhecidas: usuario.alergias_conhecidas || "",
+                remedio_continuo: usuario.remedio_continuo || "",
+            });
+        }
+    }, [usuario, modalForm]);
 
     function showModalButtons() {
         setModalButtons(true);
@@ -41,24 +61,55 @@ export default function Perfil() {
         navigate("/");
     }
 
-    async function handleSubmit(e) {
+    const handleChangeAdditionalInfo = (e) => {
+        let { name, value } = e.target;
+
+        // Converte vírgula para ponto para campos numéricos decimais
+        if (name === "altura" || name === "peso") {
+            value = value.replace(",", ".");
+        }
+        setAdditionalInfo((prev) => ({ ...prev, [name]: value }));
+    };
+
+    async function handleAdditionalInfoSubmit(e) {
         e.preventDefault();
+        const token = localStorage.getItem("token");
 
-        // try {
-        //     const result = await cadastrarConsulta({
-        //         ...formData,
-        //         data_e_hora: dataHoraCompleta,
-        //     });
+        if (!token) {
+            alert("Autenticação necessária.");
+            navigate("/login");
+            return;
+        }
 
-        //     if (result.mensagem) {
-        //         alert(result.mensagem);
-        //         navigate("/"); // Navega para a home (ou onde quiser)
-        //     } else {
-        //         alert("Erro ao cadastrar a consulta");
-        //     }
-        // } catch (error) {
-        //     alert("Erro na requisição: " + error.message);
-        // }
+        if (!usuario || !usuario.id) {
+            alert("ID do usuário não encontrado. Por favor, faça login novamente.");
+            // Redirecionar para a página de login
+            return;
+        }
+
+        // O ID do usuário é obtido pelo backend a partir do token, não é mais necessário enviar no payload.
+        const payload = { ...additionalInfo };
+
+        try {
+            const result = await atualizarInfoPerfil(payload, token);
+            if (result.mensagem === "Informações de perfil atualizadas com sucesso!") {
+                alert(result.mensagem);
+                setModalForm(false);
+                // Atualizar os dados do usuário no AuthContext para refletir imediatamente na UI
+                const perfilAtualizadoResponse = await buscarPerfil(token);
+                if (perfilAtualizadoResponse.usuario) {
+                    login(perfilAtualizadoResponse.usuario, token); // Atualiza o AuthContext e localStorage
+                } else {
+                    console.error("Não foi possível buscar o perfil atualizado após a atualização.");
+                    // Opcional: Adicionar uma mensagem para o usuário ou tentar novamente.
+                }
+            } else {
+                alert(result.mensagem || "Erro ao atualizar informações.");
+            }
+        } catch (error) {
+            console.error("Erro ao atualizar perfil:", error);
+            alert("Erro na requisição: " + (error.message || "Erro desconhecido ao atualizar perfil."));
+        }
     }
 
     return (
@@ -140,11 +191,11 @@ export default function Perfil() {
 
                 <aside id="profile_aside">
                     <h2>INFORMAÇÕES ADICIONAIS</h2>
-                    <p>Altura: {/* Preencha este campo */}</p>
-                    <p>Peso: {/* Preencha este campo */}</p>
-                    <p>Tipo sanguíneo: {/* Preencha este campo */}</p>
-                    <p>Alergias conhecidas: {/* Preencha este campo */}</p>
-                    <p>Remédio contínuo: {/* Preencha este campo */}</p>
+                    <p>Altura: {additionalInfo.altura || "Não informado"}</p>
+                    <p>Peso: {additionalInfo.peso || "Não informado"}</p>
+                    <p>Tipo sanguíneo: {additionalInfo.tipo_sanguineo || "Não informado"}</p>
+                    <p>Alergias conhecidas: {additionalInfo.alergias_conhecidas || "Não informado"}</p>
+                    <p>Remédio contínuo: {additionalInfo.remedio_continuo || "Não informado"}</p>
 
                     <Button onClick={showModalForm}>EDITAR FICHA</Button>
                 </aside>
@@ -161,37 +212,49 @@ export default function Perfil() {
                     >
                         <h2>Complete as informações</h2>
                     </Modal.Header>
-                    <form onSubmit={handleSubmit}>
+                    <form onSubmit={handleAdditionalInfoSubmit}>
                         <Modal.Body>
                             <div id="two_inputs">
                                 <FormInputSchedule
-                                    name={"altura_profile"}
+                                    name={"altura"}
                                     label={"Altura:"}
                                     type={"text"}
+                                    placeholder={"Ex: 1.75"}
+                                    value={additionalInfo.altura}
+                                    onChange={handleChangeAdditionalInfo}
                                 />
                                 <FormInputSchedule
-                                    name={"peso_profile"}
+                                    name={"peso"}
                                     label={"Peso:"}
                                     type={"text"}
+                                    placeholder={"Ex: 70.5"}
+                                    value={additionalInfo.peso}
+                                    onChange={handleChangeAdditionalInfo}
                                 />
                             </div>
                             <FormInputSchedule
-                                name={"tipo_sanguineo_profile"}
+                                name={"tipo_sanguineo"}
                                 label={"Tipo Sanguíneo:"}
                                 type={"select"}
                                 options={Dados.tiposSanguineos}
+                                value={additionalInfo.tipo_sanguineo}
+                                onChange={handleChangeAdditionalInfo}
                             />
                             <FormInputSchedule
-                                name={"alergias_profile"}
+                                name={"alergias_conhecidas"}
                                 label={"Alergias Conhecidas:"}
                                 type={"textarea"}
                                 rows={2}
+                                value={additionalInfo.alergias_conhecidas}
+                                onChange={handleChangeAdditionalInfo}
                             />
                             <FormInputSchedule
-                                name={"remedio_continuo_profile"}
+                                name={"remedio_continuo"}
                                 label={"Remedio Contínuo:"}
                                 type={"textarea"}
                                 rows={2}
+                                value={additionalInfo.remedio_continuo}
+                                onChange={handleChangeAdditionalInfo}
                             />
                         </Modal.Body>
                         <Modal.Footer
