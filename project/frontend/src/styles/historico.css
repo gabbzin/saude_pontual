@@ -5,6 +5,7 @@
     flex-direction: column;
     height: 100vh;
     font-family: "Passion One", sans-serif;
+    overflow: hidden;
 }
 
 #box_history {
@@ -18,6 +19,7 @@
     align-items: center;
     padding-left: 15px;
     flex-shrink: 0;
+    box-sizing: border-box;
 }
 
 #box_history h1 {
@@ -31,7 +33,6 @@
 
 #history_wrapper {
     display: flex;
-    flex-direction: row;
     max-height: calc(100vh - 50px);
     padding: 1rem;
     box-sizing: border-box;
@@ -40,6 +41,63 @@
 
 #tabela {
     width: 70%;
+    height: 100%;
+    box-sizing: border-box;
+    overflow-y: hidden;
+    padding: 10px;
+    border-spacing: 0px 10px;
+    border-collapse: separate;
+}
+
+tr, thead, tbody, th, td { /* TR linha da tabela, THEAD cabeçalho, TBODY corpo, th celula do cabeçalho, td celula do corpo*/
+    border: none;
+}
+
+th {
+    border-bottom: 4px solid #00B0AD;
+    padding: 10px 10px;
+    font-weight: 700;
+    font-size: 1.3rem;
+    text-transform: uppercase;
+    text-align: left;
+}
+
+.tablerow {
+    background-color: #C2C2C2;
+}
+
+.tablerow:hover {
+    background-color: rgb(61, 61, 61);
+    color: white;
+    cursor: pointer;
+}
+
+td {
+    font-size: 1rem;
+    font-family: "Inter";
+    font-weight: 400;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    padding: 10px 10px;
+}
+
+#tabela th:nth-child(1), #tabela td:nth-child(1) { width: 25%; } /* Tipo de Consulta */
+#tabela th:nth-child(2), #tabela td:nth-child(2) { width: 35%; } /* Profissional Responsável */
+#tabela th:nth-child(3), #tabela td:nth-child(3) { width: 20%; } /* Data */
+#tabela th:nth-child(4), #tabela td:nth-child(4) { width: 20%; } /* Protocolo */
+
+#tabela td:first-child {
+    border-top-left-radius: 6px;
+    border-bottom-left-radius: 6px;
+}
+#tabela td:last-child {
+    border-top-right-radius: 6px;
+    border-bottom-right-radius: 6px;
+}
+
+#tabela, #fichapdf {
+    height: calc(100vh - 80px);
 }
 
 #fichapdf {
@@ -47,4 +105,5 @@
     flex-direction: column;
     flex: 1;
     border: 1px solid black;
+    padding: 1.2rem;
 }

@@ -5,6 +5,7 @@ import Dados from "../dados.json";
 // Assets
 import BackButton from "../assets/back_button.png"
 import Logo from "../assets/logo_saude_pontual.png";
+import Relatorio from "../assets/relatorio.jpg";
 // Components
 import Button from "../components/Button";
 // Styles
@@ -14,13 +15,11 @@ export default function Historico() {
 
     // eslint-disable-next-line no-unused-vars
     const { usuario } = useContext(AuthContext);
-    const { logout } = useContext(AuthContext);
 
     const navigate = useNavigate();
 
-    function fazerLogout() {
-        logout();
-        navigate("/login");
+    function redirectToHome() {
+        navigate("/");
     }
 
     return (
@@ -33,7 +32,7 @@ export default function Historico() {
                         margin: 0,
                         padding: 0,
                     }}
-                    onClick={fazerLogout}
+                    onClick={redirectToHome}
                 >
                     <img src={BackButton} height={40} width={50} />
                 </Button>
@@ -52,7 +51,7 @@ export default function Historico() {
                     </thead>
                     <tbody>
                         {Dados.consultas.map((consulta, index) => (
-                            <tr key={index}>
+                            <tr key={index} className="tablerow">
                                 <td>{consulta.tipo}</td>
                                 <td>{consulta.profissional}</td>
                                 <td>{consulta.data}</td>
@@ -62,7 +61,11 @@ export default function Historico() {
                     </tbody>
                 </table>
                 <aside id="fichapdf">
-                    
+                    <h2>Saúde Pontual</h2>
+                    <img src={Relatorio} alt="relatorio" width={200} height={280}/>
+                    <Button>
+                        Baixar Ficha                        
+                    </Button>
                 </aside>
             </main>
         </div>
