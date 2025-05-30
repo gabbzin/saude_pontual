@@ -171,3 +171,21 @@ exports.cadastrarConsulta = async (req, res) => {
         res.status(500).json({mensagem: "Erro ao cadastrar esta consulta"})
     }
 }
+
+exports.adicionarInfoPerfil = async (req, res) => {
+    const { altura, peso, tipo_sanguineo, alergias_conhecidas, remedio_continuo } = req.body;
+    const usuario_id = req.userId; // Utiliza o ID do usuário autenticado pelo token
+
+    try {     
+        await db.query(
+            `UPDATE usuarios 
+            SET altura = $1, peso = $2, tipo_sanguineo = $3, alergias_conhecidas = $4, remedio_continuo = $5 
+            WHERE id = $6`,
+            [altura, peso, tipo_sanguineo, alergias_conhecidas, remedio_continuo, usuario_id]
+        );
+        res.status(200).json({ mensagem: "Informações de perfil atualizadas com sucesso!" });
+    } catch (error) {
+        console.error("Erro ao atualizar informações de perfil: ", error);
+        res.status(500).json({ mensagem: "Erro ao atualizar informações de perfil" });
+    }
+}
