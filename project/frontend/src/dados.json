@@ -38,7 +38,10 @@
         { "value": "hematologia", "label": "Hematologia" }
     ],
     "tiposSanguineos": [
-        { "value": "Selecione um tipo sanguíneo", "label": "Selecione o tipo sanguíneo"},
+        {
+            "value": "Selecione um tipo sanguíneo",
+            "label": "Selecione o tipo sanguíneo"
+        },
         { "value": "A+", "label": "A+" },
         { "value": "A-", "label": "A-" },
         { "value": "B+", "label": "B+" },
@@ -51,6 +54,18 @@
 
     "consultas": [
         {
+            "tipo": "Clínico Geral",
+            "profissional": "Dr. João Silva",
+            "data": "10/05/2025",
+            "protocolo": "12345678"
+        },
+        {
+            "tipo": "Ortopedia",
+            "profissional": "Dra. Maria Oliveira",
+            "data": "22/05/2025",
+            "protocolo": "87654321"
+        },
+        {
             "tipo": "Cardiologia",
             "profissional": "Dr. Pedro Henrique",
             "data": "15/06/2025",
@@ -61,6 +76,66 @@
             "profissional": "Dra. Ana Costa",
             "data": "20/06/2025",
             "protocolo": "50039876"
+        },
+        {
+            "tipo": "Pediatria",
+            "profissional": "Dra. Sofia Almeida",
+            "data": "25/06/2025",
+            "protocolo": "60123450"
+        },
+        {
+            "tipo": "Ginecologia",
+            "profissional": "Dr. Carlos Pereira",
+            "data": "30/06/2025",
+            "protocolo": "70234561"
+        },
+        {
+            "tipo": "Oftalmologia",
+            "profissional": "Dra. Beatriz Lima",
+            "data": "05/07/2025",
+            "protocolo": "80345672"
+        },
+        {
+            "tipo": "Endocrinologia",
+            "profissional": "Dr. Lucas Martins",
+            "data": "10/07/2025",
+            "protocolo": "90456783"
+        },
+        {
+            "tipo": "Neurologia",
+            "profissional": "Dra. Isabela Rocha",
+            "data": "15/07/2025",
+            "protocolo": "10056789"
+        },
+        {
+            "tipo": "Psiquiatria",
+            "profissional": "Dr. Fernando Barros",
+            "data": "20/07/2025",
+            "protocolo": "11067890"
+        },
+        {
+            "tipo": "Nutrição",
+            "profissional": "Dra. Gabriela Nunes",
+            "data": "25/07/2025",
+            "protocolo": "12078901"
+        },
+        {
+            "tipo": "Fisioterapia",
+            "profissional": "Dr. Rafael Souza",
+            "data": "30/07/2025",
+            "protocolo": "13089012"
+        },
+        {
+            "tipo": "Urologia",
+            "profissional": "Dra. Laura Mendes",
+            "data": "05/08/2025",
+            "protocolo": "14090123"
+        },
+        {
+            "tipo": "Otorrinolaringologia",
+            "profissional": "Dr. André Ferreira",
+            "data": "10/08/2025",
+            "protocolo": "15001234"
         }
     ]
 }
