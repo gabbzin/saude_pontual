@@ -173,18 +173,15 @@ exports.cadastrarConsulta = async (req, res) => {
 }
 
 exports.adicionarInfoPerfil = async (req, res) => {
-    const { id, altura, peso, tipo_sanguineo, alergias_conhecidas, remedio_continuo } = req.body;
+    const { altura, peso, tipo_sanguineo, alergias_conhecidas, remedio_continuo } = req.body;
+    const usuario_id = req.userId; // Utiliza o ID do usuário autenticado pelo token
 
-    if (!id) {
-        return res.status(400).json({ mensagem: "ID do usuário é obrigatório" });
-    }
-
-    try {
+    try {     
         await db.query(
             `UPDATE usuarios 
             SET altura = $1, peso = $2, tipo_sanguineo = $3, alergias_conhecidas = $4, remedio_continuo = $5 
             WHERE id = $6`,
-            [altura, peso, tipo_sanguineo, alergias_conhecidas, remedio_continuo, id]
+            [altura, peso, tipo_sanguineo, alergias_conhecidas, remedio_continuo, usuario_id]
         );
         res.status(200).json({ mensagem: "Informações de perfil atualizadas com sucesso!" });
     } catch (error) {

@@ -15,10 +15,19 @@ app.use(cors());
 app.use(express.json());
 app.use("/api", usuarioRoutes);
 
-// Inicializa a criação das tabelas
-createTables()
+async function startServer() {
+    try {
+        // Inicializa a criação/atualização das tabelas e aguarda a conclusão
+        await createTables();
+        
+        // Inicia o servidor apenas após a configuração bem-sucedida do banco de dados
+        app.listen(port, () => {
+            console.log(`Servidor rodando em http://localhost:${port}`);
+        });
+    } catch (error) {
+        console.error("Falha ao inicializar o servidor (erro na criação/atualização de tabelas):", error);
+        process.exit(1); // Encerrar o processo se as tabelas não puderem ser configuradas
+    }
+}
 
-// Inicia o servidor
-app.listen(port, () => {
-    console.log(`Servidor rodando em http://localhost:${port}`);
-});
+startServer();
