@@ -34,6 +34,7 @@ export default function Perfil() {
 
     useEffect(() => {
         if (usuario) {
+            console.log("Perfil.jsx: useEffect - Objeto usuario recebido do AuthContext:", usuario);
             setAdditionalInfo({
                 altura: usuario.altura || "",
                 peso: usuario.peso || "",
@@ -97,9 +98,11 @@ export default function Perfil() {
                 setModalForm(false);
                 // Atualizar os dados do usuário no AuthContext para refletir imediatamente na UI
                 const perfilAtualizadoResponse = await buscarPerfil(token);
+                console.log("Perfil.jsx: handleAdditionalInfoSubmit - Resposta de buscarPerfil:", perfilAtualizadoResponse);
                 if (perfilAtualizadoResponse.usuario) {
                     login(perfilAtualizadoResponse.usuario, token); // Atualiza o AuthContext e localStorage
                 } else {
+                    alert("Não foi possível recarregar os dados do perfil após a atualização.");
                     console.error("Não foi possível buscar o perfil atualizado após a atualização.");
                     // Opcional: Adicionar uma mensagem para o usuário ou tentar novamente.
                 }
