@@ -41,21 +41,21 @@ export default function Historico() {
             </header>
             <main id="history_wrapper">
                 <table id="tabela">
-                    <thead>
-                        <tr>
-                            <th>Tipo de Consulta</th>
-                            <th>Profissional Responsável</th>
-                            <th>Data</th>
-                            <th>Protocolo</th>
+                    <thead id="thead">
+                        <tr id="tr">
+                            <th className="th">Tipo de Consulta</th>
+                            <th className="th">Profissional Responsável</th>
+                            <th className="th">Data</th>
+                            <th className="th">Protocolo</th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody id="tbody">
                         {Dados.consultas.map((consulta, index) => (
-                            <tr key={index} className="tablerow">
-                                <td>{consulta.tipo}</td>
-                                <td>{consulta.profissional}</td>
-                                <td>{consulta.data}</td>
-                                <td>{consulta.protocolo}</td>
+                            <tr id="tr" key={index} className="tablerow">
+                                <td className="td">{consulta.tipo}</td>
+                                <td className="td">{consulta.profissional}</td>
+                                <td className="td">{consulta.data}</td>
+                                <td className="td">{consulta.protocolo}</td>
                             </tr>
                         ))}
                     </tbody>
@@ -63,7 +63,8 @@ export default function Historico() {
                 <aside id="fichapdf">
                     <h2>Saúde Pontual</h2>
                     <img src={Relatorio} alt="relatorio" width={200} height={280}/>
-                    <Button>
+                    <p>40028922</p>
+                    <Button id={"download_button"}>
                         Baixar Ficha                        
                     </Button>
                 </aside>
