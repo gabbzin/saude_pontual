@@ -82,7 +82,9 @@ export default function Perfil() {
         }
 
         if (!usuario || !usuario.id) {
-            alert("ID do usuário não encontrado. Por favor, faça login novamente.");
+            alert(
+                "ID do usuário não encontrado. Por favor, faça login novamente."
+            );
             // Redirecionar para a página de login
             return;
         }
@@ -92,7 +94,10 @@ export default function Perfil() {
 
         try {
             const result = await atualizarInfoPerfil(payload, token);
-            if (result.mensagem === "Informações de perfil atualizadas com sucesso!") {
+            if (
+                result.mensagem ===
+                "Informações de perfil atualizadas com sucesso!"
+            ) {
                 alert(result.mensagem);
                 setModalForm(false);
                 // Atualizar os dados do usuário no AuthContext para refletir imediatamente na UI
@@ -100,7 +105,9 @@ export default function Perfil() {
                 if (perfilAtualizadoResponse.usuario) {
                     login(perfilAtualizadoResponse.usuario, token); // Atualiza o AuthContext e localStorage
                 } else {
-                    console.error("Não foi possível buscar o perfil atualizado após a atualização.");
+                    console.error(
+                        "Não foi possível buscar o perfil atualizado após a atualização."
+                    );
                     // Opcional: Adicionar uma mensagem para o usuário ou tentar novamente.
                 }
             } else {
@@ -108,7 +115,10 @@ export default function Perfil() {
             }
         } catch (error) {
             console.error("Erro ao atualizar perfil:", error);
-            alert("Erro na requisição: " + (error.message || "Erro desconhecido ao atualizar perfil."));
+            alert(
+                "Erro na requisição: " +
+                    (error.message || "Erro desconhecido ao atualizar perfil.")
+            );
         }
     }
 
@@ -141,21 +151,18 @@ export default function Perfil() {
                         <div id="informations_profile">
                             <h2>{usuario?.nome}</h2>
                             <div id="informations">
-                                <span>
-                                    Email:{" "}
-                                    {usuario?.email}
-                                </span>
-                                <span>
-                                    Telefone:{" "}
-                                    {usuario?.telefone}
-                                </span>
+                                <span>Email: {usuario?.email}</span>
+                                <span>Telefone: {usuario?.telefone}</span>
                                 <span>
                                     Matrícula: {usuario?.matricula || "0021598"}
                                 </span>
                                 <span>
                                     Data de Nascimento:{" "}
-                                    {usuario?.data_nascimento 
-                                        ? new Date(usuario.data_nascimento + 'T00:00:00').toLocaleDateString('pt-BR') 
+                                    {usuario?.data_nascimento
+                                        ? new Date(
+                                              usuario.data_nascimento +
+                                                  "T00:00:00"
+                                          ).toLocaleDateString("pt-BR")
                                         : "Não informado"}
                                 </span>
                             </div>
@@ -173,7 +180,12 @@ export default function Perfil() {
                         >
                             INÍCIO
                         </Button>
-                        <Button className={"redirect_profile_buttons"}>
+                        <Button
+                            className={"redirect_profile_buttons"}
+                            onClick={() => {
+                                navigate("/historico");
+                            }}
+                        >
                             HISTÓRICO
                         </Button>
                         <Button
@@ -195,9 +207,18 @@ export default function Perfil() {
                     <h2>INFORMAÇÕES ADICIONAIS</h2>
                     <p>Altura: {additionalInfo.altura || "Não informado"}</p>
                     <p>Peso: {additionalInfo.peso || "Não informado"}</p>
-                    <p>Tipo sanguíneo: {additionalInfo.tipo_sanguineo || "Não informado"}</p>
-                    <p>Alergias conhecidas: {additionalInfo.alergias_conhecidas || "Não informado"}</p>
-                    <p>Remédio contínuo: {additionalInfo.remedio_continuo || "Não informado"}</p>
+                    <p>
+                        Tipo sanguíneo:{" "}
+                        {additionalInfo.tipo_sanguineo || "Não informado"}
+                    </p>
+                    <p>
+                        Alergias conhecidas:{" "}
+                        {additionalInfo.alergias_conhecidas || "Não informado"}
+                    </p>
+                    <p>
+                        Remédio contínuo:{" "}
+                        {additionalInfo.remedio_continuo || "Não informado"}
+                    </p>
 
                     <Button onClick={showModalForm}>EDITAR FICHA</Button>
                 </aside>

@@ -32,7 +32,9 @@ export default function Home() {
     const [selectedDate, setSelectedDate] = useState("");
 
     function showModal(dateStr) {
-        const formattedDate = new Date(dateStr + "T00:00:00").toLocaleDateString("pt-br", {
+        const formattedDate = new Date(
+            dateStr + "T00:00:00"
+        ).toLocaleDateString("pt-br", {
             weekday: "long",
             day: "2-digit",
             month: "2-digit",
@@ -122,9 +124,9 @@ export default function Home() {
                     <Button
                         id={"historico"}
                         text={"HISTÓRICO DE CONSULTAS"}
-                        onClick={() => {
-                            console.log("Abrir Histórico");
-                        }}
+                        onClick={() => (
+                            navigate("/historico")
+                        )}
                         style={{
                             fontSize: "1em",
                         }}
