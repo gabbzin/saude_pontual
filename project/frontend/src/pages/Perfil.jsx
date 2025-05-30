@@ -33,16 +33,16 @@ export default function Perfil() {
     const navigate = useNavigate();
 
     useEffect(() => {
-        if (usuario) {
+        if (additionalInfo) {
             setAdditionalInfo({
-                altura: usuario.altura || "",
-                peso: usuario.peso || "",
-                tipo_sanguineo: usuario.tipo_sanguineo || "",
-                alergias_conhecidas: usuario.alergias_conhecidas || "",
-                remedio_continuo: usuario.remedio_continuo || "",
+                altura: additionalInfo.altura || "",
+                peso: additionalInfo.peso || "",
+                tipo_sanguineo: additionalInfo.tipo_sanguineo || "",
+                alergias_conhecidas: additionalInfo.alergias_conhecidas || "",
+                remedio_continuo: additionalInfo.remedio_continuo || "",
             });
         }
-    }, [usuario, modalForm]);
+    }, [additionalInfo, modalForm]);
 
     function showModalButtons() {
         setModalButtons(true);
@@ -152,18 +152,13 @@ export default function Perfil() {
                             <h2>{usuario?.nome}</h2>
                             <div id="informations">
                                 <span>Email: {usuario?.email}</span>
-                                <span>Telefone: {usuario?.telefone}</span>
+                                <span>Telefone: {usuario?.telefone || "(99) 98503-7478"}</span>
                                 <span>
                                     Matrícula: {usuario?.matricula || "0021598"}
                                 </span>
                                 <span>
                                     Data de Nascimento:{" "}
-                                    {usuario?.data_nascimento
-                                        ? new Date(
-                                              usuario.data_nascimento +
-                                                  "T00:00:00"
-                                          ).toLocaleDateString("pt-BR")
-                                        : "Não informado"}
+                                    {usuario?.data_nascimento || "13/06/2006"}
                                 </span>
                             </div>
                             <Button>
@@ -205,19 +200,19 @@ export default function Perfil() {
 
                 <aside id="profile_aside">
                     <h2>INFORMAÇÕES ADICIONAIS</h2>
-                    <p>Altura: {additionalInfo.altura || "Não informado"}</p>
-                    <p>Peso: {additionalInfo.peso || "Não informado"}</p>
+                    <p>Altura: {additionalInfo.altura || "1.84"}m</p>
+                    <p>Peso: {additionalInfo.peso || "74"}kg</p>
                     <p>
                         Tipo sanguíneo:{" "}
-                        {additionalInfo.tipo_sanguineo || "Não informado"}
+                        {additionalInfo.tipo_sanguineo || "O+"}
                     </p>
                     <p>
                         Alergias conhecidas:{" "}
-                        {additionalInfo.alergias_conhecidas || "Não informado"}
+                        {additionalInfo.alergias_conhecidas || "Não existe"}
                     </p>
                     <p>
                         Remédio contínuo:{" "}
-                        {additionalInfo.remedio_continuo || "Não informado"}
+                        {additionalInfo.remedio_continuo || "Não existe"}
                     </p>
 
                     <Button onClick={showModalForm}>EDITAR FICHA</Button>
