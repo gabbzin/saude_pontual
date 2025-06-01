@@ -136,14 +136,9 @@
     height: 100%;
 }
 
-#fichapdf > p {
-    font-family: "Inter";
-    font-size: 0.9em;
-    color: blue;
-}
-
 #download_button {
     background-color: #08BFAC;
-    font-size: 2em;
+    font-size: 1.8rem;
     cursor: pointer;
+    border: none;
 }

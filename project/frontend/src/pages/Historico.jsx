@@ -63,9 +63,8 @@ export default function Historico() {
                 <aside id="fichapdf">
                     <h2>Saúde Pontual</h2>
                     <img src={Relatorio} alt="relatorio" width={200} height={280}/>
-                    <p>40028922</p>
                     <Button id={"download_button"}>
-                        Baixar Ficha                        
+                        Download
                     </Button>
                 </aside>
             </main>
