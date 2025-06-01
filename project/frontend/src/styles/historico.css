@@ -90,7 +90,13 @@
     border-radius: 25px;
 }
 
-.tablerow:hover {
+.tablerow:hover{
+    background-color: rgb(136, 136, 136);
+    color: white;
+    cursor: pointer;
+}
+
+.tablerow.selected {
     background-color: rgb(61, 61, 61);
     color: white;
     cursor: pointer;

@@ -1,9 +1,9 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { AuthContext } from "../contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
 import Dados from "../dados.json";
 // Assets
-import BackButton from "../assets/back_button.png"
+import BackButton from "../assets/back_button.png";
 import Logo from "../assets/logo_saude_pontual.png";
 import Relatorio from "../assets/relatorio.jpg";
 // Components
@@ -12,14 +12,22 @@ import Button from "../components/Button";
 import "../styles/historico.css";
 
 export default function Historico() {
-
     // eslint-disable-next-line no-unused-vars
     const { usuario } = useContext(AuthContext);
 
     const navigate = useNavigate();
 
+    const [selectedConsulta, setSelectedConsulta] = useState(
+        Dados.consultas.length > 0 ? Dados.consultas[0] : null
+    );
+
     function redirectToHome() {
         navigate("/");
+    }
+
+    function handleConsultaClick(consulta) {
+        setSelectedConsulta(consulta);
+        console.log("Consulta selecionada: ", consulta);
     }
 
     return (
@@ -51,7 +59,18 @@ export default function Historico() {
                     </thead>
                     <tbody id="tbody">
                         {Dados.consultas.map((consulta, index) => (
-                            <tr id="tr" key={index} className="tablerow">
+                            <tr
+                                id="tr"
+                                key={index}
+                                className={`tablerow ${
+                                    selectedConsulta &&
+                                    selectedConsulta.protocolo ===
+                                        consulta.protocolo
+                                        ? "selected"
+                                        : ""
+                                }`}
+                                onClick={() => handleConsultaClick(consulta)}
+                            >
                                 <td className="td">{consulta.tipo}</td>
                                 <td className="td">{consulta.profissional}</td>
                                 <td className="td">{consulta.data}</td>
@@ -62,10 +81,16 @@ export default function Historico() {
                 </table>
                 <aside id="fichapdf">
                     <h2>Saúde Pontual</h2>
-                    <img src={Relatorio} alt="relatorio" width={200} height={280}/>
-                    <Button id={"download_button"}>
-                        Download
-                    </Button>
+                    <img
+                        src={Relatorio}
+                        alt="relatorio"
+                        width={200}
+                        height={280}
+                    />
+                    <p>
+                        {selectedConsulta ? selectedConsulta.protocolo : "Selecione uma consulta"}
+                    </p>
+                    <Button id={"download_button"}>Download</Button>
                 </aside>
             </main>
         </div>

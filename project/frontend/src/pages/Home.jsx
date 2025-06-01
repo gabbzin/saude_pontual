@@ -111,7 +111,7 @@ export default function Home() {
 
                         <h2 className="text-center mt-2 fs-1">SAÚDE PONTUAL</h2>
                     </div>
-                    <p className="description fs-5 p-4">
+                    <p className="description fs-6 p-4">
                         Nosso propósito é simplificar sua jornada de cuidados,
                         oferecendo acesso rápido a informações sobre
                         medicamentos, agendamentos de consultas e acompanhamento
