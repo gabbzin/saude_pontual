@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import { useContext } from "react";
 import {
     BrowserRouter as Router,
     Routes,
@@ -9,7 +9,7 @@ import {
 import { AuthContext } from "../contexts/AuthContext";
 // Pages
 // Admin
-
+import HomePro from "../pages/admin/HomePro";
 // Auth
 import Login from "../pages/auth/Login";
 import Cadastro from "../pages/auth/Cadastro";
@@ -36,7 +36,10 @@ const AppRoutes = () => {
                 <Route path="/login" element={<Login />} />
                 <Route path="/cadastro" element={<Cadastro />} />
 
-                {/* Rotas Protegidas (Acessíveis apenas com o token) */}
+                {/* Rotas de Admin Protegidas (Acessíveis com token e rule) */}
+                <Route path="/homepro" element={<HomePro />} />
+
+                {/* Rotas de Usuário Protegidas (Acessíveis apenas com o token) */}
                 <Route
                     path="/"
                     element={usuario ? <Home /> : redirectToLogin}
