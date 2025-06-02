@@ -1,15 +1,15 @@
 import React, { useContext, useState } from "react";
-import { AuthContext } from "../contexts/AuthContext";
+import { AuthContext } from "../../contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
-import Dados from "../dados.json";
+import Dados from "../../dados.json";
 // Assets
-import BackButton from "../assets/back_button.png";
-import Logo from "../assets/logo_saude_pontual.png";
-import Relatorio from "../assets/relatorio.jpg";
+import BackButton from "../../assets/back_button.png";
+import Logo from "../../assets/logo_saude_pontual.png";
+import Relatorio from "../../assets/relatorio.jpg";
 // Components
-import Button from "../components/Button";
+import Button from "../../components/Button";
 // Styles
-import "../styles/historico.css";
+import "../../styles/historico.css";
 
 export default function Historico() {
     // eslint-disable-next-line no-unused-vars
@@ -88,7 +88,9 @@ export default function Historico() {
                         height={280}
                     />
                     <p>
-                        {selectedConsulta ? selectedConsulta.protocolo : "Selecione uma consulta"}
+                        {selectedConsulta
+                            ? selectedConsulta.protocolo
+                            : "Selecione uma consulta"}
                     </p>
                     <Button id={"download_button"}>Download</Button>
                 </aside>

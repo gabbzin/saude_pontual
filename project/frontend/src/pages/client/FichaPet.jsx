@@ -1,14 +1,13 @@
-import React from "react";
-
-import BackButton from "../assets/back_button.png";
-
-import Button from "../components/Button"
-import FormInputSchedule from "../components/FormInputSchedule";
-
-import Dados from "../dados.json";
-
-import "../styles/fichas.css";
 import { useNavigate } from "react-router-dom";
+// Assets
+import BackButton from "../../assets/back_button.png";
+// Components
+import Button from "../../components/Button";
+import FormInputSchedule from "../../components/FormInputSchedule";
+
+import Dados from "../../dados.json";
+// Styles
+import "../../styles/fichas.css";
 
 export default function FichaPessoa(){
 

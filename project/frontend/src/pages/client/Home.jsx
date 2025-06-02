@@ -1,22 +1,21 @@
-import React, { useContext, useState } from "react";
+import { useContext, useState } from "react";
 import { Modal } from "react-bootstrap";
-import { AuthContext } from "../contexts/AuthContext";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { AuthContext } from "../../contexts/AuthContext";
 // Assets
-import ButtonExit from "../assets/button_exit_1.jpeg";
-import FundoLaranja from "../assets/background_orange.jpg";
-import GatoIcon from "../assets/gato_icon.jpeg";
-import Logo from "../assets/logo_saude_pontual.png";
-import ProfileIcon from "../assets/profile_icon.png";
-import ProfileButton from "../assets/profile_button.png";
+import FundoLaranja from "../../assets/background_orange.jpg";
+import ButtonExit from "../../assets/button_exit_1.jpeg";
+import GatoIcon from "../../assets/gato_icon.jpeg";
+import Logo from "../../assets/logo_saude_pontual.png";
+import ProfileButton from "../../assets/profile_button.png";
 // Components
-import Background from "../components/Background";
-import Button from "../components/Button";
-import Calendar from "../components/Calendar";
-import ScheduleButtons from "../components/ScheduleButtons";
+import Background from "../../components/Background";
+import Button from "../../components/Button";
+import Calendar from "../../components/Calendar";
+import ScheduleButtons from "../../components/ScheduleButtons";
 // Styles
-import "../styles/home.css";
 import "bootstrap/dist/css/bootstrap.min.css";
+import "../../styles/home.css";
 
 export default function Home() {
     const { usuario } = useContext(AuthContext);
