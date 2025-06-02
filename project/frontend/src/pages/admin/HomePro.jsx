@@ -7,18 +7,22 @@ import Calendar from "../../components/Calendar";
 import FormInputSchedule from "../../components/FormInputSchedule";
 // Styles
 import "../../styles/calendario.css";
+import "../../styles/homepro.css";
+import "bootstrap/dist/css/bootstrap.min.css";
 
 export default function HomePro() {
     return (
         <div id="pro_container_home">
-            <header id="pro_home">
+            <header id="pro_header_home">
                 <div id="rebranding">
                     <img src={Logo} id="logo_pro_home" />
-                    <h2 id="title_pro_home">Saúde Pontual</h2>
+                    <h3 id="title_pro_home" className="text-uppercase">
+                        Saúde Pontual
+                    </h3>
                 </div>
                 <div id="profilepro">
                     <img src={ProfileIcon} id="icon_pro_home" />
-                    <h3>Dra. {"Júlia"}</h3>
+                    <h3 id="perfil_name">Dra. {"Júlia"}</h3>
                 </div>
             </header>
             <main id="pro_home_wrapper">
@@ -30,12 +34,12 @@ export default function HomePro() {
                             className="input_pesquisar_pacientes"
                             placeholder="PESQUISAR"
                         />
-                        <button>
+                        <button className="botao_pesquisa">
                             <svg
                                 xmlns="http://www.w3.org/2000/svg"
                                 width="18"
                                 height="18"
-                                fill="currentColor"
+                                fill="#757575"
                                 class="bi bi-search"
                                 viewBox="0 0 16 16"
                             >
@@ -43,11 +47,9 @@ export default function HomePro() {
                             </svg>
                         </button>
                     </div>
-                    <FormInputSchedule
-                        placeholder={"Escrever relatório"}
-                        id={"relatorio_write"}
-                        rows={8}
-                    />
+                    <textarea name="relatorio_write" id="relatorio_write" rows={15} placeholder="Escrever relatório">
+
+                    </textarea>
                     <Button
                         className={"button_homepro_page"}
                         type={"submit"}
@@ -59,27 +61,28 @@ export default function HomePro() {
                     </Button>
                 </section>
                 <section id="calendar_history_section">
-                    <div id="calendar_pro" style={{ height: "100%" }}>
+                    <div id="calendar_pro" style={{ height: "75%" }}>
                         <Calendar />
                     </div>
                     <div id="historico_relatorios">
-                        <Button className={"button_homepro_page"}>
+                        <Button className={"button_homepro_page"} id="historico_e_relatorio">
                             Histórico e Relatórios
                         </Button>
                     </div>
                 </section>
                 <section id="ficha_pacientes">
+                    <h2>Ficha de Pacientes</h2>
                     <div className="pesquisar_pacientes">
                         <input
                             type="text"
                             className="input_pesquisar_pacientes"
                             placeholder="PESQUISAR"
                         />
-                        <button>
+                        <button className="botao_pesquisa">
                             <svg
                                 xmlns="http://www.w3.org/2000/svg"
-                                width="18"
-                                height="18"
+                                width="15"
+                                height="15"
                                 fill="currentColor"
                                 class="bi bi-search"
                                 viewBox="0 0 16 16"
