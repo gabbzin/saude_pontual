@@ -6,13 +6,13 @@ import {
     Navigate,
 } from "react-router-dom";
 // Contexto
-import { AuthContext } from "../contexts/AuthContext"
+import { AuthContext } from "../contexts/AuthContext";
 // Pages
 // Admin
 
 // Auth
-import Login from "../pages/Login";
-import Cadastro from "../pages/Cadastro";
+import Login from "../pages/auth/Login";
+import Cadastro from "../pages/auth/Cadastro";
 // Client
 import Home from "../pages/client/Home";
 import FichaPessoa from "../pages/client/FichaPessoa";
