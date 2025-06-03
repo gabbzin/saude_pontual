@@ -41,7 +41,7 @@ export default function HistoricoPro() {
                 >
                     <img src={BackButton} height={40} width={50} />
                 </Button>
-                <h1>HISTÓRICO DE CONSULTA</h1>
+                <h1 className="text-uppercase fs-2">Histórico e Relatórios enviados</h1>
                 <img id="logo" src={Logo} height={40} width={40} />
             </header>
             <main id="history_wrapper">
@@ -77,14 +77,14 @@ export default function HistoricoPro() {
                     </tbody>
                 </table>
                 <aside id="fichapdf">
-                    <h2>Saúde Pontual</h2>
+                    <h2 className="fs-1">Saúde Pontual</h2>
                     <img
                         src={Relatorio}
                         alt="relatorio"
                         width={200}
                         height={280}
                     />
-                    <p>
+                    <p className="fs-3">
                         {selectedConsulta
                             ? selectedConsulta.protocolo
                             : "Selecione uma consulta"}
