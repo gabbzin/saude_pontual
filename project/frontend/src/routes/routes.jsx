@@ -39,6 +39,8 @@ const AppRoutes = () => {
                 {/* Rotas de Admin Protegidas (Acessíveis com token e rule) */}
                 <Route path="/homepro" element={<HomePro />} />
 
+                <Route path="/historicopro" element={<HistoricoPro />} />
+
                 {/* Rotas de Usuário Protegidas (Acessíveis apenas com o token) */}
                 <Route
                     path="/"
