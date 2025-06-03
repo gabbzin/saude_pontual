@@ -143,3 +143,10 @@
     padding: 20px;
 }
 
+#ficha_pacientes {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 1.2rem;
+    border-radius: 20px;
+}
