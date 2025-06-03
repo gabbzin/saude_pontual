@@ -19,7 +19,7 @@ export default function HistoricoPro() {
     );
 
     function redirectToHome() {
-        navigate("/");
+        navigate("/homepro");
     }
 
     function handleConsultaClick(consulta) {

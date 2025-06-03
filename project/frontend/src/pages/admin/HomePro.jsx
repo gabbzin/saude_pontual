@@ -47,7 +47,7 @@ export default function HomePro() {
                             </svg>
                         </button>
                     </div>
-                    <textarea name="relatorio_write" id="relatorio_write" rows={15} placeholder="Escrever relatório">
+                    <textarea name="relatorio_write" id="relatorio_write" rows={20} placeholder="Escrever relatório">
 
                     </textarea>
                     <Button
