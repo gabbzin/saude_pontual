@@ -1,6 +1,5 @@
-import { useContext, useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { AuthContext } from "../../contexts/AuthContext";
 import Dados from "../../dados.json";
 // Assets
 import BackButton from "../../assets/back_button.png";
@@ -12,8 +11,6 @@ import Button from "../../components/Button";
 import "../../styles/historico.css";
 
 export default function HistoricoPro() {
-    // eslint-disable-next-line no-unused-vars
-    const { usuario } = useContext(AuthContext);
 
     const navigate = useNavigate();
 
@@ -52,7 +49,7 @@ export default function HistoricoPro() {
                     <thead id="thead">
                         <tr id="tr">
                             <th className="th">Tipo de Consulta</th>
-                            <th className="th">Profissional Responsável</th>
+                            <th className="th">Paciente</th>
                             <th className="th">Data</th>
                             <th className="th">Protocolo</th>
                         </tr>
@@ -72,7 +69,7 @@ export default function HistoricoPro() {
                                 onClick={() => handleConsultaClick(consulta)}
                             >
                                 <td className="td">{consulta.tipo}</td>
-                                <td className="td">{consulta.profissional}</td>
+                                <td className="td">Alfredo Ribeiro</td>
                                 <td className="td">{consulta.data}</td>
                                 <td className="td">{consulta.protocolo}</td>
                             </tr>

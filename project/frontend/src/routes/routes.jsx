@@ -10,6 +10,7 @@ import { AuthContext } from "../contexts/AuthContext";
 // Pages
 // Admin
 import HomePro from "../pages/admin/HomePro";
+import HistoricoPro from "../pages/admin/HistoricoPro";
 // Auth
 import Login from "../pages/auth/Login";
 import Cadastro from "../pages/auth/Cadastro";
