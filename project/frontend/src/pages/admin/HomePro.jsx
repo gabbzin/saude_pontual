@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Modal } from "react-bootstrap";
+import { useNavigate } from "react-router-dom";
 // Assets
 import Logo from "../../assets/logo_saude_pontual.png";
 import ProfileIcon from "../../assets/profile_icon.png";
@@ -15,6 +16,8 @@ export default function HomePro() {
 
     const [modalCalendarVisible, setModalCalendarVisible] = useState(false);
     const [selectedDate, setSelectedDate] = useState("");
+
+    const navigate = useNavigate();
 
     function showModal(dateStr) {
         const formattedDate = new Date(
@@ -102,7 +105,7 @@ export default function HomePro() {
                             console.log("Enviando relatório");
                         }}
                     >
-                        ENVIAR
+                        Enviar
                     </Button>
                 </section>
                 <section id="calendar_history_section">
@@ -110,7 +113,9 @@ export default function HomePro() {
                         <Calendar showModal={showModal}/>
                     </div>
                     <div id="historico_relatorios">
-                        <Button className={"button_homepro_page"} id="historico_e_relatorio">
+                        <Button className={"button_homepro_page"} id="historico_e_relatorio" onClick={() => {
+                            navigate("/historicopro")
+                        }}>
                             Histórico e Relatórios
                         </Button>
                     </div>
