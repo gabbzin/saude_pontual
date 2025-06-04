@@ -1,1 +1,1 @@
-const dbPet = require('../db');
+const { db } = require('../db');

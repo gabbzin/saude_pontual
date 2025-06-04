@@ -2,6 +2,7 @@ const express = require("express");
 const cors = require("cors");
 const dotenv = require("dotenv");
 const usuarioRoutes = require("./routes/usuarioRoutes");
+const consultaRoutes = require("./routes/consultaRoutes"); // Importar as novas rotas de consulta
 const {db, createTables} = require("./db");
 
 require("dotenv").config();
@@ -14,6 +15,7 @@ const port = 3001;
 app.use(cors());
 app.use(express.json());
 app.use("/api", usuarioRoutes);
+app.use("/api", consultaRoutes);
 
 async function startServer() {
     try {
