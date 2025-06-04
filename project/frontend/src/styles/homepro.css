@@ -1,0 +1,153 @@
+* {
+    box-sizing: border-box;
+}
+
+#pro_container_home {
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    font-family: "Passion One";
+}
+
+#pro_header_home {
+    width: 100%;
+    height: 70px;
+    background-color: white;
+    z-index: 10;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 25px;
+}
+
+#logo_pro_home, #icon_pro_home {
+    width: 50px;
+    height: 50px;
+    margin-right: 15px;
+}
+
+#logo_pro_home {
+    border-radius: 10px;
+}
+
+#icon_pro_home {
+    border-radius: 50%;
+}
+
+#title_pro_home, #perfil_name {
+    margin-top: 5px;
+    font-family: "Lilita One";
+    color: #043C40;
+}
+
+#rebranding, #profilepro {
+    display: flex;
+    align-items: center;
+}
+
+#pro_home_wrapper {
+    flex-grow: 1;
+    background-color: #D7D7D7;
+    display: flex;
+    justify-content: space-around;
+    padding: 1rem;
+}
+
+#writer_relatorio, #calendar_history_section, #ficha_pacientes {
+    width: 30%;
+}
+
+#writer_relatorio, #ficha_pacientes, #historico_relatorios {
+    background-color: #FFF;
+}
+
+#writer_relatorio {
+    font-family: "Passion One";
+    color: #043C40;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    border-radius: 20px;
+    padding: 1.2rem;
+}
+
+.pesquisar_pacientes {
+    display: flex;
+    align-items: center;
+    background-color: #ECECEC;
+    border-radius: 30px;
+    padding: 8px 8px 8px 20px;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.input_pesquisar_pacientes {
+    flex-grow: 1;
+    border: none;
+    outline: none;
+    background-color: transparent;
+    font-size: 1em;
+    color: #333;
+}
+
+.botao_pesquisa {
+    background-color: white;
+    border: none;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    margin-left: 10px;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.15);
+}
+
+#relatorio_write {
+    border: 1px dotted orange;
+    border-radius: 15px;
+    padding: 10px;
+    resize: none;
+}
+
+.button_homepro_page {
+    background-color: #08BFAC;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-size: 1.6em;
+    text-transform: uppercase;
+    transition: background-color 0.3s ease-in-out;
+}
+
+.button_homepro_page:hover {
+    background-color: #043C40;
+}
+
+#calendar_history_section {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+#historico_relatorios {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+}
+
+#historico_e_relatorio {
+    padding: 20px;
+}
+
+#ficha_pacientes {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 1.2rem;
+    border-radius: 20px;
+}

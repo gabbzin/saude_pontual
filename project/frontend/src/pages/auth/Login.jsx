@@ -1,18 +1,18 @@
 import React, { useContext, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { AuthContext } from "../contexts/AuthContext";
+import { AuthContext } from "../../contexts/AuthContext";
 // Assets
-import FundoVerde from "../assets/background_green.jpg";
-import Logo from "../assets/logo_saude_pontual.png";
+import FundoVerde from "../../assets/background_green.jpg";
+import Logo from "../../assets/logo_saude_pontual.png";
 // Components
-import Background from "../components/Background"; // Importação do Background
-import Button from "../components/Button"; // Importação do Button
-import FormInput from "../components/FormInput"; // Importação do Input
-import MoModal from "../components/MoModal"; // Importação do MoModal
+import Background from "../../components/Background"; // Importação do Background
+import Button from "../../components/Button"; // Importação do Button
+import FormInput from "../../components/FormInput"; // Importação do Input
+import MoModal from "../../components/MoModal"; // Importação do MoModal
 // Styles
 import "bootstrap/dist/css/bootstrap.min.css";
-import "../styles/login_cadastro.css";
-import { loginUsuario } from "../../api/api";
+import "../../styles/login_cadastro.css";
+import { loginUsuario } from "../../../api/api";
 
 export default function Login() {
     const [form, setForm] = useState({ email: "", senha: "" });
@@ -33,8 +33,8 @@ export default function Login() {
         console.log(result);
         if (result.token) {
             login(result.usuario, result.token); // Atualiza o contexto aqui
-            setError("") // Limpa o erro antes de navegar
-            setTimeout( () => {
+            setError(""); // Limpa o erro antes de navegar
+            setTimeout(() => {
                 navigate("/");
             }, 200); // Navegando pra Home
         } else {

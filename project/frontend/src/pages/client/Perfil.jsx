@@ -1,22 +1,21 @@
-import React, { useContext, useState, useEffect } from "react";
-import { AuthContext } from "../contexts/AuthContext";
+import { useContext, useEffect, useState } from "react";
+import { Modal } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
-import { Modal, ModalFooter } from "react-bootstrap";
-import Dados from "../dados.json";
+import { AuthContext } from "../../contexts/AuthContext";
+import Dados from "../../dados.json";
 // Assets
-import { buscarPerfil, atualizarInfoPerfil } from "../../api/api";
-import BackButton from "../assets/back_button.png";
-import ButtonEdit from "../assets/button_edit.png";
-import FundoLaranja from "../assets/background_orange.jpg";
-import GatoIcon from "../assets/gato_icon.jpeg";
-import ProfileIcon from "../assets/profile_icon.png";
+import { atualizarInfoPerfil, buscarPerfil } from "../../../api/api";
+import BackButton from "../../assets/back_button.png";
+import FundoLaranja from "../../assets/background_orange.jpg";
+import ButtonEdit from "../../assets/button_edit.png";
+import GatoIcon from "../../assets/gato_icon.jpeg";
 // Componentes
-import Background from "../components/Background";
-import Button from "../components/Button";
-import FormInputSchedule from "../components/FormInputSchedule";
-import ScheduleButtons from "../components/ScheduleButtons";
+import Background from "../../components/Background";
+import Button from "../../components/Button";
+import FormInputSchedule from "../../components/FormInputSchedule";
+import ScheduleButtons from "../../components/ScheduleButtons";
 // Styles
-import "../styles/perfil.css";
+import "../../styles/perfil.css";
 
 export default function Perfil() {
     const { usuario, login, logout } = useContext(AuthContext);

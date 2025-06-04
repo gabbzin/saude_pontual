@@ -1,14 +1,14 @@
-import React, { useState } from "react";
-import { cadastrarConsulta } from "../../api/api";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { cadastrarConsulta } from "../../../api/api";
 // Components
-import BackButton from "../assets/back_button.png";
-import Button from "../components/Button";
-import FormInputSchedule from "../components/FormInputSchedule";
+import Button from "../../components/Button";
+import FormInputSchedule from "../../components/FormInputSchedule";
+import BackButton from "../../assets/back_button.png";
 
-import Dados from "../dados.json";
+import Dados from "../../dados.json";
 
-import "../styles/fichas.css";
+import "../../styles/fichas.css";
 
 export default function FichaPessoa() {
     const [formData, setFormData] = useState({
