@@ -47,3 +47,14 @@ export async function atualizarInfoPerfil(dados, token) {
     });
     return res.json();
 }
+
+export async function buscarHistoricoConsultas() {
+    const token = localStorage.getItem("token");
+    const res = await fetch("http://localhost:3001/api/consultas/historico", {
+        method: "GET",
+        headers: {
+            "Authorization": `Bearer ${token}`
+        }
+    });
+    return res.json();
+}
