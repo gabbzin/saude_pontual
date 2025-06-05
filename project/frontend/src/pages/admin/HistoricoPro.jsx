@@ -84,11 +84,6 @@ export default function HistoricoPro() {
                         width={200}
                         height={280}
                     />
-                    <p className="fs-3">
-                        {selectedConsulta
-                            ? selectedConsulta.protocolo
-                            : "Selecione uma consulta"}
-                    </p>
                     <Button id={"download_button"}>Download</Button>
                 </aside>
             </main>
