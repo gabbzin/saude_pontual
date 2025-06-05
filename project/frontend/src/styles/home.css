@@ -32,7 +32,7 @@
 }
 
 .sidebar {
-    width: 22%;
+    width: 24%;
     background-color: #89aba6;
     padding: 5px;
     display: flex;
@@ -41,7 +41,7 @@
 }
 
 .description {
-    font-size: 1em;
+    font-size: 0.9em;
     text-align: justify;
     font-family: "Inter", sans-serif;
     color: #fff;
@@ -85,6 +85,7 @@
 
 .actions {
     width: 20%;
+    margin-top: 9rem;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -100,7 +101,7 @@
     border: none;
     cursor: pointer;
     font-weight: 400;
-    font-size: clamp(1.8em, 5vw, 2.5em);
+    font-size: clamp(1.4em, 5vw, 2.0em);
     border-radius: 22.5px;
 }
 
@@ -112,9 +113,9 @@
         300px
     ); /* Mínimo de 200px, ideal de 80% do contêiner, máximo de 300px */
     height: clamp(
-        180px,
-        65%,
-        250px
+        150px,
+        50%,
+        220px
     ); /* Mínimo de 180px, ideal de 65% do contêiner, máximo de 250px */
     transition: background-color 0.3s ease-in-out;
 }

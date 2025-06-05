@@ -23,7 +23,7 @@ export default function Home() {
 
     const navigate = useNavigate();
 
-    const resolucaoLogoXY = 150;
+    const resolucaoLogoXY = 140;
     const resolucaoProfileXY = 85;
 
     const [modalCalendarVisible, setModalCalendarVisible] = useState(false);
