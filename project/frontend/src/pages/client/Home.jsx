@@ -79,12 +79,19 @@ export default function Home() {
                 <Modal.Body style={{ fontFamily: "Inter" }}>
                     <p>Data: {selectedDate}</p>
                     {consultas.length > 0 ? (
-                        <ul style={{listStyleType: "none"}}>
+                        <ul style={{ listStyleType: "none", paddingLeft: 0 }}>
                             {consultas.map((consulta, index) => (
                                 <li key={consulta.id || index} style={{}}>
-                                    <strong>Tipo de consulta:</strong> {consulta.area_medica_desejada} <br />
-                                    <strong>Nome do Profissional:</strong> {consulta.profissional} <br />
-                                    <strong>Horário:</strong> {consulta.hora_para_exibicao}
+                                    <strong>Tipo de consulta:</strong>{" "}
+                                    {consulta.area_medica_desejada ===
+                                    "clinica_geral"
+                                        ? "Clínica Geral"
+                                        : consulta.area_medica_desejada}{" "}
+                                    <br />
+                                    <strong>Nome do Profissional:</strong>{" "}
+                                    {consulta.profissional} <br />
+                                    <strong>Horário:</strong>{" "}
+                                    {consulta.hora_para_exibicao}
                                 </li>
                             ))}
                         </ul>
@@ -134,9 +141,7 @@ export default function Home() {
                     <Button
                         id={"historico"}
                         text={"HISTÓRICO DE CONSULTAS"}
-                        onClick={() => (
-                            navigate("/historico")
-                        )}
+                        onClick={() => navigate("/historico")}
                         style={{
                             fontSize: "1em",
                         }}
@@ -154,7 +159,9 @@ export default function Home() {
                                 borderRadius: "50%",
                             }}
                         />
-                        <h1 className="text-capitalize">SEJA BEM-VINDO(A), {usuario?.nome}</h1>
+                        <h1 className="text-capitalize">
+                            SEJA BEM-VINDO(A), {usuario?.nome}
+                        </h1>
                     </div>
                     <div id="calendar" style={{ height: "100%" }}>
                         <Calendar showModal={showModal} />
