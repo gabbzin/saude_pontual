@@ -11,6 +11,7 @@
 .fc-daygrid-day {
     border: 3px solid #005C4D;
     color: white;
+    cursor: pointer;
 }
 
 tbody, td, tfoot, th, thead, tr{
@@ -28,7 +29,14 @@ tbody, td, tfoot, th, thead, tr{
     background-color: transparent !important;
 }
 
-.consulta-marcada {
+.fc .fc-daygrid-day.consulta-marcada .fc-daygrid-day-number {
+    border: 2px solid orange !important;
+    border-radius: 50%;
+    color: orange;
+    padding: 0px 6px;
+}
+
+.fc-day-today .fc-daygrid-day-number {
     border: 2px solid orange;
     border-radius: 50%;
     color: orange;
