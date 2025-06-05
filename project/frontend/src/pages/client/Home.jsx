@@ -79,12 +79,12 @@ export default function Home() {
                 <Modal.Body style={{ fontFamily: "Inter" }}>
                     <p>Data: {selectedDate}</p>
                     {consultas.length > 0 ? (
-                        <ul>
+                        <ul style={{listStyleType: "none"}}>
                             {consultas.map((consulta, index) => (
-                                <li key={consulta.id || index}>
-                                    <strong>Tipo de consulta:</strong> {consulta.tipo} <br />
+                                <li key={consulta.id || index} style={{}}>
+                                    <strong>Tipo de consulta:</strong> {consulta.area_medica_desejada} <br />
                                     <strong>Nome do Profissional:</strong> {consulta.profissional} <br />
-                                    <strong>Horário:</strong> {consulta.horario}
+                                    <strong>Horário:</strong> {consulta.hora_para_exibicao}
                                 </li>
                             ))}
                         </ul>
