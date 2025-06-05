@@ -29,8 +29,9 @@ export default function Home() {
     const [modalCalendarVisible, setModalCalendarVisible] = useState(false);
     const [modalButtons, setModalButtons] = useState(false);
     const [selectedDate, setSelectedDate] = useState("");
+    const [consultas, setConsultas] = useState([]);
 
-    function showModal(dateStr) {
+    function showModal(dateStr, consultas) {
         const formattedDate = new Date(
             dateStr + "T00:00:00"
         ).toLocaleDateString("pt-br", {
@@ -39,7 +40,9 @@ export default function Home() {
             month: "2-digit",
             year: "numeric",
         });
+
         setSelectedDate(formattedDate);
+        setConsultas(consultas);
         setModalCalendarVisible(true);
         console.log("Estado do Modal do Calendário" + modalCalendarVisible);
     }
@@ -74,12 +77,20 @@ export default function Home() {
                     Consulta Agendada
                 </Modal.Header>
                 <Modal.Body style={{ fontFamily: "Inter" }}>
-                    Data: {selectedDate} <br />
-                    Tipo de consulta: Ortopedia <br />{" "}
-                    {/* Alimentar esse campo */}
-                    Nome do Profissional: Pedro João <br />{" "}
-                    {/* Alimentar esse campo */}
-                    Horário: 08:35 {/* Alimentar esse campo */}
+                    <p>Data: {selectedDate}</p>
+                    {consultas.length > 0 ? (
+                        <ul>
+                            {consultas.map((consulta, index) => (
+                                <li key={consulta.id || index}>
+                                    <strong>Tipo de consulta:</strong> {consulta.tipo} <br />
+                                    <strong>Nome do Profissional:</strong> {consulta.profissional} <br />
+                                    <strong>Horário:</strong> {consulta.horario}
+                                </li>
+                            ))}
+                        </ul>
+                    ) : (
+                        <p>Nenhuma consulta agendada para esta data.</p>
+                    )}
                 </Modal.Body>
             </Modal>
 

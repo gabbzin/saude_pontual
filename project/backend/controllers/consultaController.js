@@ -2,22 +2,42 @@ const { db } = require("../db");
 
 exports.criarConsulta = async (req, res) => {
     // data_e_hora é esperado como uma string combinada (ex: "YYYY-MM-DDTHH:mm")
-    const { nome, idade, peso, altura, tipo_sanguineo,
-            historico_de_saude, area_medica_desejada, data_e_hora, motivo } = req.body; // Alterado de motivo: motivo_da_consulta para motivo
+    const {
+        nome,
+        idade,
+        peso,
+        altura,
+        tipo_sanguineo,
+        historico_de_saude,
+        area_medica_desejada,
+        data_e_hora,
+        motivo,
+    } = req.body; // Alterado de motivo: motivo_da_consulta para motivo
 
     const usuario_id = req.userId;
 
-    if(!usuario_id){
-        return res.status(401).json({error: "Acesso não autorizado. Token inválido ou ausente."})
+    if (!usuario_id) {
+        return res.status(401).json({
+            error: "Acesso não autorizado. Token inválido ou ausente.",
+        });
     }
 
     //campos "obrigatórios"
-    if (!nome || !idade || !peso || !altura || !tipo_sanguineo || 
-    !historico_de_saude || !area_medica_desejada || !data_e_hora || !motivo) {
+    if (
+        !nome ||
+        !idade ||
+        !peso ||
+        !altura ||
+        !tipo_sanguineo ||
+        !historico_de_saude ||
+        !area_medica_desejada ||
+        !data_e_hora ||
+        !motivo
+    ) {
         return res
             .status(400)
             .json({ error: "Preencha todos os campos obrigatórios." });
-        }
+    }
 
     // verifica se ja tem consulta m/rcada no mesmo horário
     try {
@@ -56,7 +76,7 @@ exports.criarConsulta = async (req, res) => {
                 historico_de_saude,
                 area_medica_desejada,
                 data_e_hora,
-                motivo
+                motivo,
             ]
         );
 
@@ -77,20 +97,33 @@ exports.listarConsultasUsuario = async (req, res) => {
     const usuario_id = req.userId;
 
     if (!usuario_id) {
-        return res.status(401).json({ error: "Acesso não autorizado. Token inválido ou ausente." });
+        return res.status(401).json({
+            error: "Acesso não autorizado. Token inválido ou ausente.",
+        });
     }
 
     try {
         const { rows } = await db.query(
-            `SELECT id, nome, area_medica_desejada, TO_CHAR(data_e_hora, 'DD/MM/YYYY HH24:MI') as data_formatada, motivo 
-             FROM consultas 
-             WHERE usuario_id = $1 
-             ORDER BY data_e_hora DESC`,
+            `SELECT
+                id,
+                nome,
+                area_medica_desejada,
+                TO_CHAR(data_e_hora, 'YYYY-MM-DD') AS data_para_calendario,  -- Formato YYYY-MM-DD para comparação no FullCalendar
+                TO_CHAR(data_e_hora, 'DD/MM/YYYY') AS data_para_exibicao,    -- Formato DD/MM/YYYY para exibir no modal
+                TO_CHAR(data_e_hora, 'HH24:MI') AS hora_para_exibicao       -- Formato HH:MI (24h) para exibir a hora separadamente
+            FROM
+                consultas
+            WHERE
+                usuario_id = $1
+            ORDER BY
+                data_e_hora DESC;`,
             [usuario_id]
         );
         return res.status(200).json({ consultas: rows });
     } catch (err) {
         console.error("Erro ao listar consultas do usuário:", err);
-        return res.status(500).json({ mensagem: "Erro interno ao buscar histórico de consultas" });
+        return res.status(500).json({
+            mensagem: "Erro interno ao buscar histórico de consultas",
+        });
     }
 };

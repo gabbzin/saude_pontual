@@ -28,7 +28,7 @@ tbody, td, tfoot, th, thead, tr{
     background-color: transparent !important;
 }
 
-.fc-day-today .fc-daygrid-day-number {
+.consulta-marcada {
     border: 2px solid orange;
     border-radius: 50%;
     color: orange;
