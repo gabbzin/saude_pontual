@@ -72,3 +72,25 @@ exports.criarConsulta = async (req, res) => {
             .json({ mensagem: "Erro interno ao criar consulta" });
     }
 };
+
+exports.listarConsultasUsuario = async (req, res) => {
+    const usuario_id = req.userId;
+
+    if (!usuario_id) {
+        return res.status(401).json({ error: "Acesso não autorizado. Token inválido ou ausente." });
+    }
+
+    try {
+        const { rows } = await db.query(
+            `SELECT id, nome, area_medica_desejada, TO_CHAR(data_e_hora, 'DD/MM/YYYY HH24:MI') as data_formatada, motivo 
+             FROM consultas 
+             WHERE usuario_id = $1 
+             ORDER BY data_e_hora DESC`,
+            [usuario_id]
+        );
+        return res.status(200).json({ consultas: rows });
+    } catch (err) {
+        console.error("Erro ao listar consultas do usuário:", err);
+        return res.status(500).json({ mensagem: "Erro interno ao buscar histórico de consultas" });
+    }
+};
