@@ -86,6 +86,20 @@ async function createTables() {
         `);
         console.log("Tabela 'consultas_pet' verificada/criada.");
 
+        // Criação da tabela de profissionais se não existir
+        await client.query(`
+            CREATE TABLE IF NOT EXISTS profissionais (
+                id SERIAL PRIMARY KEY,
+                nome VARCHAR(255) NOT NULL,
+                email VARCHAR(255) UNIQUE NOT NULL,
+                senha VARCHAR(255) NOT NULL,
+                especialidade VARCHAR(255),
+                crm VARCHAR(50) UNIQUE, -- Conselho Regional de Medicina ou similar
+                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+            );
+        `);
+        console.log("Tabela 'profissionais' verificada/criada.");
+
         await client.query('COMMIT');
         console.log("Tabelas verificadas/criadas/atualizadas com sucesso!");
     } catch (err) {
