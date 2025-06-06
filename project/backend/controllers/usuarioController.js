@@ -1,16 +1,11 @@
 const bcrypt = require("bcryptjs");
 const {db} = require("../db");
 const jwt = require("jsonwebtoken");
+const { validarSenha } = require("../utils/validation");
 
 require("dotenv").config(); // Carregando as variáveis de ambiente
 
 const SECRET_KEY = process.env.JWT_CHAVE;
-
-// Função para validar força da senha
-const validarSenha = (senha) => {
-  const regex = /^(?=.*[A-Z])(?=.*[!@#$%^&*])(?=.{8,})/;
-  return regex.test(senha);
-};
 
 //função para criar um novo usuário
 exports.cadastrarUsuario = async (req, res) => {
