@@ -1,0 +1,100 @@
+const bcrypt = require("bcryptjs");
+const { db } = require("../db");
+const jwt = require("jsonwebtoken");
+const { validarSenha } = require("../utils/validation");
+
+require("dotenv").config();
+
+const SECRET_KEY = process.env.JWT_CHAVE;
+
+// Função para cadastrar um novo profissional
+exports.cadastrarProfissional = async (req, res) => {
+    const { nome, email, senha, especialidade, crm } = req.body;
+
+    // Verifica se os campos obrigatórios estão preenchidos
+    if (!nome || !email || !senha || !especialidade || !crm) {
+        return res
+            .status(400)
+            .json({ mensagem: "Nome, email, senha, especialidade e CRM são obrigatórios." });
+    }
+
+    // Validação da força da senha
+    if (!validarSenha(senha)) {
+        return res.status(400).json({
+            mensagem: "Senha deve conter: 8+ caracteres, 1 letra maiúscula e 1 caractere especial."
+        });
+    }
+
+    try {
+        // Criptografa a senha
+        const senha_hash = await bcrypt.hash(senha, 10);
+
+        // Insere o novo profissional no banco de dados
+        const { rows } = await db.query(
+            `INSERT INTO profissionais (nome, email, senha, especialidade, crm)
+       VALUES ($1, $2, $3, $4, $5)
+       RETURNING id, nome, email, especialidade, crm`,
+            [nome, email, senha_hash, especialidade, crm]
+        );
+        const profissional = rows[0];
+
+        // Retorna profissional criado
+        return res
+            .status(201)
+            .json({ mensagem: "Profissional cadastrado com sucesso", profissional });
+    } catch (err) {
+        console.error("Erro ao cadastrar profissional:", err);
+        if (err.code === "23505") { // Código de erro para violação de unicidade
+            if (err.constraint === "profissionais_email_key") {
+                return res.status(409).json({ mensagem: "Email já cadastrado." });
+            }
+            if (err.constraint === "profissionais_crm_key") {
+                return res.status(409).json({ mensagem: "CRM já cadastrado." });
+            }
+        }
+        return res
+            .status(500)
+            .json({ mensagem: "Erro interno ao cadastrar profissional." });
+    }
+};
+
+// Função para fazer login do profissional
+exports.loginProfissional = async (req, res) => {
+    const { email, senha } = req.body;
+
+    if (!email || !senha) {
+        return res
+            .status(400)
+            .json({ mensagem: "Email e senha são obrigatórios." });
+    }
+
+    try {
+        const { rows } = await db.query(
+            "SELECT id, nome, email, senha, especialidade, crm FROM profissionais WHERE email = $1",
+            [email]
+        );
+        const profissional = rows[0];
+
+        if (!profissional) {
+            return res.status(401).json({ mensagem: "Email ou senha inválidos." });
+        }
+
+        const senhaValida = await bcrypt.compare(senha, profissional.senha);
+        if (!senhaValida) {
+            return res.status(401).json({ mensagem: "Email ou senha inválidos." });
+        }
+
+        const { senha: _, ...prof } = profissional;
+
+        const token = jwt.sign(
+            { id: prof.id, email: prof.email, nome: prof.nome, role: "profissional" },
+            SECRET_KEY,
+            { expiresIn: "1h" } // Token para profissionais pode ter uma expiração diferente se necessário
+        );
+
+        return res.status(200).json({ mensagem: "Login realizado com sucesso", profissional: prof, token });
+    } catch (err) {
+        console.error("Erro ao fazer login do profissional:", err);
+        return res.status(500).json({ mensagem: "Erro interno ao realizar login." });
+    }
+};
