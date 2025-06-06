@@ -81,6 +81,10 @@ export default function Calendar({ showModal }) {
             }}
             initialView={"dayGridMonth"} // Visualização Inicial
             locale={"pt-br"} // Local do calendário
+
+            buttonText={{
+                today: "Hoje"
+            }}
             height={"100%"} // Altura do calendário
             weekends={true} // Final de semana
             fixedWeekCount={false} // Números de semanas fixos
