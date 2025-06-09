@@ -1,58 +1,58 @@
 const { db } = require("../db");
 
 exports.criarConsulta = async (req, res) => {
-    // data_e_hora é esperado como uma string combinada (ex: "YYYY-MM-DDTHH:mm")
-    const {
-        nome,
-        idade,
-        peso,
-        altura,
-        tipo_sanguineo,
-        historico_de_saude,
-        area_medica_desejada,
-        data_e_hora,
-        motivo,
-    } = req.body; // Alterado de motivo: motivo_da_consulta para motivo
+  // data_e_hora é esperado como uma string combinada (ex: "YYYY-MM-DDTHH:mm")
+  const {
+    nome,
+    idade,
+    peso,
+    altura,
+    tipo_sanguineo,
+    historico_de_saude,
+    area_medica_desejada,
+    data_e_hora,
+    motivo,
+  } = req.body; // Alterado de motivo: motivo_da_consulta para motivo
 
-    const usuario_id = req.userId;
+  const usuario_id = req.userId;
 
-    if (!usuario_id) {
-        return res.status(401).json({
-            error: "Acesso não autorizado. Token inválido ou ausente.",
-        });
+  if (!usuario_id) {
+    return res.status(401).json({
+      error: "Acesso não autorizado. Token inválido ou ausente.",
+    });
+  }
+
+  //campos "obrigatórios"
+  if (
+    !nome ||
+    !idade ||
+    !peso ||
+    !altura ||
+    !tipo_sanguineo ||
+    !historico_de_saude ||
+    !area_medica_desejada ||
+    !data_e_hora ||
+    !motivo
+  ) {
+    return res
+      .status(400)
+      .json({ error: "Preencha todos os campos obrigatórios." });
+  }
+
+  // verifica se ja tem consulta m/rcada no mesmo horário
+  try {
+    const { rows: exist } = await db.query(
+      "SELECT id FROM consultas WHERE data_e_hora = $1",
+      [data_e_hora],
+    );
+
+    if (exist.length > 0) {
+      return res.status(409).json({ mensagem: "Horário já agendado" });
     }
 
-    //campos "obrigatórios"
-    if (
-        !nome ||
-        !idade ||
-        !peso ||
-        !altura ||
-        !tipo_sanguineo ||
-        !historico_de_saude ||
-        !area_medica_desejada ||
-        !data_e_hora ||
-        !motivo
-    ) {
-        return res
-            .status(400)
-            .json({ error: "Preencha todos os campos obrigatórios." });
-    }
-
-    // verifica se ja tem consulta m/rcada no mesmo horário
-    try {
-        const { rows: exist } = await db.query(
-            "SELECT id FROM consultas WHERE data_e_hora = $1",
-            [data_e_hora]
-        );
-
-        if (exist.length > 0) {
-            return res.status(409).json({ mensagem: "Horário já agendado" });
-        }
-
-        //insere consulta no banco
-        const { rows } = await db.query(
-            `INSERT INTO consultas (
+    //insere consulta no banco
+    const { rows } = await db.query(
+      `INSERT INTO consultas (
                 usuario_id,
                 nome,
                 idade,
@@ -66,45 +66,43 @@ exports.criarConsulta = async (req, res) => {
             )
             VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)
             RETURNING *`,
-            [
-                usuario_id,
-                nome,
-                idade,
-                peso,
-                altura,
-                tipo_sanguineo,
-                historico_de_saude,
-                area_medica_desejada,
-                data_e_hora,
-                motivo,
-            ]
-        );
+      [
+        usuario_id,
+        nome,
+        idade,
+        peso,
+        altura,
+        tipo_sanguineo,
+        historico_de_saude,
+        area_medica_desejada,
+        data_e_hora,
+        motivo,
+      ],
+    );
 
-        // retorna a consulta criada
-        return res.status(201).json({ consulta: rows[0] });
-    } catch (err) {
-        console.error("Erro ao criar consulta:", err);
-        if (err.code === "23505") {
-            return res.status(409).json({ mensagem: "Horário já agendado" });
-        }
-        return res
-            .status(500)
-            .json({ mensagem: "Erro interno ao criar consulta" });
+    // retorna a consulta criada
+    return res.status(201).json({ consulta: rows[0] });
+  } catch (err) {
+    console.error("Erro ao criar consulta:", err);
+    if (err.code === "23505") {
+      return res.status(409).json({ mensagem: "Horário já agendado" });
     }
+    return res.status(500).json({ mensagem: "Erro interno ao criar consulta" });
+  }
 };
 
 exports.listarConsultasUsuario = async (req, res) => {
-    const usuario_id = req.userId;
+  const usuario_id = req.userId;
 
-    if (!usuario_id) {
-        return res.status(401).json({
-            error: "Acesso não autorizado. Token inválido ou ausente.",
-        });
-    }
+  if (!usuario_id) {
+    return res.status(401).json({
+      error: "Acesso não autorizado. Token inválido ou ausente.",
+    });
+  }
 
-    try {
-        const { rows } = await db.query(
-            `SELECT
+  try {
+    const { rows } = await db.query(
+      `SELECT
                 id,
                 nome,
                 area_medica_desejada,
@@ -117,15 +115,15 @@ exports.listarConsultasUsuario = async (req, res) => {
                 usuario_id = $1
             ORDER BY
                 data_e_hora DESC;`,
-            [usuario_id]
-        );
-        return res.status(200).json({ consultas: rows });
-    } catch (err) {
-        console.error("Erro ao listar consultas do usuário:", err);
-        return res.status(500).json({
-            mensagem: "Erro interno ao buscar histórico de consultas",
-        });
-    }
+      [usuario_id],
+    );
+    return res.status(200).json({ consultas: rows });
+  } catch (err) {
+    console.error("Erro ao listar consultas do usuário:", err);
+    return res.status(500).json({
+      mensagem: "Erro interno ao buscar histórico de consultas",
+    });
+  }
 };
 
 exports.buscarProfissionalPorArea = async (req, res) => {
@@ -133,18 +131,27 @@ exports.buscarProfissionalPorArea = async (req, res) => {
 
   if (!area_medica_desejada) {
     return res.status(400).json({
-     mensagem: "Área médica desejada é obrigatória."
-    })
+      mensagem: "Área médica desejada é obrigatória.",
+    });
   }
 
   try {
     const { rows } = await db.query(
       "SELECT id, nome, email, especialidade FROM profissionais WHERE especialidade ILIKE $1",
-      [`%${area_medica_desejada}%`]
+      [`%${area_medica_desejada}%`],
     );
 
+    if (rows.length === 0) {
+      return res.status(404).json({
+        mensagem: "Nenhum profissional encontrado para a consulta.",
+      });
+    }
 
+    return res.status(200).json({ profissionais: rows });
+  } catch (err) {
+    console.error("Erro ao buscar o profissional por area:", err);
+    return res.status(500).json({
+      mensagem: "Erro interno ao buscar o profissional",
+    });
   }
-
-
-}
+};
