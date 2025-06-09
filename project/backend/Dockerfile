@@ -1,15 +1,20 @@
 # imagem base Node.js
-FROM node:18-slim
-
-RUN apt-get update && \
-    apt-get install -y python3 build-essential --no-install-recommends && \
-    rm -rf /var/lib/apt/lists/*
+# agora com dois estagios
+FROM node:22-alpine as deps
 
 WORKDIR /app
 
 # instala dependências
 COPY package*.json ./
 RUN npm install --production
+
+
+#estagio 2
+FROM node:22-alpine
+
+WORKDIR /app
+
+COPY --from=deps /app/node_modules ./node_modules
 
 # copia código-fonte
 COPY . .
