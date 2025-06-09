@@ -127,3 +127,24 @@ exports.listarConsultasUsuario = async (req, res) => {
         });
     }
 };
+
+exports.buscarProfissionalPorArea = async (req, res) => {
+  const { area_medica_desejada } = req.query;
+
+  if (!area_medica_desejada) {
+    return res.status(400).json({
+     mensagem: "Área médica desejada é obrigatória."
+    })
+  }
+
+  try {
+    const { rows } = await db.query(
+      "SELECT id, nome, email, especialidade FROM profissionais WHERE especialidade ILIKE $1",
+      [`%${area_medica_desejada}%`]
+    );
+
+
+  }
+
+
+}
