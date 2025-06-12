@@ -133,9 +133,15 @@ export default function Login() {
                     </form>
                 </div>
                 <MoModal
-                    show={!!error}
-                    onClose={() => setError("")}
+                    show={error}
+                    onClose={() => setError(false)}
                     text={error}
+                    styleBody={{
+                        fontFamily: "Passion One",
+                        fontWeight: 400,
+                        fontSize: 48,
+                        textAlign: "center"
+                    }}
                 />
             </main>
         </div>

@@ -14,6 +14,14 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "../../styles/login_cadastro.css";
 
 export default function Cadastro() {
+
+    const estiloModalPadrao = {
+        fontFamily: "Passion One",
+        fontWeight: 400,
+        fontSize: 60,
+        textAlign: "center",
+    }
+
     const [form, setForm] = useState({
         nome: "",
         data_nascimento: "",
@@ -22,6 +30,8 @@ export default function Cadastro() {
         senha: "",
     });
     const [modalVisible, setModalVisible] = useState(false);
+    const [msgError, setmsgError] = useState("")
+    const [modalErrorSignUp, setModalErrorSignUp] = useState(false);
     const navigate = useNavigate();
 
     // Atualiza campo do formulário
@@ -30,27 +40,31 @@ export default function Cadastro() {
         setForm((prev) => ({ ...prev, [name]: value }));
     };
 
+    function showModalVisible(){
+        setModalVisible(true);
+    }
+
     // Envia dados para o cadastro
     const handleSubmit = async (e) => {
         e.preventDefault();
 
         try {
             const result = await cadastrarUsuario(form);
-            console.log("Resposta do cadastro:", result);
 
-            if (result.token) {
-                localStorage.setItem("token", result.token);
-                localStorage.setItem("usuario", JSON.stringify(result.usuario)); // se precisar do usuário no contexto
-                setModalVisible(true);
+            if (result.usuario) {
+                showModalVisible()
+
                 setTimeout(() => {
                     setModalVisible(false);
                     navigate("/login");
-                }, 1500);
+                }, 2000);
             } else {
-                alert(result.mensagem || "Erro ao cadastrar");
+                setmsgError(result.mensagem || "Erro ao cadastrar");
+                setModalErrorSignUp(true)
             }
         } catch (err) {
-            alert(err.message || "Erro ao cadastrar");
+            setmsgError(err.message || "Erro ao cadastrar");
+            setModalErrorSignUp(true)
         }
     };
 
@@ -161,16 +175,18 @@ export default function Cadastro() {
                         </div>
                     </form>
                 </div>
-                <MoModal
+                <MoModal // Sucesso ao cadastrar
                     show={modalVisible}
                     onClose={() => setModalVisible(false)}
                     text={"Cadastro \n Finalizado"}
-                    styleBody={{
-                        fontFamily: "Passion One",
-                        fontWeight: 400,
-                        fontSize: 60,
-                        textAlign: "center",
-                    }}
+                    styleBody={estiloModalPadrao}
+                />
+
+                <MoModal // Erro ao cadastrar
+                    show={modalErrorSignUp}
+                    onClose={() => setModalErrorSignUp(false)}
+                    text={msgError}
+                    styleBody={{...estiloModalPadrao, color: "#F00"}}
                 />
             </main>
         </div>
