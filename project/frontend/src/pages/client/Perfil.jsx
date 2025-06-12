@@ -18,8 +18,11 @@ import ScheduleButtons from "../../components/ScheduleButtons";
 import "../../styles/perfil.css";
 
 export default function Perfil() {
-    const { usuario, login, logout } = useContext(AuthContext);
 
+    
+    const { usuario, login, logout } = useContext(AuthContext);
+    
+    const navigate = useNavigate();
     const [modalButtons, setModalButtons] = useState(false);
     const [modalForm, setModalForm] = useState(false);
     const [additionalInfo, setAdditionalInfo] = useState({
@@ -29,19 +32,35 @@ export default function Perfil() {
         alergias_conhecidas: "",
         remedio_continuo: "",
     });
-    const navigate = useNavigate();
-
+    
     useEffect(() => {
-        if (additionalInfo) {
-            setAdditionalInfo({
-                altura: additionalInfo.altura || "",
-                peso: additionalInfo.peso || "",
-                tipo_sanguineo: additionalInfo.tipo_sanguineo || "",
-                alergias_conhecidas: additionalInfo.alergias_conhecidas || "",
-                remedio_continuo: additionalInfo.remedio_continuo || "",
-            });
+        const token = localStorage.getItem("token");
+        console.log(token);
+
+        const carregarInformacoesAdicionais = async () => {
+            if (!token) return;
+            
+            try {
+                const perfil = await buscarPerfil(token);
+                
+                if (perfil?.usuario){
+                    setAdditionalInfo((prev) => ({
+                        altura: perfil.usuario.altura ? `${perfil.usuario.altura}m` : prev.altura,
+                        peso: perfil.usuario.peso ? `${perfil.usuario.peso}` : prev.peso,
+                        tipo_sanguineo: perfil.usuario.tipo_sanguineo ? `${perfil.usuario.tipo_sanguineo}` : prev.tipo_sanguineo,
+                        alergias_conhecidas: perfil.usuario.alergias_conhecidas ? `${perfil.usuario.alergias_conhecidas}` : prev.alergias_conhecidas,
+                        remedio_continuo: perfil.usuario.remedio_continuo ? `${perfil.usuario.remedio_continuo}` : prev.remedio_continuo,
+                    }));    
+                }
+            }
+            catch (error) {
+                console.error("Erro ao carregar as informações adicionais do perfil: ", error);
+            };
         }
-    }, [additionalInfo, modalForm]);
+
+        carregarInformacoesAdicionais()
+
+    }, []);
 
     function showModalButtons() {
         setModalButtons(true);
@@ -53,11 +72,11 @@ export default function Perfil() {
 
     function fazerLogout() {
         if (logout) logout(); // Verificação se logout existe
-        navigate("/login");
+        navigate("/login", {replace: true});
     }
 
     function redirectToHome() {
-        navigate("/");
+        navigate("/", {replace: true});
     }
 
     const handleChangeAdditionalInfo = (e) => {
@@ -148,16 +167,16 @@ export default function Perfil() {
                             <img src={GatoIcon} alt="Avatar" />
                         </div>
                         <div id="informations_profile">
-                            <h2>{usuario?.nome}</h2>
+                            <h2 className="text-capitalize">{usuario?.nome}</h2>
                             <div id="informations">
                                 <span>Email: {usuario?.email}</span>
-                                <span>Telefone: {usuario?.telefone || "(99) 98503-7478"}</span>
+                                <span>Telefone: {usuario?.telefone || "(61) 4002-8922"}</span>
                                 <span>
-                                    Matrícula: {usuario?.matricula || "0021598"}
+                                    Matrícula: {usuario?.matricula || "40028922"}
                                 </span>
                                 <span>
                                     Data de Nascimento:{" "}
-                                    {usuario?.data_nascimento || "13/06/2006"}
+                                    {usuario?.data_nascimento || "27/06/2000"}
                                 </span>
                             </div>
                             <Button>
@@ -177,7 +196,7 @@ export default function Perfil() {
                         <Button
                             className={"redirect_profile_buttons"}
                             onClick={() => {
-                                navigate("/historico");
+                                navigate("/historico", {replace: true});
                             }}
                         >
                             HISTÓRICO
@@ -199,20 +218,11 @@ export default function Perfil() {
 
                 <aside id="profile_aside">
                     <h2>INFORMAÇÕES ADICIONAIS</h2>
-                    <p>Altura: {additionalInfo.altura || "1.84"}m</p>
-                    <p>Peso: {additionalInfo.peso || "74"}kg</p>
-                    <p>
-                        Tipo sanguíneo:{" "}
-                        {additionalInfo.tipo_sanguineo || "O+"}
-                    </p>
-                    <p>
-                        Alergias conhecidas:{" "}
-                        {additionalInfo.alergias_conhecidas || "Não existe"}
-                    </p>
-                    <p>
-                        Remédio contínuo:{" "}
-                        {additionalInfo.remedio_continuo || "Não existe"}
-                    </p>
+                    <p>Altura: {additionalInfo.altura || "Não existe"}</p>
+                    <p>Peso: {additionalInfo.peso || "Não existe"}</p>
+                    <p>Tipo sanguíneo: {additionalInfo.tipo_sanguineo || "Não existe"}</p>
+                    <p>Alergias conhecidas: {additionalInfo.alergias_conhecidas || "Não existe"}</p>
+                    <p>Remédio contínuo: {additionalInfo.remedio_continuo || "Não existe"}</p>
 
                     <Button onClick={showModalForm}>EDITAR FICHA</Button>
                 </aside>
