@@ -9,8 +9,7 @@ import {
 import { AuthContext } from "../contexts/AuthContext";
 // Pages
 // Admin
-import HomePro from "../pages/admin/HomePro";
-import HistoricoPro from "../pages/admin/HistoricoPro";
+import LoginAdm from "../pages/admin/LoginAdm";
 // Auth
 import Login from "../pages/auth/Login";
 import Cadastro from "../pages/auth/Cadastro";
@@ -20,6 +19,9 @@ import FichaPessoa from "../pages/client/FichaPessoa";
 import FichaPet from "../pages/client/FichaPet";
 import Perfil from "../pages/client/Perfil";
 import Historico from "../pages/client/Historico";
+// Pros
+import HomePro from "../pages/pros/HomePro";
+import HistoricoPro from "../pages/pros/HistoricoPro";
 
 const AppRoutes = () => {
     const { usuario, carregando } = useContext(AuthContext);
@@ -37,7 +39,10 @@ const AppRoutes = () => {
                 <Route path="/login" element={<Login />} />
                 <Route path="/cadastro" element={<Cadastro />} />
 
-                {/* Rotas de Admin Protegidas (Acessíveis com token e rule) */}
+                {/* Rotas de Administrador */}
+                <Route path="loginadm" element={<LoginAdm />}/>
+
+                {/* Rotas de Profssionais Protegidas (Acessíveis com rule) */}
                 <Route path="/homepro" element={<HomePro />} />
 
                 <Route path="/historicopro" element={<HistoricoPro />} />
