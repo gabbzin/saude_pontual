@@ -10,6 +10,7 @@ import { AuthContext } from "../contexts/AuthContext";
 // Pages
 // Admin
 import LoginAdm from "../pages/admin/LoginAdm";
+import HomeAdm from "../pages/admin/HomeAdm";
 // Auth
 import Login from "../pages/auth/Login";
 import Cadastro from "../pages/auth/Cadastro";
@@ -40,7 +41,9 @@ const AppRoutes = () => {
                 <Route path="/cadastro" element={<Cadastro />} />
 
                 {/* Rotas de Administrador */}
-                <Route path="loginadm" element={<LoginAdm />}/>
+                <Route path="loginadm" element={<LoginAdm />} />
+
+                <Route path="homeadm" element={<HomeAdm />} />
 
                 {/* Rotas de Profssionais Protegidas (Acessíveis com rule) */}
                 <Route path="/homepro" element={<HomePro />} />
