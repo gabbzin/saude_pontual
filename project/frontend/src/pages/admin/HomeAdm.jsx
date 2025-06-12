@@ -1,3 +1,5 @@
+import { useState } from "react";
+import { Modal } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 // Assets
 import BackButton from "../../assets/back_button.png";
@@ -13,6 +15,13 @@ import Dados from "../../dados.json";
 
 export default function HomeAdm() {
     const navigate = useNavigate();
+
+    const [showModalProEdit, setShowModalProEdit] = useState(false);
+    const [showModalClientEdit, setShowModalClientEdit] = useState(false);
+
+    function showModalPro() {
+        setShowModalProEdit(true);
+    }
 
     return (
         <>
@@ -94,17 +103,8 @@ export default function HomeAdm() {
                     </form>
 
                     <Button
+                        id={"botao-cadastrar-adm"}
                         onClick={console.log("Cadastrando user")}
-                        style={{
-                            padding: 16,
-                            margin: 8,
-                            fontSize: "1.7em",
-                            width: 200,
-                            borderRadius: 75,
-                            border: "none",
-                            backgroundColor: "#003C39",
-                            fontFamily: "Passion One",
-                        }}
                     >
                         Cadastrar
                     </Button>
@@ -139,15 +139,161 @@ export default function HomeAdm() {
                         </div>
                     </div>
                     <div id="button-actions-adm">
-                        <Button id="action-button-adm">
-                            Deletar
-                        </Button>
-                        <Button id="action-button-adm">
+                        <Button id="action-button-adm">Deletar</Button>
+                        <Button id="action-button-adm" onClick={showModalPro}>
                             Editar
                         </Button>
                     </div>
                 </section>
             </main>
+            <Modal
+                show={showModalProEdit}
+                onHide={() => setShowModalProEdit(false)}
+                centered
+            >
+                <Modal.Header
+                    closeButton
+                    style={{
+                        color: "#004D3E",
+                        fontFamily: "Passion One",
+                        fontSize: "2em",
+                        justifyContent: "center",
+                    }}
+                >
+                    <h2 style={{ margin: "auto", position: "absolute" }}>
+                        Editar Cadastro
+                    </h2>
+                </Modal.Header>
+                <Modal.Body
+                    style={{
+                        display: "flex",
+                        flexDirection: "column",
+                        alignItems: "center",
+                    }}
+                >
+                    <FormInput
+                        id="nome"
+                        name="nome"
+                        label="Nome"
+                        type="text"
+                        placeholder="Digite o nome"
+                        required={true}
+                    />
+                    <FormInput
+                        id="area"
+                        name="area"
+                        type="select"
+                        label="Área Médica"
+                        options={Dados.areasMedicas}
+                        placeholder="Digite a área de atuação"
+                        required={true}
+                    />
+                    <FormInput
+                        id="nascimento"
+                        name="nascimento"
+                        label="Data de Nascimento"
+                        type="date"
+                        placeholder="Digite a data de nascimento"
+                        required={true}
+                    />
+                    <FormInput
+                        id="telefone"
+                        name="telefone"
+                        label="Telefone"
+                        type="tel"
+                        placeholder="Digite o telefone"
+                        required={true}
+                    />
+                    <FormInput
+                        id="email"
+                        name="email"
+                        label="Email"
+                        type="email"
+                        placeholder="Digite o email"
+                        required={true}
+                    />
+                    <FormInput
+                        id="crm"
+                        name="crm"
+                        label="CRM"
+                        type="text"
+                        placeholder="Digite o CRM"
+                        required={true}
+                    />
+                    <FormInput
+                        id="senha"
+                        name="senha"
+                        label="Senha"
+                        type="password"
+                        placeholder="Digite a senha"
+                        required={true}
+                    />
+                </Modal.Body>
+                <Modal.Footer style={{ justifyContent: "center" }}>
+                    <Button id={"button-confirm-edit"}>Confirmar Edição</Button>
+                </Modal.Footer>
+            </Modal>
+            <Modal
+                show={showModalClientEdit}
+                onHide={() => setShowModalClientEdit(false)}
+                centered
+            >
+                <Modal.Header
+                    closeButton
+                    style={{
+                        color: "#004D3E",
+                        fontFamily: "Passion One",
+                        fontSize: "2em",
+                    }}
+                >
+                    <h2>Editar Cadastro</h2>
+                </Modal.Header>
+                <Modal.Body>
+                    <FormInput
+                        id="nome"
+                        name="nome"
+                        label="Nome"
+                        type="text"
+                        placeholder="Digite o nome"
+                        required={true}
+                    />
+                    <FormInput
+                        id="email"
+                        name="email"
+                        label="Email"
+                        type="email"
+                        placeholder="Digite o email"
+                        required={true}
+                    />
+                    <FormInput
+                        id="nascimento"
+                        name="nascimento"
+                        label="Data de Nascimento"
+                        type="date"
+                        placeholder="Digite a data de nascimento"
+                        required={true}
+                    />
+                    <FormInput
+                        id="telefone"
+                        name="telefone"
+                        label="Telefone"
+                        type="tel"
+                        placeholder="Digite o telefone"
+                        required={true}
+                    />
+                    <FormInput
+                        id="senha"
+                        name="senha"
+                        label="Senha"
+                        type="password"
+                        placeholder="Digite a senha"
+                        required={true}
+                    />
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button id={"button-confirm-edit"}>Confirmar Edição</Button>
+                </Modal.Footer>
+            </Modal>
         </>
     );
 }

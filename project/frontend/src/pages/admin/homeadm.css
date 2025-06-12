@@ -51,6 +51,22 @@
     text-align: center;
 }
 
+#botao-cadastrar-adm {
+    padding: 16px;
+    margin: 8px;
+    font-size: 1.7em;
+    width: 200px;
+    border-radius: 75px;
+    border: none;
+    background-color: #003C39;
+    font-family: "Passion One";
+    transition: background-color 0.5s ease-in-out;
+}
+
+#botao-cadastrar-adm:hover {
+    background-color: #001E31;
+}
+
 #button-actions-adm {
     display: flex;
     flex-direction: column;
@@ -64,5 +80,18 @@
     font-family: "Passion One";
     text-transform: uppercase;
     font-size: 1.5em;
+    border-radius: 75px;
+    transition: background-color 0.5s ease-in-out;
+}
+
+#action-button-adm:hover {
+    background-color: #003C39;
+}
+
+#button-confirm-edit {
+    background-color: #003C39;
+    padding: 12px;
+    font-family: "Passion One";
+    font-size: 1.2em;
     border-radius: 75px;
 }

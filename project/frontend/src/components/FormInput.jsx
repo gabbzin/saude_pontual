@@ -2,6 +2,8 @@ import React from 'react';
 
 export default function FormInput({ id, name, label, type, placeholder, required=false, iconrequired, options, ...restProps }) {
 
+    const iconRequiredDefault = "*";
+
     const renderSelect = () => {
         return (
             <select
@@ -49,7 +51,7 @@ export default function FormInput({ id, name, label, type, placeholder, required
                 style={{
                     backgroundColor: 'transparent',
                 }}>
-                {label} <span style={{color: "#F00"}}>{iconrequired}</span>
+                {label} <span style={{color: "#F00"}}>{iconrequired ? iconrequired : iconRequiredDefault}</span>
             </label>
         </div>
     );
