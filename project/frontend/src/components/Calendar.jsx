@@ -64,7 +64,6 @@ export default function Calendar({ showModal }) {
     };
 
     const dayCellClassNames = (arg) => {
-        console.log(`DEBUG:`, arg.date);
         if (datasConsultas.includes(arg.date.toISOString().split("T")[0])) {
             return "consulta-marcada"; // Classe CSS para marcar as datas com consultas
         }

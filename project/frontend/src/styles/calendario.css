@@ -18,6 +18,10 @@ tbody, td, tfoot, th, thead, tr{
     border: 2px solid #005C4D;
 }
 
+.fc-toolbar-title {
+    text-transform: uppercase;
+}
+
 .fc-col-header-cell-cushion {
     color: white;
     text-decoration: none;
@@ -37,9 +41,9 @@ tbody, td, tfoot, th, thead, tr{
 }
 
 .fc-day-today .fc-daygrid-day-number {
-    border: 2px solid orange;
+    border: 2px solid rgb(0, 255, 26);
     border-radius: 50%;
-    color: orange;
+    color: rgb(0, 255, 26);
     padding: 0px 6px;
 }
 
