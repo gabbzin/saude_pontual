@@ -29,7 +29,7 @@ export default function LoginAdm() {
                     <form id="form-admin" className="fs-5">
                         {/* Campo de e-mail */}
                         <FormInput
-                            id="floatingInput"
+                            id="floating-mail-adm"
                             name="email"
                             label="E-mail"
                             type="email"
@@ -37,7 +37,7 @@ export default function LoginAdm() {
                         />
                         {/* Campo de senha */}
                         <FormInput
-                            id="floatingPassword"
+                            id="floating-pass-adm"
                             name="senha"
                             label="Senha"
                             type="password"
