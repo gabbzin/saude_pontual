@@ -8,7 +8,6 @@ import FundoVerde from "../../assets/background_green.jpg";
 import Background from "../../components/Background";
 import Button from "../../components/Button";
 import FormInput from "../../components/FormInput";
-import FormInputS from "../../components/FormInputSchedule";
 // Styles
 import "./homeadm.css";
 import Dados from "../../dados.json";
