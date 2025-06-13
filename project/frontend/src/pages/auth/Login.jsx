@@ -32,7 +32,20 @@ export default function Login() {
         const result = await loginUsuario(form);
         console.log(result);
         if (result.token) {
-            login(result.usuario, result.token); // Atualiza o contexto aqui
+
+            const capitalizeEachWord = (str) => {
+                if (!str) return ''
+                return str
+                    .toLowerCase() // Primeiro tudo em minuscula
+                    .split(' ') // Dividindo as palavras por espaço
+                    .map(word => word.charAt(0).toUpperCase() + word.slice(1)) // Transformando a primeira letra em maiscula
+                    .join(' ') // Junta as palavras de novo
+            };
+
+            let userName = result.usuario.nome;
+            let transformedUserName = capitalizeEachWord(userName);
+
+            login({...result.usuario, nome: transformedUserName}, result.token); // Atualiza o contexto aqui
             setError(""); // Limpa o erro antes de navegar
             setTimeout(() => {
                 navigate("/");
