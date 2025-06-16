@@ -3,6 +3,7 @@ import { Pool } from "pg";
 import dotenv from "dotenv";
 import bcrypt from "bcryptjs";
 import { profissionais } from "./schema/schema.ts";
+import { eq } from "drizzle-orm";
 
 dotenv.config();
 
@@ -37,7 +38,7 @@ export async function createAdminUser() {
   const adminExists = await db
     .select()
     .from(profissionais)
-    .where(profissionais.email.eq(ADMIN_EMAIL));
+    .where(eq(profissionais.email, ADMIN_EMAIL));
 
   if (adminExists.length > 0) {
     console.log(
@@ -59,7 +60,7 @@ export async function createAdminUser() {
       especialidade: "Administrador",
       crm: "ADMIN000",
     })
-    .run();
+    .execute();
 
   console.log(`Usuário administrador padrão '${ADMIN_EMAIL}' criado com sucesso.`);
 }
