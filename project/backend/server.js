@@ -10,8 +10,11 @@ import { createTables } from "./db.js";
 dotenv.config();
 
 const app = express();
+
+// Define a porta onde o servidor vai rodar
 const port = 3001;
 
+// health check
 app.use("/health", (req, res) => {
   res.status(200).json({ message: "Servidor está rodando!" });
 });
@@ -25,7 +28,10 @@ app.use("/api", consultaRoutes);
 
 async function startServer() {
   try {
+    // Inicializa a criação/atualização das tabelas e aguarda a conclusão
     await createTables();
+
+    // Inicia o servidor apenas após a configuração bem-sucedida do banco de dados
     app.listen(port, () => {
       console.log(`Servidor rodando em http://localhost:${port}`);
     });
