@@ -2,6 +2,7 @@
   "name": "backend",
   "version": "1.0.0",
   "main": "server.js",
+  "type": "module",
   "scripts": {
     "start": "node server.js"
   },
@@ -23,7 +24,8 @@
   "devDependencies": {
     "@tsconfig/node22": "^22.0.2",
     "@types/node": "^22.15.30",
+    "@types/pg": "^8.15.4",
     "drizzle-kit": "^0.31.1",
     "typescript": "^5.8.3"
-    }
+  }
 }
