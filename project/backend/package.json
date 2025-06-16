@@ -4,7 +4,9 @@
   "main": "server.js",
   "type": "module",
   "scripts": {
-    "start": "node server.js"
+    "start": "node server.js",
+    "migrate:generate": "drizzle-kit generate:pg --name init",
+    "migrate:up": "drizzle-kit migrate up"
   },
   "dependencies": {
     "@types/node": "^24.0.1",
