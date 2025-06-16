@@ -2,7 +2,7 @@ import { drizzle } from "drizzle-orm/node-postgres";
 import { Pool } from "pg";
 import dotenv from "dotenv";
 import bcrypt from "bcryptjs";
-import { profissionais } from "./schema/schema";
+import { profissionais } from "./schema/schema.ts";
 
 dotenv.config();
 
