@@ -5,7 +5,7 @@ import usuarioRoutes from "./routes/usuarioRoutes.js";
 import consultaPetRoutes from "./routes/consultaPetRoutes.js";
 import profissionalRoutes from "./routes/profissionalRoutes.js";
 import consultaRoutes from "./routes/consultaRoutes.js";
-import { createTables } from "./db.js";
+import { createAdminUser } from "./db/db.ts";
 
 dotenv.config();
 
@@ -28,10 +28,7 @@ app.use("/api", consultaRoutes);
 
 async function startServer() {
   try {
-    // Inicializa a criação/atualização das tabelas e aguarda a conclusão
-    await createTables();
-
-    // Inicia o servidor apenas após a configuração bem-sucedida do banco de dados
+    await createAdminUser();
     app.listen(port, () => {
       console.log(`Servidor rodando em http://localhost:${port}`);
     });
