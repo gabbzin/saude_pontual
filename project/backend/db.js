@@ -1,6 +1,8 @@
 require("dotenv").config();
 
 const { Pool } = require("pg");
+const bcrypt = require("bcryptjs");
+const { validarSenha } = require("./utils/validation"); // Import password validation utility
 
 // cria uma nova pool de conexões com o banco de dados PostgreSQL
 const db = new Pool({
@@ -99,6 +101,34 @@ async function createTables() {
             );
         `);
         console.log("Tabela 'profissionais' verificada/criada.");
+
+        // Criação do usuário administrador padrão, se não existir
+        const adminEmail = process.env.ADMIN_EMAIL || 'admin@saudepontual.com';
+        const adminExists = await client.query("SELECT id FROM profissionais WHERE email = $1", [adminEmail]);
+
+        if (adminExists.rows.length === 0) {
+            const adminNome = process.env.ADMIN_NOME;
+            const adminSenhaPlain = process.env.ADMIN_SENHA;
+            const adminEspecialidade = 'Administrador';
+            const adminCrm = 'ADMIN000';
+
+            if (!validarSenha(adminSenhaPlain)) {
+                console.error(
+                    "A senha padrão do administrador não atende aos critérios de segurança. O administrador não será criado. " +
+                    "Senha deve conter: 8+ caracteres, 1 letra maiúscula e 1 caractere especial."
+                );
+            } else {
+                const adminSenhaHash = await bcrypt.hash(adminSenhaPlain, 10);
+                await client.query(
+                    `INSERT INTO profissionais (nome, email, senha, especialidade, crm)
+                     VALUES ($1, $2, $3, $4, $5)`,
+                    [adminNome, adminEmail, adminSenhaHash, adminEspecialidade, adminCrm]
+                );
+                console.log(`Usuário administrador padrão '${adminEmail}' criado com sucesso.`);
+            }
+        } else {
+            console.log(`Usuário administrador padrão '${adminEmail}' já existe, nenhuma ação necessária.`);
+        }
 
         await client.query('COMMIT');
         console.log("Tabelas verificadas/criadas/atualizadas com sucesso!");
