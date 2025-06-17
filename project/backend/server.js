@@ -1,11 +1,12 @@
-import express from "express";
-import cors from "cors";
-import dotenv from "dotenv";
-import usuarioRoutes from "./routes/usuarioRoutes.js";
-import consultaPetRoutes from "./routes/consultaPetRoutes.js";
-import profissionalRoutes from "./routes/profissionalRoutes.js";
-import consultaRoutes from "./routes/consultaRoutes.js";
-import { createAdminUser } from "./db/db.ts";
+const express = require("express");
+const cors = require("cors");
+const dotenv = require("dotenv");
+const usuarioRoutes = require("./routes/usuarioRoutes.js");
+const consultaPetRoutes = require("./routes/consultaPetRoutes.js");
+const profissionalRoutes = require("./routes/profissionalRoutes.js");
+const consultaRoutes = require("./routes/consultaRoutes.js");
+const { createAdminUser } = require("./db/db.js");
+const { createTables } = require("./db.js");
 
 dotenv.config();
 
@@ -29,6 +30,8 @@ app.use("/api", consultaRoutes);
 async function startServer() {
   try {
     await createAdminUser();
+    await createTables();
+    console.log("Tabelas criadas e usuário administrador configurado.");
     app.listen(port, () => {
       console.log(`Servidor rodando em http://localhost:${port}`);
     });
