@@ -1,10 +1,11 @@
-import express from "express";
-import { criarConsultaPet, listarConsultasPetUsuario } from "../controllers/consultaPetController.js";
-import { verifyToken } from "../middleware/authMiddleware.js";
+const express = require("express");
+const { criarConsultaPet, listarConsultasPetUsuario } = require("../controllers/consultaPetController.js");
+const { verifyToken } = require("../middleware/authMiddleware.js");
 
 const router = express.Router();
 
 // Rota para criar uma nova consulta para pet
 router.post("/fichapet", verifyToken, criarConsultaPet);
+router.get("/fichapet", verifyToken, listarConsultasPetUsuario);
 
-export default router;
+module.exports = router;
