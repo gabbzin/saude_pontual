@@ -97,10 +97,18 @@ async function createTables() {
                 senha VARCHAR(255) NOT NULL,
                 especialidade VARCHAR(255),
                 crm VARCHAR(50) UNIQUE, -- Conselho Regional de Medicina ou similar
+                telefone VARCHAR(20),
                 created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
             );
         `);
         console.log("Tabela 'profissionais' verificada/criada.");
+
+        // Adiciona coluna telefone
+        await client.query(`
+            ALTER TABLE profissionais
+            ADD COLUMN IF NOT EXISTS telefone VARCHAR(20);
+        `);
+        console.log("Coluna 'telefone' verificada/adicionada à tabela profissionais.");
 
         // Criação do usuário administrador padrão, se não existir
         const adminEmail = process.env.ADMIN_EMAIL || 'admin@saudepontual.com';

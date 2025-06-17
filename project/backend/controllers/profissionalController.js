@@ -9,7 +9,7 @@ const SECRET_KEY = process.env.JWT_CHAVE;
 
 // Função para cadastrar um novo profissional
 exports.cadastrarProfissional = async (req, res) => {
-    const { nome, email, senha, especialidade, crm } = req.body;
+    const { nome, email, senha, especialidade, crm, telefone } = req.body;
 
     // Verifica se os campos obrigatórios estão preenchidos
     if (!nome || !email || !senha || !especialidade || !crm) {
@@ -31,10 +31,10 @@ exports.cadastrarProfissional = async (req, res) => {
 
         // Insere o novo profissional no banco de dados
         const { rows } = await db.query(
-            `INSERT INTO profissionais (nome, email, senha, especialidade, crm)
-       VALUES ($1, $2, $3, $4, $5)
-       RETURNING id, nome, email, especialidade, crm`,
-            [nome, email, senha_hash, especialidade, crm]
+            `INSERT INTO profissionais (nome, email, senha, especialidade, crm, telefone)
+       VALUES ($1, $2, $3, $4, $5, $6)
+       RETURNING id, nome, email, especialidade, crm, telefone`,
+            [nome, email, senha_hash, especialidade, crm, telefone || null]
         );
         const profissional = rows[0];
 
@@ -70,7 +70,7 @@ exports.loginProfissional = async (req, res) => {
 
     try {
         const { rows } = await db.query(
-            "SELECT id, nome, email, senha, especialidade, crm FROM profissionais WHERE email = $1",
+            "SELECT id, nome, email, senha, especialidade, crm, telefone FROM profissionais WHERE email = $1",
             [email]
         );
         const profissional = rows[0];
