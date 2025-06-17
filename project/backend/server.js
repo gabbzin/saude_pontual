@@ -5,7 +5,6 @@ const usuarioRoutes = require("./routes/usuarioRoutes.js");
 const consultaPetRoutes = require("./routes/consultaPetRoutes.js");
 const profissionalRoutes = require("./routes/profissionalRoutes.js");
 const consultaRoutes = require("./routes/consultaRoutes.js");
-const { createAdminUser } = require("./db/db.js");
 const { createTables } = require("./db.js");
 
 dotenv.config();
@@ -29,7 +28,6 @@ app.use("/api", consultaRoutes);
 
 async function startServer() {
   try {
-    await createAdminUser();
     await createTables();
     console.log("Tabelas criadas e usuário administrador configurado.");
     app.listen(port, () => {
