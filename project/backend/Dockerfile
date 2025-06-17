@@ -1,5 +1,4 @@
 # imagem base Node.js
-# agora com dois estagios
 FROM node:22-alpine as deps
 
 WORKDIR /app
@@ -8,22 +7,21 @@ WORKDIR /app
 COPY package*.json ./
 RUN npm install --production
 
-
-#estagio 2
-FROM node:22-alpine
-
+# estágio de build
+FROM node:22-alpine as build
 WORKDIR /app
-
 COPY --from=deps /app/node_modules ./node_modules
-
-# copia código-fonte
 COPY . .
+RUN npm run build
 
-# expõe porta da API
+# estágio final
+FROM node:22-alpine
+WORKDIR /app
+COPY --from=build /app/node_modules ./node_modules
+COPY --from=build /app/dist ./dist
+COPY --from=build /app/package*.json ./
+# se precisar de arquivos estáticos, adicione COPY extra
+
 EXPOSE 3001
-
-# variável de ambiente
 ENV NODE_ENV=production
-
-# inicia o servidor
-CMD ["node", "server.js"]
+CMD ["npm", "run", "start"]
