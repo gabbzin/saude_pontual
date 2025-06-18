@@ -126,3 +126,4 @@ exports.deletarProfissional = async (req, res) => {
       mensagem: "Erro interno ao deletar profissional."
     });
   }
+};
