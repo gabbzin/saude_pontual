@@ -129,7 +129,8 @@ export default function FichaPessoa() {
                             required={true}
                             iconrequired={"*"}
                             label={"Tipo Sanguíneo:"}
-                            type={"text"}
+                            type={"select"}
+                            options={Dados.tiposSanguineos}
                             placeholder={"Digite seu tipo sanguíneo"}
                             value={formData.tipo_sanguineo}
                             onChange={handleChange}
@@ -180,7 +181,7 @@ export default function FichaPessoa() {
                             id={"data_e_hora"}
                             name={"data_e_hora"}
                             iconrequired={"*"}
-                            label={"Data do Agendamento:"}
+                            label={"Data da consulta:"}
                             required={true}
                             type={"date"}
                             value={formData.data_e_hora}

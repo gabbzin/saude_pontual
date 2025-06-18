@@ -117,7 +117,7 @@ export default function Cadastro() {
                             id="floatingPhoneNumber"
                             name="telefone"
                             label="Telefone"
-                            type="number"
+                            type="tel"
                             value={form.telefone}
                             onChange={handleChange}
                             required={false}

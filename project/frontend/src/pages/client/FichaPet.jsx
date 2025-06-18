@@ -115,7 +115,7 @@ export default function FichaPessoa(){
                             id={"data_agendamento"}
                             name={"data_agendamento"}
                             iconrequired={"*"}
-                            label={"Data do Agendamento:"}
+                            label={"Data da consulta:"}
                             required={true}
                             type={"date"}
                         />
