@@ -18,7 +18,7 @@ export default function Cadastro() {
     const estiloModalPadrao = {
         fontFamily: "Passion One",
         fontWeight: 400,
-        fontSize: 60,
+        fontSize: "1.7em",
         textAlign: "center",
     }
 
