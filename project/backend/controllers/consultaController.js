@@ -106,9 +106,9 @@ exports.listarConsultasUsuario = async (req, res) => {
                 id,
                 nome,
                 area_medica_desejada,
-                TO_CHAR(data_e_hora, 'YYYY-MM-DD') AS data_para_calendario,  -- Formato YYYY-MM-DD para comparação no FullCalendar
-                TO_CHAR(data_e_hora, 'DD/MM/YYYY') AS data_para_exibicao,    -- Formato DD/MM/YYYY para exibir no modal
-                TO_CHAR(data_e_hora, 'HH24:MI') AS hora_para_exibicao       -- Formato HH:MI (24h) para exibir a hora separadamente
+                TO_CHAR(data_e_hora, 'YYYY-MM-DD') AS data_para_calendario,
+                TO_CHAR(data_e_hora, 'DD/MM/YYYY') AS data_para_exibicao,
+                TO_CHAR(data_e_hora, 'HH24:MI') AS hora_para_exibicao
             FROM
                 consultas
             WHERE

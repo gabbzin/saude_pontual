@@ -98,3 +98,31 @@ exports.loginProfissional = async (req, res) => {
         return res.status(500).json({ mensagem: "Erro interno ao realizar login." });
     }
 };
+
+exports.deletarProfissional = async (req, res) => {
+  const profissionalId = req.params.id;
+  if (!profissionalId) {
+    return res.status(400).json({
+      mensagem: "ID do profissional é obrigatório." 
+    });
+  }
+
+  try {
+    const { rows } = await db.query(
+      "DELETE FROM profissionais WHERE id = $1",
+      [profissionalId]
+    );
+    if (rows.length === 0) {
+      return res.status(404).json({
+        mensagem: "Profissional não encontrado."
+      });
+    }
+    return res.status(200).json({
+      mensagem: "Profissional deletado com sucesso."
+    });
+  } catch (err) {
+    console.error("Erro ao deletar profissional:", err);
+    return res.status(500).json({
+      mensagem: "Erro interno ao deletar profissional."
+    });
+  }
