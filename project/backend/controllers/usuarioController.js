@@ -46,7 +46,7 @@ exports.cadastrarUsuario = async (req, res) => {
   } catch (err) {
     console.error("Erro ao cadastrar usuário:", err);
     if (err.code === "23505") {
-      return res.status(409).json({ mensagem: "Email já cadastrado" });
+      return res.status(409).json({ mensagem: "Erro no cadastro" });
     }
     return res
       .status(500)
@@ -72,13 +72,13 @@ exports.loginUsuario = async (req, res) => {
 
     //verifica se o usuário existe
     if (!usuario) {
-      return res.status(401).json({ mensagem: "Email ou senha inválidos" });
+      return res.status(401).json({ mensagem: "Credenciais Inválidas" });
     }
 
     //verifica se a senha está correta
     const senhaValida = await bcrypt.compare(senha, usuario.senha);
     if (!senhaValida) {
-      return res.status(401).json({ mensagem: "Email ou senha inválidos" });
+      return res.status(401).json({ mensagem: "Credenciais Inválidas" });
     }
 
     // remove senha antes de retornar
