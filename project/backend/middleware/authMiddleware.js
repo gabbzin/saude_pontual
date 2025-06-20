@@ -20,3 +20,10 @@ exports.verifyToken = function(req, res, next){
         res.status(401).json({ error: "Invalid token "});
     }
 }
+
+exports.isAdmin = function(req, res, next){
+    if(req.userRole !== 'admin'){
+        return res.status(403).json({error: "Acesso negado: Somente admins"});
+    }
+    next();
+}
