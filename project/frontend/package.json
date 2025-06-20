@@ -15,9 +15,11 @@
     "@fullcalendar/interaction": "^6.1.17",
     "@fullcalendar/react": "^6.1.17",
     "bootstrap": "^5.3.6",
+    "jwt-decode": "^4.0.0",
     "react": "^18.2.0",
     "react-bootstrap": "^2.10.9",
     "react-dom": "^18.2.0",
+    "react-input-mask": "^2.0.4",
     "react-router-dom": "^7.5.3"
   },
   "devDependencies": {
