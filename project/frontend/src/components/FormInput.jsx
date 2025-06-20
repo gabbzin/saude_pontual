@@ -1,7 +1,19 @@
-import React from 'react';
+import React from "react";
 
-export default function FormInput({ id, name, label, type, placeholder, required=false, iconrequired, options, ...restProps }) {
-
+export default function FormInput({
+    id,
+    name,
+    label,
+    type,
+    placeholder,
+    required = false,
+    minLength,
+    maxLength,
+    mask,
+    iconrequired,
+    options,
+    ...restProps
+}) {
     const iconRequiredDefault = "*";
 
     const renderSelect = () => {
@@ -16,14 +28,15 @@ export default function FormInput({ id, name, label, type, placeholder, required
                 }}
                 {...restProps}
             >
-                {options && options.map((option) => (
-                    <option key={option.value} value={option.value}>
-                        {option.label}
-                    </option>
-                ))}
+                {options &&
+                    options.map((option) => (
+                        <option key={option.value} value={option.value}>
+                            {option.label}
+                        </option>
+                    ))}
             </select>
         );
-    }
+    };
 
     const renderInput = () => {
         return (
@@ -34,24 +47,31 @@ export default function FormInput({ id, name, label, type, placeholder, required
                 name={name}
                 placeholder={placeholder}
                 required={required}
+                minLength={minLength}
+                maxLength={maxLength}
+                mask={mask}
                 style={{
                     border: "None",
                 }}
                 {...restProps}
             />
         );
-    }
+    };
 
     return (
         <div className="form-floating my-2">
             {type === "select" ? renderSelect() : renderInput()}
-            
+
             <label
                 htmlFor={id}
                 style={{
-                    backgroundColor: 'transparent',
-                }}>
-                {label} <span style={{color: "#F00"}}>{iconrequired ? iconrequired : iconRequiredDefault}</span>
+                    backgroundColor: "transparent",
+                }}
+            >
+                {label}{" "}
+                <span style={{ color: "#F00" }}>
+                    {iconrequired ? iconrequired : iconRequiredDefault}
+                </span>
             </label>
         </div>
     );

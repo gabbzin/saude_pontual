@@ -22,6 +22,8 @@ export default function HomeAdm() {
         setShowModalProEdit(true);
     }
 
+
+
     return (
         <>
             <Background imageUrl={FundoVerde} />
@@ -72,8 +74,13 @@ export default function HomeAdm() {
                             name="telefone"
                             label="Telefone"
                             type="tel"
+                            minLength={11}
+                            maxLength={11}
                             placeholder="Digite o telefone"
                             required={true}
+                            // eslint-disable-next-line no-useless-escape
+                            pattern={"\(\d{2}\) \d{5}-\d{4}"}
+                            mask={"(99) 99999-9999"}
                         />
                         <FormInput
                             id="email"
@@ -87,7 +94,7 @@ export default function HomeAdm() {
                             id="crm"
                             name="crm"
                             label="CRM"
-                            type="text"
+                            type=""
                             placeholder="Digite o CRM"
                             required={true}
                         />
