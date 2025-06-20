@@ -1,41 +1,53 @@
 import { createContext, useEffect, useState } from "react";
-
+import { jwtDecode } from "jwt-decode";
 
 // eslint-disable-next-line react-refresh/only-export-components
 export const AuthContext = createContext(); // Instância do contexto
-
 
 export const AuthProvider = ({ children }) => {
     const [usuario, setUsuario] = useState(null);
     const [carregando, setCarregando] = useState(true);
 
+    const getUserFromToken = (token) => {
+        try {
+            const decoded = jwtDecode(token);
+            return {
+                id: decoded.id,
+                role: decoded.role,
+                email: decoded.email,
+                nome: decoded.nome,
+            };
+        } catch (error) {
+            console.log(error);
+            return null;
+        }
+    };
+
     useEffect(() => {
         const token = localStorage.getItem("token");
-        const usuarioSalvo = localStorage.getItem("usuario");
 
-        if (token && usuarioSalvo){
-            setUsuario(JSON.parse(usuarioSalvo));
+        if (token) {
+            const usuarioDoToken = getUserFromToken(token);
+            setUsuario(usuarioDoToken);
         }
-    
 
         setCarregando(false);
     }, []);
 
-    const login = (usuario, token) => {
+    const login = (token) => {
         localStorage.setItem("token", token);
-        localStorage.setItem("usuario", JSON.stringify(usuario));
-        setUsuario(usuario);
-    }
+        const usuarioDoToken = getUserFromToken(token);
+        setUsuario(usuarioDoToken);
+    };
 
     const logout = () => {
         localStorage.removeItem("token");
-        localStorage.removeItem("usuario");
         setUsuario(null);
-    }
+    };
 
     return (
-        <AuthContext.Provider value={{usuario, login, logout, carregando}}>
+        <AuthContext.Provider value={{ usuario, login, logout, carregando }}>
             {children}
         </AuthContext.Provider>
     );
-}
+};
