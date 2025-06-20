@@ -110,11 +110,13 @@ async function createTables() {
         `);
         console.log("Coluna 'telefone' verificada/adicionada à tabela profissionais.");
 
+        /* Comentei pra logar somente com o .env
         // Criação do usuário administrador padrão, se não existir
         const adminEmail = process.env.ADMIN_EMAIL || 'admin@saudepontual.com';
         const adminExists = await client.query("SELECT id FROM profissionais WHERE email = $1", [adminEmail]);
 
         if (adminExists.rows.length === 0) {
+            // Admin precisa só de email e senha, não?
             const adminNome = process.env.ADMIN_NOME;
             const adminSenhaPlain = process.env.ADMIN_SENHA;
             const adminEspecialidade = 'Administrador';
@@ -137,6 +139,7 @@ async function createTables() {
         } else {
             console.log(`Usuário administrador padrão '${adminEmail}' já existe, nenhuma ação necessária.`);
         }
+        */
 
         await client.query('COMMIT');
         console.log("Tabelas verificadas/criadas/atualizadas com sucesso!");
