@@ -4,7 +4,7 @@ const adminEmail = process.env.ADMIN_EMAIL;
 const adminSenha = process.env.ADMIN_SENHA;
 const jwtSecret = process.env.JWT_CHAVE;
 
-async function loginAdmin(req, res) {
+export async function loginAdmin(req, res) {
     const { email, senha } = req.body;
 
     if (email === adminEmail && senha === adminSenha) {
@@ -17,5 +17,3 @@ async function loginAdmin(req, res) {
 
     return res.status(401).json({error: "Credenciais Inválidas"});
 }
-
-module.exports = {loginAdmin}

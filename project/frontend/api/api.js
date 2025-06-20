@@ -23,15 +23,31 @@ export async function buscarPerfil(token) {
     return res.json();
 }
 
+export async function cadastrarProfissional(data) {
+    const token = localStorage.getItem("token");
+    const res = await fetch(
+        "http://localhost:3001/api/admin/cadastrarProfissional", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`,
+            },
+            body: JSON.stringify(data)
+        }
+    );
+
+    return res.json();
+}
+
 export async function cadastrarConsulta(data) {
     const token = localStorage.getItem("token");
     const res = await fetch("http://localhost:3001/api/fichapessoa", {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
-            "Authorization": `Bearer ${token}`
+            Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify(data)
+        body: JSON.stringify(data),
     });
     return res.json();
 }
@@ -41,7 +57,7 @@ export async function atualizarInfoPerfil(dados, token) {
         method: "PUT",
         headers: {
             "Content-Type": "application/json",
-            "Authorization": `Bearer ${token}`,
+            Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify(dados),
     });
@@ -53,8 +69,8 @@ export async function buscarHistoricoConsultas() {
     const res = await fetch("http://localhost:3001/api/consultas/historico", {
         method: "GET",
         headers: {
-            "Authorization": `Bearer ${token}`
-        }
+            Authorization: `Bearer ${token}`,
+        },
     });
     return res.json();
 }

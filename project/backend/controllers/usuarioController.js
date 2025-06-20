@@ -86,7 +86,7 @@ exports.loginUsuario = async (req, res) => {
 
     // Adiciona token antes de retornar
     const token = jwt.sign(
-      { id: user.id, email: user.email, nome: user.nome },
+      { id: user.id, role: "client", email: user.email, nome: user.nome },
       SECRET_KEY,
       { expiresIn: "1h" },
     );
