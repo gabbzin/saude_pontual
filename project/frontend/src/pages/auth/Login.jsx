@@ -30,16 +30,15 @@ export default function Login() {
     const handleSubmit = async (e) => {
         e.preventDefault();
         const result = await loginUsuario(form);
-        console.log(result);
+        
         if (result.token) {
 
-            let userName = result.usuario.nome;
-
-            login({...result.usuario, nome: userName}, result.token);
+            login(result.token);
             setError("");
             setTimeout(() => {
                 navigate("/");
             }, 200);
+            
         } else {
             setError(result.mensagem || "Falha no login");
         }
