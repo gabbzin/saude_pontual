@@ -35,7 +35,7 @@ export default function Login() {
             const result = await loginProfissional(form);
             if (result.token) {
                 login(result.token)
-                navigate("/");
+                navigate("/homepro");
             } else {
                 setError(result.mensagem || "Erro no login");
             }
@@ -59,8 +59,8 @@ export default function Login() {
                 }}
             />
             <main className="form-signin w-100 m-auto d-flex flex-column align-items-center py-2">
-                <h1 id="title" className="mb-3 fw-normal">
-                    SAÚDE PONTUAL
+                <h1 id="title" className="mb-3 fw-normal text-uppercase">
+                    Saúde Pontual <br /> Profissional
                 </h1>
                 <div
                     id="box-form"

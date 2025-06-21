@@ -1,13 +1,13 @@
-const jwt = require("jsonwebtoken");
+import jwt from "jsonwebtoken";
 
-require("dotenv").config()
+require("dotenv").config();
 
-const SECRET_KEY = process.env.JWT_CHAVE
+const SECRET_KEY = process.env.JWT_CHAVE;
 
-exports.verifyToken = function(req, res, next){
-    const authHeader = req.header('Authorization');
-    if (!authHeader || !authHeader.startsWith("Bearer ")){
-        return res.status(401).json({error: "Access denied"});
+exports.verifyToken = function (req, res, next) {
+    const authHeader = req.header("Authorization");
+    if (!authHeader || !authHeader.startsWith("Bearer ")) {
+        return res.status(401).json({ error: "Access denied" });
     } // Sem token Sem Acesso
 
     const token = authHeader.split(" ")[1];
@@ -18,13 +18,21 @@ exports.verifyToken = function(req, res, next){
         req.userRole = decoded.role; // Verificação da role
         next();
     } catch (error) {
-        res.status(401).json({ error: "Invalid token "});
-    }
-}
+        if (error.name === "TokenExpiredError") {
+            return res
+                .status(401)
+                .json({
+                    error: "Sessão expirada. Por favor, faça login novamente.",
+                });
+        }
 
-exports.isAdmin = function(req, res, next){
-    if(req.userRole !== 'admin'){
-        return res.status(403).json({error: "Acesso negado: Somente admins"});
+        return res.status(401).json({ error: "Token inválido ou malformado." });
+    }
+};
+
+exports.isAdmin = function (req, res, next) {
+    if (req.userRole !== "admin") {
+        return res.status(403).json({ error: "Acesso negado: Somente admins" });
     }
     next();
-}
+};

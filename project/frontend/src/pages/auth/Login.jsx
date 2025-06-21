@@ -34,29 +34,16 @@ export default function Login() {
         if (result.token) {
 
             login(result.token);
+            console.log(result.token)
             setError("");
             setTimeout(() => {
                 navigate("/");
             }, 200);
-            
+
         } else {
             setError(result.mensagem || "Falha no login");
         }
     };
-
-    //   const handleSubmit = async (e) => {
-    //     e.preventDefault();
-    //     try {
-    //       const result = await loginUsuario(form);
-    //       if (result.usuario) {
-    //         navigate("/");
-    //       } else {
-    //         setError(result.mensagem || "Erro no login");
-    //       }
-    //     } catch (err) {
-    //       setError(err.message || "Erro no login");
-    //     }
-    //   };
 
     return (
         <div id="background" className="d-flex align-items-center">

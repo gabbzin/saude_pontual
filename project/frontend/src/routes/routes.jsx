@@ -23,6 +23,7 @@ import Historico from "../pages/client/Historico";
 // Pros
 import HomePro from "../pages/pros/HomePro";
 import HistoricoPro from "../pages/pros/HistoricoPro";
+import LoginPro from "../pages/pros/LoginPro";
 
 const AppRoutes = () => {
     const { usuario, carregando } = useContext(AuthContext);
@@ -36,13 +37,13 @@ const AppRoutes = () => {
     return (
         <Router>
             <Routes>
-                {/* Rotas  Públicas de Cadastro e Login */}
+                {/* Rotas Públicas de Cadastro e Login */}
                 <Route path="/login" element={<Login />} />
                 <Route path="/cadastro" element={<Cadastro />} />
-
-                {/* Rotas de Administrador */}
+                <Route path="/loginpro" element={<LoginPro />} />
                 <Route path="loginadm" element={<LoginAdm />} />
 
+                {/* Rotas de Administrador */}
                 <Route
                     path="homeadm"
                     element={

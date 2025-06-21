@@ -1,4 +1,4 @@
-const jwt = require("jsonwebtoken");
+import jwt from "jsonwebtoken";
 
 const adminEmail = process.env.ADMIN_EMAIL;
 const adminSenha = process.env.ADMIN_SENHA;
@@ -9,7 +9,7 @@ export async function loginAdmin(req, res) {
 
     if (email === adminEmail && senha === adminSenha) {
         const token = jwt.sign({ role: "admin", email }, jwtSecret, {
-            expiresIn: "1h",
+            expiresIn: "30min",
         });
 
         return res.json({ token });

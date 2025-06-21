@@ -5,6 +5,7 @@ const usuarioRoutes = require("./routes/usuarioRoutes.js");
 const consultaPetRoutes = require("./routes/consultaPetRoutes.js");
 const profissionalRoutes = require("./routes/profissionalRoutes.js");
 const consultaRoutes = require("./routes/consultaRoutes.js");
+const adminRoutes = require("./routes/adminRoutes.js");
 const { createTables } = require("./db.js");
 
 dotenv.config();
@@ -25,6 +26,7 @@ app.use("/api", usuarioRoutes);
 app.use("/api", consultaPetRoutes);
 app.use("/api", profissionalRoutes);
 app.use("/api", consultaRoutes);
+app.use("/api", adminRoutes)
 
 async function startServer() {
   try {
