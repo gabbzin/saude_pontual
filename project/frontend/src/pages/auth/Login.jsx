@@ -33,23 +33,13 @@ export default function Login() {
         console.log(result);
         if (result.token) {
 
-            const capitalizeEachWord = (str) => {
-                if (!str) return ''
-                return str
-                    .toLowerCase() // Primeiro tudo em minuscula
-                    .split(' ') // Dividindo as palavras por espaço
-                    .map(word => word.charAt(0).toUpperCase() + word.slice(1)) // Transformando a primeira letra em maiscula
-                    .join(' ') // Junta as palavras de novo
-            };
-
             let userName = result.usuario.nome;
-            let transformedUserName = capitalizeEachWord(userName);
 
-            login({...result.usuario, nome: transformedUserName}, result.token); // Atualiza o contexto aqui
-            setError(""); // Limpa o erro antes de navegar
+            login({...result.usuario, nome: userName}, result.token);
+            setError("");
             setTimeout(() => {
                 navigate("/");
-            }, 200); // Navegando pra Home
+            }, 200);
         } else {
             setError(result.mensagem || "Falha no login");
         }
