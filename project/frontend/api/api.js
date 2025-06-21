@@ -39,6 +39,17 @@ export async function cadastrarProfissional(data) {
     return res.json();
 }
 
+export async function loginProfissional(data) {
+    const res = await fetch("http://localhost:3001/api/profissional/login", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data)
+    });
+    return res.json();
+}
+
 export async function cadastrarConsulta(data) {
     const token = localStorage.getItem("token");
     const res = await fetch("http://localhost:3001/api/fichapessoa", {

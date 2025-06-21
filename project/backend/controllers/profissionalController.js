@@ -2,6 +2,7 @@ const bcrypt = require("bcryptjs");
 const { db } = require("../db");
 const jwt = require("jsonwebtoken");
 const { validarSenha } = require("../utils/validation");
+const {capitalizeEachWord} = require("../utils/formatters");
 
 require("dotenv").config();
 
@@ -15,13 +16,19 @@ exports.cadastrarProfissional = async (req, res) => {
     if (!nome || !email || !senha || !especialidade || !crm) {
         return res
             .status(400)
-            .json({ mensagem: "Nome, email, senha, especialidade e CRM são obrigatórios." });
+            .json({
+                mensagem:
+                    "Nome, email, senha, especialidade e CRM são obrigatórios.",
+            });
     }
+
+    nomeFormatado = capitalizeEachWord(nome)
 
     // Validação da força da senha
     if (!validarSenha(senha)) {
         return res.status(400).json({
-            mensagem: "Senha deve conter: 8+ caracteres, 1 letra maiúscula e 1 caractere especial."
+            mensagem:
+                "Senha deve conter: 8+ caracteres, 1 letra maiúscula e 1 caractere especial.",
         });
     }
 
@@ -34,19 +41,25 @@ exports.cadastrarProfissional = async (req, res) => {
             `INSERT INTO profissionais (nome, email, senha, especialidade, crm, telefone)
        VALUES ($1, $2, $3, $4, $5, $6)
        RETURNING id, nome, email, especialidade, crm, telefone`,
-            [nome, email, senha_hash, especialidade, crm, telefone || null]
+            [nomeFormatado, email, senha_hash, especialidade, crm, telefone || null]
         );
         const profissional = rows[0];
 
         // Retorna profissional criado
         return res
             .status(201)
-            .json({ mensagem: "Profissional cadastrado com sucesso", profissional });
+            .json({
+                mensagem: "Profissional cadastrado com sucesso",
+                profissional,
+            });
     } catch (err) {
         console.error("Erro ao cadastrar profissional:", err);
-        if (err.code === "23505") { // Código de erro para violação de unicidade
+        if (err.code === "23505") {
+            // Código de erro para violação de unicidade
             if (err.constraint === "profissionais_email_key") {
-                return res.status(409).json({ mensagem: "Email já cadastrado." });
+                return res
+                    .status(409)
+                    .json({ mensagem: "Email já cadastrado." });
             }
             if (err.constraint === "profissionais_crm_key") {
                 return res.status(409).json({ mensagem: "CRM já cadastrado." });
@@ -76,54 +89,71 @@ exports.loginProfissional = async (req, res) => {
         const profissional = rows[0];
 
         if (!profissional) {
-            return res.status(401).json({ mensagem: "Email ou senha inválidos." });
+            return res
+                .status(401)
+                .json({ mensagem: "Email ou senha inválidos." });
         }
 
         const senhaValida = await bcrypt.compare(senha, profissional.senha);
         if (!senhaValida) {
-            return res.status(401).json({ mensagem: "Email ou senha inválidos." });
+            return res
+                .status(401)
+                .json({ mensagem: "Email ou senha inválidos." });
         }
 
         const { senha: _, ...prof } = profissional;
 
         const token = jwt.sign(
-            { id: prof.id, email: prof.email, nome: prof.nome, role: "profissional" },
+            {
+                id: prof.id,
+                email: prof.email,
+                nome: prof.nome,
+                role: "profissional",
+            },
             SECRET_KEY,
             { expiresIn: "1h" } // Token para profissionais pode ter uma expiração diferente se necessário
         );
 
-        return res.status(200).json({ mensagem: "Login realizado com sucesso", profissional: prof, token });
+        return res
+            .status(200)
+            .json({
+                mensagem: "Login realizado com sucesso",
+                profissional: prof,
+                token,
+            });
     } catch (err) {
         console.error("Erro ao fazer login do profissional:", err);
-        return res.status(500).json({ mensagem: "Erro interno ao realizar login." });
+        return res
+            .status(500)
+            .json({ mensagem: "Erro interno ao realizar login." });
     }
 };
 
 exports.deletarProfissional = async (req, res) => {
-  const profissionalId = req.params.id;
-  if (!profissionalId) {
-    return res.status(400).json({
-      mensagem: "ID do profissional é obrigatório." 
-    });
-  }
-
-  try {
-    const { rows } = await db.query(
-      "DELETE FROM profissionais WHERE id = $1",
-      [profissionalId]
-    );
-    if (rows.length === 0) {
-      return res.status(404).json({
-        mensagem: "Profissional não encontrado."
-      });
+    const profissionalId = req.params.id;
+    if (!profissionalId) {
+        return res.status(400).json({
+            mensagem: "ID do profissional é obrigatório.",
+        });
     }
-    return res.status(200).json({
-      mensagem: "Profissional deletado com sucesso."
-    });
-  } catch (err) {
-    console.error("Erro ao deletar profissional:", err);
-    return res.status(500).json({
-      mensagem: "Erro interno ao deletar profissional."
-    });
-  }
+
+    try {
+        const { rows } = await db.query(
+            "DELETE FROM profissionais WHERE id = $1",
+            [profissionalId]
+        );
+        if (rows.length === 0) {
+            return res.status(404).json({
+                mensagem: "Profissional não encontrado.",
+            });
+        }
+        return res.status(200).json({
+            mensagem: "Profissional deletado com sucesso.",
+        });
+    } catch (err) {
+        console.error("Erro ao deletar profissional:", err);
+        return res.status(500).json({
+            mensagem: "Erro interno ao deletar profissional.",
+        });
+    }
 };

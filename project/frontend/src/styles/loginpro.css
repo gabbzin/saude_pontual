@@ -1,0 +1,56 @@
+#background {
+    background-color: transparent;
+    height: 100vh;
+    margin: 0;
+    padding: 0;
+}
+
+.form-signin {
+    width: 550px;
+    padding: 1rem;
+}
+
+.form-signin .form-floating:focus-within {
+    z-index: 2;
+}
+
+#title {
+    font-family: Passion One, sans-serif;
+    font-weight: 400;
+    font-size: 3.8em;
+    text-align: center;
+    line-height: 100%;
+    letter-spacing: 0%;
+}
+
+#box-form {
+    background-color: #11BDAF;
+    border-radius: 1em;
+}
+
+.inputs {
+    background-color: #6FD7CB;
+    width: 420px;
+}
+
+.inputs:focus {
+    background-color: #6FD7CB;
+}
+
+
+#login-button {
+    font-family: Passion One, sans-serif;
+    font-size: 1.3em;
+    color: white;
+    background-color: #003C39;
+    border-radius: 1em;
+}
+
+#link {
+    color: white;
+    text-align: center;
+}
+
+#link > a{
+    color: white;
+}
