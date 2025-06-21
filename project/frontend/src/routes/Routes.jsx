@@ -56,30 +56,30 @@ const AppRoutes = () => {
                 />
 
                 {/* Rotas de Profssionais Protegidas (Acessíveis com rule) */}
-                <Route path="/homepro" element={usuario && usuario.role === "admin" ? <HomePro /> : redirectToLogin} />
+                <Route path="/homepro" element={usuario && usuario.role === "profissional" ? <HomePro /> : redirectToLogin} />
 
-                <Route path="/historicopro" element={usuario && usuario.role === "admin" ? <HistoricoPro /> : redirectToLogin} />
+                <Route path="/historicopro" element={usuario && usuario.role === "profissional" ? <HistoricoPro /> : redirectToLogin} />
 
                 {/* Rotas de Usuário Protegidas (Acessíveis apenas com o token) */}
                 <Route
                     path="/"
-                    element={usuario && usuario.role === "admin" ? <Home /> : redirectToLogin}
+                    element={usuario && usuario.role === "client" ? <Home /> : redirectToLogin}
                 />
                 <Route
                     path="/fichapessoa"
-                    element={usuario && usuario.role === "admin" ? <FichaPessoa /> : redirectToLogin}
+                    element={usuario && usuario.role === "client" ? <FichaPessoa /> : redirectToLogin}
                 />
                 <Route
                     path="/fichapet"
-                    element={usuario && usuario.role === "admin" ? <FichaPet /> : redirectToLogin}
+                    element={usuario && usuario.role === "client" ? <FichaPet /> : redirectToLogin}
                 />
                 <Route
                     path="/perfil"
-                    element={usuario && usuario.role === "admin" ? <Perfil /> : redirectToLogin}
+                    element={usuario && usuario.role === "client" ? <Perfil /> : redirectToLogin}
                 />
                 <Route
                     path="/historico"
-                    element={usuario && usuario.role === "admin" ? <Historico /> : redirectToLogin}
+                    element={usuario && usuario.role === "client" ? <Historico /> : redirectToLogin}
                 />
 
                 {/* Rota genérica */}

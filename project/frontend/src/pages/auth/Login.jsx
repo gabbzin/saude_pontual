@@ -29,13 +29,13 @@ export default function Login() {
     // Envia dados de login
     const handleSubmit = async (e) => {
         e.preventDefault();
+        setError("");
         const result = await loginUsuario(form);
         
         if (result.token) {
 
             login(result.token);
-            console.log(result.token)
-            setError("");
+            console.log("Redirecionando agora...")
             setTimeout(() => {
                 navigate("/");
             }, 200);
