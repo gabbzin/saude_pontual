@@ -36,40 +36,49 @@ const AppRoutes = () => {
     return (
         <Router>
             <Routes>
-                {/* Rotas de Cadastro e Login */}
+                {/* Rotas  Públicas de Cadastro e Login */}
                 <Route path="/login" element={<Login />} />
                 <Route path="/cadastro" element={<Cadastro />} />
 
                 {/* Rotas de Administrador */}
                 <Route path="loginadm" element={<LoginAdm />} />
 
-                <Route path="homeadm" element={<HomeAdm />} />
+                <Route
+                    path="homeadm"
+                    element={
+                        usuario && usuario.role === "admin" ? (
+                            <HomeAdm />
+                        ) : (
+                            <LoginAdm />
+                        )
+                    }
+                />
 
                 {/* Rotas de Profssionais Protegidas (Acessíveis com rule) */}
-                <Route path="/homepro" element={<HomePro />} />
+                <Route path="/homepro" element={usuario && usuario.role === "admin" ? <HomePro /> : redirectToLogin} />
 
-                <Route path="/historicopro" element={<HistoricoPro />} />
+                <Route path="/historicopro" element={usuario && usuario.role === "admin" ? <HistoricoPro /> : redirectToLogin} />
 
                 {/* Rotas de Usuário Protegidas (Acessíveis apenas com o token) */}
                 <Route
                     path="/"
-                    element={usuario ? <Home /> : redirectToLogin}
+                    element={usuario && usuario.role === "admin" ? <Home /> : redirectToLogin}
                 />
                 <Route
                     path="/fichapessoa"
-                    element={usuario ? <FichaPessoa /> : redirectToLogin}
+                    element={usuario && usuario.role === "admin" ? <FichaPessoa /> : redirectToLogin}
                 />
                 <Route
                     path="/fichapet"
-                    element={usuario ? <FichaPet /> : redirectToLogin}
+                    element={usuario && usuario.role === "admin" ? <FichaPet /> : redirectToLogin}
                 />
                 <Route
                     path="/perfil"
-                    element={usuario ? <Perfil /> : redirectToLogin}
+                    element={usuario && usuario.role === "admin" ? <Perfil /> : redirectToLogin}
                 />
                 <Route
                     path="/historico"
-                    element={usuario ? <Historico /> : redirectToLogin}
+                    element={usuario && usuario.role === "admin" ? <Historico /> : redirectToLogin}
                 />
 
                 {/* Rota genérica */}
