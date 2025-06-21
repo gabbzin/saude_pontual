@@ -2,7 +2,7 @@ const bcrypt = require("bcryptjs");
 const { db } = require("../db");
 const jwt = require("jsonwebtoken");
 const { validarSenha } = require("../utils/validation");
-const { capitalizeEachWord } = require("../utils/validation");
+const { capitalizeEachWord } = require("../utils/formatters");
 
 require("dotenv").config(); // Carregando as variáveis de ambiente
 
@@ -27,7 +27,7 @@ exports.cadastrarUsuario = async (req, res) => {
         });
     }
 
-    nomeFormatado = capitalizeEachWord(nome);
+    const nomeFormatado = capitalizeEachWord(nome);
 
     try {
         //criptografa a senha

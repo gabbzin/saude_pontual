@@ -2,7 +2,7 @@ const bcrypt = require("bcryptjs");
 const { db } = require("../db");
 const jwt = require("jsonwebtoken");
 const { validarSenha } = require("../utils/validation");
-const {capitalizeEachWord} = require("../utils/formatters");
+const { capitalizeEachWord } = require("../utils/formatters");
 
 require("dotenv").config();
 
@@ -14,15 +14,13 @@ exports.cadastrarProfissional = async (req, res) => {
 
     // Verifica se os campos obrigatórios estão preenchidos
     if (!nome || !email || !senha || !especialidade || !crm) {
-        return res
-            .status(400)
-            .json({
-                mensagem:
-                    "Nome, email, senha, especialidade e CRM são obrigatórios.",
-            });
+        return res.status(400).json({
+            mensagem:
+                "Nome, email, senha, especialidade e CRM são obrigatórios.",
+        });
     }
 
-    nomeFormatado = capitalizeEachWord(nome)
+    const nomeFormatado = capitalizeEachWord(nome);
 
     // Validação da força da senha
     if (!validarSenha(senha)) {
@@ -41,17 +39,22 @@ exports.cadastrarProfissional = async (req, res) => {
             `INSERT INTO profissionais (nome, email, senha, especialidade, crm, telefone)
        VALUES ($1, $2, $3, $4, $5, $6)
        RETURNING id, nome, email, especialidade, crm, telefone`,
-            [nomeFormatado, email, senha_hash, especialidade, crm, telefone || null]
+            [
+                nomeFormatado,
+                email,
+                senha_hash,
+                especialidade,
+                crm,
+                telefone || null,
+            ]
         );
         const profissional = rows[0];
 
         // Retorna profissional criado
-        return res
-            .status(201)
-            .json({
-                mensagem: "Profissional cadastrado com sucesso",
-                profissional,
-            });
+        return res.status(201).json({
+            mensagem: "Profissional cadastrado com sucesso",
+            profissional,
+        });
     } catch (err) {
         console.error("Erro ao cadastrar profissional:", err);
         if (err.code === "23505") {
@@ -114,13 +117,11 @@ exports.loginProfissional = async (req, res) => {
             { expiresIn: "1h" } // Token para profissionais pode ter uma expiração diferente se necessário
         );
 
-        return res
-            .status(200)
-            .json({
-                mensagem: "Login realizado com sucesso",
-                profissional: prof,
-                token,
-            });
+        return res.status(200).json({
+            mensagem: "Login realizado com sucesso",
+            profissional: prof,
+            token,
+        });
     } catch (err) {
         console.error("Erro ao fazer login do profissional:", err);
         return res
