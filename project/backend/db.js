@@ -68,6 +68,13 @@ async function createTables() {
         `);
         console.log("Tabela 'consultas' verificada/criada.");
 
+        // Adiciona coluna profissional_id se não existir
+        await client.query(`
+            ALTER TABLE consultas
+            ADD COLUMN IF NOT EXISTS profissional_id INTEGER REFERENCES profissionais(id);
+        `);
+        console.log("Coluna 'profissional_id' verificada/adicionada à tabela consultas.");
+
         // Criação da tabela de consultas_pet se não existir
         await client.query(`
             CREATE TABLE IF NOT EXISTS consultas_pet (
