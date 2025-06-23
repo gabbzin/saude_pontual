@@ -17,10 +17,12 @@ import "../../styles/homepro.css";
 export default function HomePro() {
     const [modalCalendarVisible, setModalCalendarVisible] = useState(false);
     const [selectedDate, setSelectedDate] = useState("");
+    const [consultas, setConsultas] = useState([]);
 
     const navigate = useNavigate();
 
-    const logout = useContext(AuthContext);
+    const { usuario } = useContext(AuthContext);
+    const { logout } = useContext(AuthContext);
 
     function logoutUser() {
         logout();
@@ -28,7 +30,7 @@ export default function HomePro() {
         console.log("Usuário deslogado");
     }
 
-    function showModal(dateStr) {
+    function showModal(dateStr, consultas) {
         const formattedDate = new Date(
             dateStr + "T00:00:00"
         ).toLocaleDateString("pt-br", {
@@ -38,6 +40,7 @@ export default function HomePro() {
             year: "numeric",
         });
         setSelectedDate(formattedDate);
+        setConsultas(consultas);
         setModalCalendarVisible(true);
         console.log("Estado do Modal do Calendário" + modalCalendarVisible);
     }
@@ -60,12 +63,27 @@ export default function HomePro() {
                     Consulta Agendada
                 </Modal.Header>
                 <Modal.Body style={{ fontFamily: "Inter" }}>
-                    Data: {selectedDate} <br />
-                    Tipo de consulta: Ortopedia <br />{" "}
-                    {/* Alimentar esse campo */}
-                    Nome do Profissional: Pedro João <br />{" "}
-                    {/* Alimentar esse campo */}
-                    Horário: 08:35 {/* Alimentar esse campo */}
+                    <p>Data: {selectedDate}</p>
+                    {consultas.length > 0 ? (
+                        <ul style={{ listStyleType: "none", paddingLeft: 0 }}>
+                            {consultas.map((consulta, index) => (
+                                <li key={consulta.id || index} style={{}}>
+                                    <strong>Tipo de consulta:</strong>{" "}
+                                    {consulta.area_medica_desejada ===
+                                    "clinica_geral"
+                                        ? "Clínica Geral"
+                                        : consulta.area_medica_desejada}{" "}
+                                    <br />
+                                    <strong>Nome do Profissional:</strong>{" "}
+                                    {consulta.profissional} <br />
+                                    <strong>Horário:</strong>{" "}
+                                    {consulta.hora_para_exibicao}
+                                </li>
+                            ))}
+                        </ul>
+                    ) : (
+                        <p>Nenhuma consulta agendada para esta data.</p>
+                    )}
                 </Modal.Body>
             </Modal>
             <header id="pro_header_home">
@@ -75,27 +93,35 @@ export default function HomePro() {
                         Saúde Pontual
                     </h3>
                 </div>
-                <div id="profilepro">
-                    <img src={ProfileIcon} id="icon_pro_home" />
-                    <h3 id="perfil_name">Dra. {"Júlia"}</h3>
-                </div>
-                <div>
-                    <Button
-                        onClick={logoutUser}
-                        style={{
-                            backgroundColor: "transparent",
-                            border: "none",
-                            padding: 0,
-                            cursor: "pointer",
-                        }}
-                    >
-                        <img
-                            src={ButtonExit}
-                            id="exit_pro_home"
-                            width={45}
-                            height={45}
-                        />
-                    </Button>
+                <div
+                    style={{
+                        display: "flex",
+                        alignItems: "center",
+                        gap: "1.5rem",
+                    }}
+                >
+                    <div id="profilepro">
+                        <img src={ProfileIcon} id="icon_pro_home" />
+                        <h3 id="perfil_name">{usuario.nome}</h3>
+                    </div>
+                    <div>
+                        <Button
+                            onClick={logoutUser}
+                            style={{
+                                backgroundColor: "transparent",
+                                border: "none",
+                                padding: 0,
+                                cursor: "pointer",
+                            }}
+                        >
+                            <img
+                                src={ButtonExit}
+                                id="exit_pro_home"
+                                width={45}
+                                height={45}
+                            />
+                        </Button>
+                    </div>
                 </div>
             </header>
             <main id="pro_home_wrapper">
