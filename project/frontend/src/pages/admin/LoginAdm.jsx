@@ -2,8 +2,39 @@ import Button from "../../components/Button";
 import FormInput from "../../components/FormInput";
 import Logo from "../../assets/logo_saude_pontual.png";
 import "./loginadm.css";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { loginAdmin } from "../../../api/api";
 
 export default function LoginAdm() {
+    const [form, setForm] = useState({ email: "", senha: "" });
+    const [error, setError] = useState("");
+    const navigate = useNavigate();
+
+    function handleChange(e) {
+        const { name, value } = e.target;
+        setForm((prev) => ({ ...prev, [name]: value }));
+    }
+
+    async function handleSubmit(e) {
+        e.preventDefault();
+        setError("");
+        try {
+            const result = await loginAdmin({
+                email: form.email,
+                senha: form.senha
+            });
+            if (result.token) {
+                localStorage.setItem("token", result.token);
+                navigate("/homeadm");
+            } else {
+                setError(result.mensagem || "Erro no login");
+            }
+        } catch (err) {
+            setError("Erro no login");
+        }
+    }
+
     return (
         <div id="background-admin">
             <img
@@ -26,7 +57,7 @@ export default function LoginAdm() {
                     id="box-form-admin"
                     className="flex justify-content-center align-items-center p-5"
                 >
-                    <form id="form-admin" className="fs-5">
+                    <form id="form-admin" className="fs-5" onSubmit={handleSubmit}>
                         {/* Campo de e-mail */}
                         <FormInput
                             id="floating-mail-adm"
@@ -34,6 +65,8 @@ export default function LoginAdm() {
                             label="E-mail"
                             type="email"
                             required={true}
+                            value={form.email}
+                            onChange={handleChange}
                         />
                         {/* Campo de senha */}
                         <FormInput
@@ -42,7 +75,13 @@ export default function LoginAdm() {
                             label="Senha"
                             type="password"
                             required={true}
+                            value={form.senha}
+                            onChange={handleChange}
                         />
+                        {/* Mensagem de erro */}
+                        {error && (
+                            <div className="text-danger mb-2" style={{fontWeight:600}}>{error}</div>
+                        )}
                         {/* Botão de Login */}
                         <div id="botao" className="flex text-center w-100">
                             <Button
