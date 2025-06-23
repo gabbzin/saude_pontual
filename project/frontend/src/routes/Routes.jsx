@@ -56,9 +56,9 @@ const AppRoutes = () => {
                 />
 
                 {/* Rotas de Profssionais Protegidas (Acessíveis com rule) */}
-                <Route path="/homepro" element={usuario && usuario.role === "profissional" ? <HomePro /> : redirectToLogin} />
+                <Route path="/homepro" element={usuario && usuario.role === "profissional" ? <HomePro /> : <LoginPro />} />
 
-                <Route path="/historicopro" element={usuario && usuario.role === "profissional" ? <HistoricoPro /> : redirectToLogin} />
+                <Route path="/historicopro" element={usuario && usuario.role === "profissional" ? <HistoricoPro /> : <LoginPro/>} />
 
                 {/* Rotas de Usuário Protegidas (Acessíveis apenas com o token) */}
                 <Route
