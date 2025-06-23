@@ -1,7 +1,7 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../../contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
-import Dados from "../../dados.json";
+import { buscarHistoricoConsultas } from "../../../api/api";
 // Assets
 import BackButton from "../../assets/back_button.png";
 import Logo from "../../assets/logo_saude_pontual.png";
@@ -12,14 +12,22 @@ import Button from "../../components/Button";
 import "../../styles/historico.css";
 
 export default function Historico() {
-    // eslint-disable-next-line no-unused-vars
     const { usuario } = useContext(AuthContext);
-
     const navigate = useNavigate();
+    const [consultas, setConsultas] = useState([]);
+    const [selectedConsulta, setSelectedConsulta] = useState(null);
+    const [loading, setLoading] = useState(true);
 
-    const [selectedConsulta, setSelectedConsulta] = useState(
-        Dados.consultas.length > 0 ? Dados.consultas[0] : null
-    );
+    useEffect(() => {
+        async function fetchConsultas() {
+            setLoading(true);
+            const data = await buscarHistoricoConsultas();
+            setConsultas(Array.isArray(data) ? data : []);
+            setSelectedConsulta(Array.isArray(data) && data.length > 0 ? data[0] : null);
+            setLoading(false);
+        }
+        fetchConsultas();
+    }, []);
 
     function redirectToHome() {
         navigate("/");
@@ -48,37 +56,42 @@ export default function Historico() {
                 <img id="logo" src={Logo} height={40} width={40} />
             </header>
             <main id="history_wrapper">
-                <table id="tabela">
-                    <thead id="thead">
-                        <tr id="tr">
-                            <th className="th">Tipo de Consulta</th>
-                            <th className="th">Profissional Responsável</th>
-                            <th className="th">Data</th>
-                            <th className="th">Protocolo</th>
-                        </tr>
-                    </thead>
-                    <tbody id="tbody">
-                        {Dados.consultas.map((consulta, index) => (
-                            <tr
-                                id="tr"
-                                key={index}
-                                className={`tablerow ${
-                                    selectedConsulta &&
-                                    selectedConsulta.protocolo ===
-                                        consulta.protocolo
-                                        ? "selected"
-                                        : ""
-                                }`}
-                                onClick={() => handleConsultaClick(consulta)}
-                            >
-                                <td className="td">{consulta.tipo}</td>
-                                <td className="td">{consulta.profissional}</td>
-                                <td className="td">{consulta.data}</td>
-                                <td className="td">{consulta.protocolo}</td>
+                {loading ? (
+                    <p>Carregando...</p>
+                ) : (
+                    <table id="tabela">
+                        <thead id="thead">
+                            <tr id="tr">
+                                <th className="th">Tipo de Consulta</th>
+                                <th className="th">Profissional Responsável</th>
+                                <th className="th">Especialidade</th>
+                                <th className="th">Data</th>
+                                <th className="th">Protocolo</th>
                             </tr>
-                        ))}
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody id="tbody">
+                            {consultas.map((consulta, index) => (
+                                <tr
+                                    id="tr"
+                                    key={consulta.id || index}
+                                    className={`tablerow ${
+                                        selectedConsulta &&
+                                        selectedConsulta.protocolo === consulta.protocolo
+                                            ? "selected"
+                                            : ""
+                                    }`}
+                                    onClick={() => handleConsultaClick(consulta)}
+                                >
+                                    <td className="td">{consulta.tipo || consulta.tipo_consulta}</td>
+                                    <td className="td">{consulta.profissional_nome || consulta.profissional}</td>
+                                    <td className="td">{consulta.profissional_especialidade || consulta.especialidade}</td>
+                                    <td className="td">{consulta.data}</td>
+                                    <td className="td">{consulta.protocolo}</td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                )}
                 <aside id="fichapdf">
                     <h2>Saúde Pontual</h2>
                     <img
