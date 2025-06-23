@@ -24,13 +24,12 @@ export async function buscarPerfil(token) {
 }
 
 export async function cadastrarProfissional(data) {
-    const token = localStorage.getItem("token");
+    // Não precisa de token para cadastrar profissional (admin inicial)
     const res = await fetch(
-        "http://localhost:3001/api/admin/cadastrarProfissional", {
+        "http://localhost:3001/api/profissionais/cadastrar", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
-                Authorization: `Bearer ${token}`,
             },
             body: JSON.stringify(data)
         }
@@ -40,7 +39,7 @@ export async function cadastrarProfissional(data) {
 }
 
 export async function loginProfissional(data) {
-    const res = await fetch("http://localhost:3001/api/profissional/login", {
+    const res = await fetch("http://localhost:3001/api/profissionais/login", {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
@@ -82,6 +81,17 @@ export async function buscarHistoricoConsultas() {
         headers: {
             Authorization: `Bearer ${token}`,
         },
+    });
+    return res.json();
+}
+
+export async function loginAdmin(data) {
+    const res = await fetch("http://localhost:3001/api/loginadm", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data)
     });
     return res.json();
 }

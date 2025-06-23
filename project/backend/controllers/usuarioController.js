@@ -173,3 +173,15 @@ exports.adicionarInfoPerfil = async (req, res) => {
         });
     }
 };
+
+exports.listarTodosUsuarios = async (req, res) => {
+    try {
+        const { rows } = await db.query("SELECT id, nome, email, telefone, data_nascimento FROM usuarios ORDER BY id ASC");
+        return res.status(200).json({ usuarios: rows });
+    } catch (err) {
+        console.error("Erro ao listar todos os usuários:", err);
+        return res.status(500).json({ 
+          mensagem: "Erro interno ao buscar usuários" 
+        });
+    }
+};

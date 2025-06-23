@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Modal } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
+import { cadastrarProfissional } from "../../../api/api";
 // Assets
 import BackButton from "../../assets/back_button.png";
 import FundoVerde from "../../assets/background_green.jpg";
@@ -17,6 +18,51 @@ export default function HomeAdm() {
 
     const [showModalProEdit, setShowModalProEdit] = useState(false);
     const [showModalClientEdit, setShowModalClientEdit] = useState(false);
+
+    // Estado para os campos do formulário de cadastro de profissional
+    const [form, setForm] = useState({
+        nome: "",
+        area: "",
+        telefone: "",
+        email: "",
+        crm: "",
+        senha: ""
+    });
+    const [cadastroMsg, setCadastroMsg] = useState("");
+    const [cadastroErro, setCadastroErro] = useState("");
+
+    // Atualiza campo do formulário
+    function handleChange(e) {
+        const { name, value } = e.target;
+        setForm((prev) => ({ ...prev, [name]: value }));
+    }
+
+    // Submete cadastro de profissional
+    async function handleSubmit(e) {
+        e.preventDefault();
+        setCadastroMsg("");
+        setCadastroErro("");
+        try {
+            // Limpa o telefone para conter apenas dígitos
+            const telefoneLimpo = form.telefone.replace(/\D/g, "");
+            const result = await cadastrarProfissional({
+                nome: form.nome,
+                especialidade: form.area,
+                crm: form.crm,
+                email: form.email,
+                senha: form.senha,
+                telefone: telefoneLimpo
+            });
+            if (result.profissional) {
+                setCadastroMsg("Profissional cadastrado com sucesso!");
+                setForm({ nome: "", area: "", telefone: "", email: "", crm: "", senha: "" });
+            } else {
+                setCadastroErro(result.mensagem || "Erro ao cadastrar profissional");
+            }
+        } catch (err) {
+            setCadastroErro("Erro ao cadastrar profissional");
+        }
+    }
 
     function showModalPro() {
         setShowModalProEdit(true);
@@ -43,7 +89,7 @@ export default function HomeAdm() {
             <main id="container-adm-wrapper">
                 <section id="cadastrar-profissional">
                     <h2>Cadastrar Profissional</h2>
-                    <form>
+                    <form onSubmit={handleSubmit}>
                         <FormInput
                             id="nome"
                             name="nome"
@@ -51,6 +97,8 @@ export default function HomeAdm() {
                             type="text"
                             placeholder="Digite o nome"
                             required={true}
+                            value={form.nome}
+                            onChange={handleChange}
                         />
                         <FormInput
                             id="area"
@@ -60,6 +108,8 @@ export default function HomeAdm() {
                             options={Dados.areasMedicas}
                             placeholder="Digite a área de atuação"
                             required={true}
+                            value={form.area}
+                            onChange={handleChange}
                         />
                         <FormInput
                             id="nascimento"
@@ -68,19 +118,18 @@ export default function HomeAdm() {
                             type="date"
                             placeholder="Digite a data de nascimento"
                             required={true}
+                            value={form.nascimento}
+                            onChange={handleChange}
                         />
                         <FormInput
                             id="telefone"
                             name="telefone"
                             label="Telefone"
                             type="tel"
-                            minLength={11}
-                            maxLength={11}
-                            placeholder="Digite o telefone"
+                            placeholder="Digite o telefone (com DDD)"
                             required={true}
-                            // eslint-disable-next-line no-useless-escape
-                            pattern={"\(\d{2}\) \d{5}-\d{4}"}
-                            mask={"(99) 99999-9999"}
+                            value={form.telefone}
+                            onChange={handleChange}
                         />
                         <FormInput
                             id="email"
@@ -89,6 +138,8 @@ export default function HomeAdm() {
                             type="email"
                             placeholder="Digite o email"
                             required={true}
+                            value={form.email}
+                            onChange={handleChange}
                         />
                         <FormInput
                             id="crm"
@@ -97,6 +148,8 @@ export default function HomeAdm() {
                             type=""
                             placeholder="Digite o CRM"
                             required={true}
+                            value={form.crm}
+                            onChange={handleChange}
                         />
                         <FormInput
                             id="senha"
@@ -105,15 +158,18 @@ export default function HomeAdm() {
                             type="password"
                             placeholder="Digite a senha"
                             required={true}
+                            value={form.senha}
+                            onChange={handleChange}
                         />
+                        <Button
+                            id={"botao-cadastrar-adm"}
+                            type="submit"
+                        >
+                            Cadastrar
+                        </Button>
                     </form>
-
-                    <Button
-                        id={"botao-cadastrar-adm"}
-                        onClick={console.log("Cadastrando user")}
-                    >
-                        Cadastrar
-                    </Button>
+                    {cadastroMsg && <p className="text-success">{cadastroMsg}</p>}
+                    {cadastroErro && <p className="text-danger">{cadastroErro}</p>}
                 </section>
 
                 <h1 id="plataform-name">
