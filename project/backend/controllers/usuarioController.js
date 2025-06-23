@@ -112,20 +112,25 @@ exports.loginUsuario = async (req, res) => {
     }
 };
 
-exports.pegarPerfil = async (req, res) => {
-    const { id } = req.query;
-    if (!id) {
-        return res.status(400).json({ mensagem: "Parametro id é obrigatório" });
+exports.pegarPerfilDoToken = async (req, res) => {
+    const usuario_id = req.userId; 
+
+    if (!usuario_id) {
+        return res.status(401).json({ mensagem: "Usuário não autenticado." });
     }
+
     try {
         const { rows } = await db.query(
-            "SELECT id, nome, email FROM usuarios WHERE id = $1",
-            [id]
+            "SELECT * FROM usuarios WHERE id = $1",
+            [usuario_id]
         );
+
         if (rows.length === 0) {
             return res.status(404).json({ mensagem: "Usuário não encontrado" });
         }
+
         return res.json({ usuario: rows[0] });
+
     } catch (err) {
         console.error("Erro ao buscar perfil:", err);
         return res
@@ -142,7 +147,7 @@ exports.adicionarInfoPerfil = async (req, res) => {
         alergias_conhecidas,
         remedio_continuo,
     } = req.body;
-    const usuario_id = req.userId; // Utiliza o ID do usuário autenticado pelo token
+    const usuario_id = req.userId;
 
     try {
         await db.query(

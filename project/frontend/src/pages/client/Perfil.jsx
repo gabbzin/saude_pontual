@@ -18,14 +18,15 @@ import ScheduleButtons from "../../components/ScheduleButtons";
 import "../../styles/perfil.css";
 
 export default function Perfil() {
-
     
-    const { usuario, login, logout } = useContext(AuthContext);
+    const { usuario, logout } = useContext(AuthContext);
     
     const navigate = useNavigate();
     const [modalButtons, setModalButtons] = useState(false);
     const [modalForm, setModalForm] = useState(false);
     const [additionalInfo, setAdditionalInfo] = useState({
+        telefone: "",
+        data_nascimento: "",
         altura: "",
         peso: "",
         tipo_sanguineo: "",
@@ -44,8 +45,13 @@ export default function Perfil() {
                 const perfil = await buscarPerfil(token);
                 
                 if (perfil?.usuario){
+                    const dataNascimentoFormatada = formatarDataPtBr(perfil.usuario.data_nascimento);
+                    console.log(dataNascimentoFormatada);
+
                     setAdditionalInfo((prev) => ({
-                        altura: perfil.usuario.altura ? `${perfil.usuario.altura}m` : prev.altura,
+                        telefone: perfil.usuario.telefone ? `${perfil.usuario.telefone}` : prev.telefone,
+                        data_nascimento: dataNascimentoFormatada ? `${dataNascimentoFormatada}` : prev.data_nascimento,
+                        altura: perfil.usuario.altura ? `${perfil.usuario.altura}` : prev.altura,
                         peso: perfil.usuario.peso ? `${perfil.usuario.peso}` : prev.peso,
                         tipo_sanguineo: perfil.usuario.tipo_sanguineo ? `${perfil.usuario.tipo_sanguineo}` : prev.tipo_sanguineo,
                         alergias_conhecidas: perfil.usuario.alergias_conhecidas ? `${perfil.usuario.alergias_conhecidas}` : prev.alergias_conhecidas,
@@ -61,6 +67,16 @@ export default function Perfil() {
         carregarInformacoesAdicionais()
 
     }, []);
+
+    function formatarDataPtBr(dataISO){
+        const data = new Date(dataISO);
+
+        const dataFormatada = data.toLocaleDateString('pt-BR', {
+            timeZone: "UTC",
+        });
+
+        return dataFormatada;
+    }
 
     function showModalButtons() {
         setModalButtons(true);
@@ -121,7 +137,7 @@ export default function Perfil() {
                 // Atualizar os dados do usuário no AuthContext para refletir imediatamente na UI
                 const perfilAtualizadoResponse = await buscarPerfil(token);
                 if (perfilAtualizadoResponse.usuario) {
-                    login(perfilAtualizadoResponse.usuario, token); // Atualiza o AuthContext e localStorage
+                    window.location.reload();
                 } else {
                     console.error(
                         "Não foi possível buscar o perfil atualizado após a atualização."
@@ -170,13 +186,13 @@ export default function Perfil() {
                             <h2 className="text-capitalize">{usuario?.nome}</h2>
                             <div id="informations">
                                 <span>Email: {usuario?.email}</span>
-                                <span>Telefone: {usuario?.telefone || "(61) 4002-8922"}</span>
+                                <span>Telefone: {usuario?.telefone || "Não informado"}</span>   
                                 <span>
-                                    Matrícula: {usuario?.matricula || "40028922"}
+                                    Matrícula: 00{usuario?.id || ""}
                                 </span>
                                 <span>
                                     Data de Nascimento:{" "}
-                                    {usuario?.data_nascimento || "27/06/2000"}
+                                    {additionalInfo.data_nascimento || ""}
                                 </span>
                             </div>
                             <Button>
@@ -218,8 +234,8 @@ export default function Perfil() {
 
                 <aside id="profile_aside">
                     <h2>INFORMAÇÕES ADICIONAIS</h2>
-                    <p>Altura: {additionalInfo.altura || "Não existe"}</p>
-                    <p>Peso: {additionalInfo.peso || "Não existe"}</p>
+                    <p>Altura: {additionalInfo.altura + " m" || "Não existe"}</p>
+                    <p>Peso: {additionalInfo.peso + " kg" || "Não existe"}</p>
                     <p>Tipo sanguíneo: {additionalInfo.tipo_sanguineo || "Não existe"}</p>
                     <p>Alergias conhecidas: {additionalInfo.alergias_conhecidas || "Não existe"}</p>
                     <p>Remédio contínuo: {additionalInfo.remedio_continuo || "Não existe"}</p>
