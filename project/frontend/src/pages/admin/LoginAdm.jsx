@@ -2,14 +2,16 @@ import Button from "../../components/Button";
 import FormInput from "../../components/FormInput";
 import Logo from "../../assets/logo_saude_pontual.png";
 import "./loginadm.css";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { loginAdmin } from "../../../api/api";
+import { AuthContext } from "../../contexts/AuthContext";
 
 export default function LoginAdm() {
     const [form, setForm] = useState({ email: "", senha: "" });
     const [error, setError] = useState("");
     const navigate = useNavigate();
+    const { login } = useContext(AuthContext);
 
     function handleChange(e) {
         const { name, value } = e.target;
@@ -22,16 +24,16 @@ export default function LoginAdm() {
         try {
             const result = await loginAdmin({
                 email: form.email,
-                senha: form.senha
+                senha: form.senha,
             });
             if (result.token) {
-                localStorage.setItem("token", result.token);
+                login(result.token);
                 navigate("/homeadm");
             } else {
                 setError(result.mensagem || "Erro no login");
             }
         } catch (err) {
-            setError("Erro no login");
+            setError("Erro no login", err);
         }
     }
 
@@ -57,7 +59,11 @@ export default function LoginAdm() {
                     id="box-form-admin"
                     className="flex justify-content-center align-items-center p-5"
                 >
-                    <form id="form-admin" className="fs-5" onSubmit={handleSubmit}>
+                    <form
+                        id="form-admin"
+                        className="fs-5"
+                        onSubmit={handleSubmit}
+                    >
                         {/* Campo de e-mail */}
                         <FormInput
                             id="floating-mail-adm"
@@ -80,7 +86,12 @@ export default function LoginAdm() {
                         />
                         {/* Mensagem de erro */}
                         {error && (
-                            <div className="text-danger mb-2" style={{fontWeight:600}}>{error}</div>
+                            <div
+                                className="text-danger mb-2"
+                                style={{ fontWeight: 600 }}
+                            >
+                                {error}
+                            </div>
                         )}
                         {/* Botão de Login */}
                         <div id="botao" className="flex text-center w-100">
