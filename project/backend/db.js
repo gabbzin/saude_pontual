@@ -109,8 +109,7 @@ async function createTables() {
             ADD COLUMN IF NOT EXISTS telefone VARCHAR(20);
         `);
         console.log("Coluna 'telefone' verificada/adicionada à tabela profissionais.");
-
-        /* Comentei pra logar somente com o .env
+        /*
         // Criação do usuário administrador padrão, se não existir
         const adminEmail = process.env.ADMIN_EMAIL || 'admin@saudepontual.com';
         const adminExists = await client.query("SELECT id FROM profissionais WHERE email = $1", [adminEmail]);
@@ -140,7 +139,6 @@ async function createTables() {
             console.log(`Usuário administrador padrão '${adminEmail}' já existe, nenhuma ação necessária.`);
         }
         */
-
         await client.query('COMMIT');
         console.log("Tabelas verificadas/criadas/atualizadas com sucesso!");
     } catch (err) {
