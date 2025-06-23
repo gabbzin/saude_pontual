@@ -39,21 +39,52 @@ exports.criarConsulta = async (req, res) => {
       .json({ error: "Preencha todos os campos obrigatórios." });
   }
 
-  // verifica se ja tem consulta m/rcada no mesmo horário
+  // verifica se já tem consulta marcada no mesmo horário para o profissional
   try {
-    const { rows: exist } = await db.query(
-      "SELECT id FROM consultas WHERE data_e_hora = $1",
-      [data_e_hora],
+    // Buscar profissional disponível para a especialidade e horário
+    const { rows: profissionais } = await db.query(
+      `SELECT id FROM profissionais WHERE especialidade ILIKE $1`,
+      [`%${area_medica_desejada}%`],
     );
-
-    if (exist.length > 0) {
-      return res.status(409).json({ mensagem: "Horário já agendado" });
+    if (profissionais.length === 0) {
+      return res
+        .status(404)
+        .json({
+          mensagem: "Nenhum profissional disponível para essa especialidade.",
+        });
     }
 
-    //insere consulta no banco
+    // Verifica disponibilidade de cada profissional
+    let profissionalDisponivel = null;
+    for (const prof of profissionais) {
+      const { rows: consultasProf } = await db.query(
+        `SELECT id FROM consultas WHERE profissional_id = $1 AND data_e_hora = $2`,
+        [prof.id, data_e_hora],
+      );
+      if (consultasProf.length === 0) {
+        profissionalDisponivel = prof.id;
+        break;
+      }
+    }
+    if (!profissionalDisponivel) {
+      return res
+        .status(409)
+        .json({ mensagem: "Nenhum profissional disponível nesse horário." });
+    }
+
+    // Validação de horário: só permite agendamento entre 08:00 e 18:00 (exemplo)
+    const hora = new Date(data_e_hora).getHours();
+    if (hora < 8 || hora > 18) {
+      return res.status(400).json({
+        mensagem: "Horário fora do expediente (08:00-18:00).",
+      });
+    }
+
+    // Insere consulta no banco
     const { rows } = await db.query(
       `INSERT INTO consultas (
                 usuario_id,
+                profissional_id,
                 nome,
                 idade,
                 peso,
@@ -64,10 +95,11 @@ exports.criarConsulta = async (req, res) => {
                 data_e_hora,
                 motivo
             )
-            VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)
+            VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)
             RETURNING *`,
       [
         usuario_id,
+        profissionalDisponivel,
         nome,
         idade,
         peso,

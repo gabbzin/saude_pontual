@@ -53,6 +53,7 @@ async function createTables() {
             CREATE TABLE IF NOT EXISTS consultas (
                 id SERIAL PRIMARY KEY,
                 usuario_id INTEGER NOT NULL REFERENCES usuarios(id),
+                profissional_id INTEGER REFERENCES profissionais(id),
                 nome VARCHAR(255) NOT NULL,
                 idade INTEGER NOT NULL,
                 peso DECIMAL(5, 2) NOT NULL,
