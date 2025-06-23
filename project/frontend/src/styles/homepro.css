@@ -56,11 +56,24 @@
     padding: 1rem;
 }
 
-#writer_relatorio, #calendar_history_section, #ficha_pacientes {
-    width: 30%;
+#calendar_pro {
+    flex-grow: 1;
+    gap: 20px;
 }
 
-#writer_relatorio, #ficha_pacientes, #historico_relatorios {
+#inline-div {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+#writer_relatorio, #calendar_history_section {
+    flex-grow: 1;
+    width: 45%;
+    padding: 20px;
+}
+
+#writer_relatorio, #ficha_pacientes {
     background-color: #FFF;
 }
 
@@ -137,17 +150,8 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 1rem;
 }
 
 #historico_e_relatorio {
-    padding: 20px;
-}
-
-#ficha_pacientes {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    padding: 1.2rem;
-    border-radius: 20px;
+    padding: 15px;
 }
