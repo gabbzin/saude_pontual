@@ -3,7 +3,7 @@ const router = express.Router();
 const {
     cadastrarUsuario,
     loginUsuario,
-    pegarPerfil,
+    pegarPerfilDoToken,
     adicionarInfoPerfil,
     listarTodosUsuarios
 } = require("../controllers/usuarioController");
