@@ -135,18 +135,22 @@ exports.listarConsultasUsuario = async (req, res) => {
   try {
     const { rows } = await db.query(
       `SELECT
-                id,
-                nome,
-                area_medica_desejada,
-                TO_CHAR(data_e_hora, 'YYYY-MM-DD') AS data_para_calendario,
-                TO_CHAR(data_e_hora, 'DD/MM/YYYY') AS data_para_exibicao,
-                TO_CHAR(data_e_hora, 'HH24:MI') AS hora_para_exibicao
+                c.id,
+                c.nome,
+                c.area_medica_desejada,
+                TO_CHAR(c.data_e_hora, 'YYYY-MM-DD') AS data_para_calendario,'
+                TO_CHAR(c.data_e_hora, 'DD/MM/YYYY') AS data_para_exibicao,
+                TO_CHAR(c.data_e_hora, 'HH24:MI') AS hora_para_exibicao,
+                c.profissional_id,
+                p.nome AS profissional_nome,
+                p.especialidade AS profissional_especialidade
             FROM
-                consultas
+                consultas c
+            LEFT JOIN profissionais p ON c.profissional_id = p.id
             WHERE
-                usuario_id = $1
+                c.usuario_id = $1
             ORDER BY
-                data_e_hora DESC;`,
+                c.data_e_hora DESC;`,
       [usuario_id],
     );
     return res.status(200).json({ consultas: rows });
