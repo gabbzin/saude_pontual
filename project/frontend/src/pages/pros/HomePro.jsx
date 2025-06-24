@@ -72,7 +72,7 @@ export default function HomePro() {
                                     {consulta.area_medica_desejada ===
                                     "clinica_geral"
                                         ? "Clínica Geral"
-                                        : consulta.area_medica_desejada}{" "}
+                                        : consulta.paciente}{" "}
                                     <br />
                                     <strong>Nome do Paciente:</strong>{" "}
                                     {consulta.paciente} <br />
