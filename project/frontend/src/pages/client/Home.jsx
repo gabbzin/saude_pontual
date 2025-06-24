@@ -88,8 +88,14 @@ export default function Home() {
                                         ? "Clínica Geral"
                                         : consulta.area_medica_desejada}{" "}
                                     <br />
-                                    <strong>Nome do Profissional:</strong>{" "}
-                                    {consulta.profissional} <br />
+                                    <strong>Profissional:</strong>{" "}
+                                    {consulta.profissional_nome || consulta.profissional}
+                                    {consulta.profissional_especialidade ? (
+                                        <>
+                                            {" "}- {consulta.profissional_especialidade}
+                                        </>
+                                    ) : null}
+                                    <br />
                                     <strong>Horário:</strong>{" "}
                                     {consulta.hora_para_exibicao}
                                 </li>
