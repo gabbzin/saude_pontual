@@ -22,8 +22,9 @@ export default function Historico() {
         async function fetchConsultas() {
             setLoading(true);
             const data = await buscarHistoricoConsultas();
-            setConsultas(Array.isArray(data) ? data : []);
-            setSelectedConsulta(Array.isArray(data) && data.length > 0 ? data[0] : null);
+            const lista = Array.isArray(data.consultas) ? data.consultas : [];
+            setConsultas(lista);
+            setSelectedConsulta(lista.length > 0 ? lista[0] : null);
             setLoading(false);
         }
         fetchConsultas();
@@ -76,17 +77,17 @@ export default function Historico() {
                                     key={consulta.id || index}
                                     className={`tablerow ${
                                         selectedConsulta &&
-                                        selectedConsulta.protocolo === consulta.protocolo
+                                        selectedConsulta.id === consulta.id
                                             ? "selected"
                                             : ""
                                     }`}
                                     onClick={() => handleConsultaClick(consulta)}
                                 >
-                                    <td className="td">{consulta.tipo || consulta.tipo_consulta}</td>
+                                    <td className="td">{consulta.area_medica_desejada || consulta.tipo_consulta}</td>
                                     <td className="td">{consulta.profissional_nome || consulta.profissional}</td>
                                     <td className="td">{consulta.profissional_especialidade || consulta.especialidade}</td>
-                                    <td className="td">{consulta.data}</td>
-                                    <td className="td">{consulta.protocolo}</td>
+                                    <td className="td">{consulta.data_para_exibicao || "-"}</td>
+                                    <td className="td">{consulta.id}</td>
                                 </tr>
                             ))}
                         </tbody>
