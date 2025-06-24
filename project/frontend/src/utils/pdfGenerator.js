@@ -1,4 +1,4 @@
-import jspdf, { jsPDF } from "jspdf";
+import { jsPDF } from "jspdf";
 
 const addImageToPDF = (doc, imageUrl = "../assets/logo_uniceplac.png", x, y, width, height) => {
     return new Promise((resolve, reject) => {
