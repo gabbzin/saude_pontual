@@ -120,7 +120,9 @@
 }
 
 #relatorio_write {
-    border: 1px dotted orange;
+    font-size: 1em;
+    font-family: "Arial";
+    border: 2.5px dotted orange;
     border-radius: 15px;
     padding: 10px;
     resize: none;

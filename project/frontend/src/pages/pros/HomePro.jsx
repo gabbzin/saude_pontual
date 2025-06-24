@@ -74,8 +74,8 @@ export default function HomePro() {
                                         ? "Clínica Geral"
                                         : consulta.area_medica_desejada}{" "}
                                     <br />
-                                    <strong>Nome do Profissional:</strong>{" "}
-                                    {consulta.profissional} <br />
+                                    <strong>Nome do Paciente:</strong>{" "}
+                                    {consulta.paciente} <br />
                                     <strong>Horário:</strong>{" "}
                                     {consulta.hora_para_exibicao}
                                 </li>
