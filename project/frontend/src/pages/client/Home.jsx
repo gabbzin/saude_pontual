@@ -82,6 +82,8 @@ export default function Home() {
                         <ul style={{ listStyleType: "none", paddingLeft: 0 }}>
                             {consultas.map((consulta, index) => (
                                 <li key={consulta.id || index} style={{}}>
+                                  <span>-----------------------------------</span>
+                                  <br />
                                     <strong>Tipo de consulta:</strong>{" "}
                                     {consulta.area_medica_desejada ===
                                     "clinica_geral"
