@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Modal } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../../contexts/AuthContext";
@@ -24,10 +24,51 @@ export default function HomePro() {
     const { usuario } = useContext(AuthContext);
     const { logout } = useContext(AuthContext);
 
+    const [consultasDoDia, setConsultasDoDia] = useState([]);
+    const [selectedConsultaId, setSelectedConsultaId] = useState("");
+    const [relatorioText, setRelatorioText] = useState("");
+    const [mensagem, setMensagem] = useState("");
+
     function logoutUser() {
         logout();
         navigate("/");
         console.log("Usuário deslogado");
+    }
+
+    useEffect(() => {
+        const fetchConsultas = async () => {
+            try {
+                const data = await buscarHistoricoConsultas();
+                if(data.consultas){
+                    setConsultasDoDia(data.consultas);
+                }
+            }
+            catch (error) {
+                console.error("Erro ao buscar as consultas do profissional", error);
+            }
+        }
+
+        fetchConsultas();
+    }, []);
+
+    const handleEnviarRelatorio = async () => {
+        if(!selectedConsultaId || !relatorioText){
+            setMensagem("Por favor, selecione um paciente e escreva o relatório");
+            return;
+        }
+
+        setMensagem("")
+        try {
+            const result = await adicionarRelatorioConsulta(selectedConsultaId, {relatorio: relatorioText});
+            if (result.mensagem){
+                setMensagem(result.mensagem);
+                setRelatorioText(""); // Limpando o text area
+            } else {
+                setMensagem("Erro ao enviar relatório.");
+            }
+        } catch (error){
+            setMensagem("Erro na requisição", error);
+        }
     }
 
     function showModal(dateStr, consultas) {
@@ -141,6 +182,19 @@ export default function HomePro() {
                                 </Button>
                             </div>
                         </div>
+                        <select className="form-select mt-2" value={selectedConsultaId} onChange={(e) => {
+                            setSelectedConsultaId(e.target.value);
+                            const consulta = consultasDoDia.find(c => c.id === parseInt(e.target.value)); // Puxa a consulta correspondente
+                            setRelatorioText(consulta?.relatorio || ""); // Carrega o relatório
+                        }}>
+                            <option value="">Selecione uma consulta</option>
+                            {consultasDoDia.map(c => (
+                                <option key={c.id} value={c.id}>
+                                    {c.paciente_nome} - {c.data_para_exibicao} {c.hora_para_exibicao}
+                                </option>
+                            ))}
+                        </select>
+
                         <div className="pesquisar_pacientes mt-4">
                             <input
                                 type="text"
