@@ -158,3 +158,39 @@ exports.deletarProfissional = async (req, res) => {
         });
     }
 };
+
+exports.listarConsultasProfissional = async (req, res) => {
+  const profissionalId = req.params.id;
+  if (!profissionalId) {
+    return res.status(400).json({
+      mensagem: "ID do profissional é obrigatório.",
+    });
+  }
+  try {
+    const { rows } = await db.query(
+      `SELECT
+                c.id,
+                c.nome,
+                c.area_medica_desejada,
+                TO_CHAR(c.data_e_hora, 'YYYY-MM-DD') AS data_para_calendario,
+                TO_CHAR(c.data_e_hora, 'DD/MM/YYYY') AS data_para_exibicao,
+                TO_CHAR(c.data_e_hora, 'HH24:MI') AS hora_para_exibicao,
+                c.usuario_id,
+                u.nome AS usuario_nome
+            FROM
+                consultas c
+            LEFT JOIN usuarios u ON c.usuario_id = u.id
+            WHERE
+                c.profissional_id = $1
+            ORDER BY
+                c.data_e_hora DESC;`,
+      [profissionalId]
+    );
+    return res.status(200).json({ consultas: rows });
+  } catch (err) {
+    console.error("Erro ao listar consultas do profissional:", err);
+    return res.status(500).json({
+      mensagem: "Erro interno ao buscar histórico de consultas do profissional",
+    });
+  }
+};
