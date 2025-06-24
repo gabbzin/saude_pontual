@@ -234,8 +234,8 @@ export default function Perfil() {
 
                 <aside id="profile_aside">
                     <h2>INFORMAÇÕES ADICIONAIS</h2>
-                    <p>Altura: {additionalInfo.altura + " m" || "Não existe"}</p>
-                    <p>Peso: {additionalInfo.peso + " kg" || "Não existe"}</p>
+                    <p>Altura: {additionalInfo.altura ? additionalInfo.altura + " m" : "Não existe"}</p>
+                    <p>Peso: {additionalInfo.peso ? additionalInfo.peso + " kg" : "Não existe"}</p>
                     <p>Tipo sanguíneo: {additionalInfo.tipo_sanguineo || "Não existe"}</p>
                     <p>Alergias conhecidas: {additionalInfo.alergias_conhecidas || "Não existe"}</p>
                     <p>Remédio contínuo: {additionalInfo.remedio_continuo || "Não existe"}</p>
