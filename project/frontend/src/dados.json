@@ -26,6 +26,7 @@
         { "value": "ginecologia", "label": "Ginecologia" },
         { "value": "neurologia", "label": "Neurologia" },
         { "value": "oftalmologia", "label": "Oftalmologia" },
+        { "value": "odontologia", "label": "Odontologia" },
         { "value": "ortopedia", "label": "Ortopedia" },
         { "value": "pediatria", "label": "Pediatria" },
         { "value": "psiquiatria", "label": "Psiquiatria" },

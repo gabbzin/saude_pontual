@@ -81,7 +81,7 @@ export default function Home() {
                     {consultas.length > 0 ? (
                         <ul style={{ listStyleType: "none", paddingLeft: 0 }}>
                             {consultas.map((consulta, index) => (
-                                <li key={consulta.id || index} style={{}}>
+                                <li key={consulta.id || index} style={{}} className="text-capitalize">
                                   <span>-----------------------------------</span>
                                   <br />
                                     <strong>Tipo de consulta:</strong>{" "}
@@ -92,11 +92,6 @@ export default function Home() {
                                     <br />
                                     <strong>Profissional:</strong>{" "}
                                     {consulta.profissional_nome || consulta.profissional}
-                                    {consulta.profissional_especialidade ? (
-                                        <>
-                                            {" "}- {consulta.profissional_especialidade}
-                                        </>
-                                    ) : null}
                                     <br />
                                     <strong>Horário:</strong>{" "}
                                     {consulta.hora_para_exibicao}
