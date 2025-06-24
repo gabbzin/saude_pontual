@@ -138,7 +138,7 @@ exports.listarConsultasUsuario = async (req, res) => {
                 c.id,
                 c.nome,
                 c.area_medica_desejada,
-                TO_CHAR(c.data_e_hora, 'YYYY-MM-DD') AS data_para_calendario,'
+                TO_CHAR(c.data_e_hora, 'YYYY-MM-DD') AS data_para_calendario,
                 TO_CHAR(c.data_e_hora, 'DD/MM/YYYY') AS data_para_exibicao,
                 TO_CHAR(c.data_e_hora, 'HH24:MI') AS hora_para_exibicao,
                 c.profissional_id,
