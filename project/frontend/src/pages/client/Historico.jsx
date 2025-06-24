@@ -12,11 +12,11 @@ import Button from "../../components/Button";
 import "../../styles/historico.css";
 
 export default function Historico() {
-    const { usuario } = useContext(AuthContext);
     const navigate = useNavigate();
     const [consultas, setConsultas] = useState([]);
     const [selectedConsulta, setSelectedConsulta] = useState(null);
     const [loading, setLoading] = useState(true);
+    // const { usuario } = useContext(AuthContext);
 
     useEffect(() => {
         async function fetchConsultas() {
