@@ -4,53 +4,50 @@ import dayGridPlugin from "@fullcalendar/daygrid";
 import InteractionPlugin from "@fullcalendar/interaction";
 import "../styles/calendario.css";
 
-export default function Calendar({ showModal }) {
-    const [consultas, setConsultas] = useState([]); // Estado para armazenar as consultas
-    const [datasConsultas, setDatasConsultas] = useState([]); // Estado para armazenar as datas das consultas
+export default function Calendar({ showModal, consultas: consultasProp }) {
+    const [consultas, setConsultas] = useState(consultasProp || []);
+    const [datasConsultas, setDatasConsultas] = useState([]);
 
     useEffect(() => {
-        // Função para buscar as consultas do usuário
-        const token = localStorage.getItem("token");
-
-        if (!token) {
-            console.error("Token não encontrado");
-            return;
-        }
-
-        // Função para buscar as consultas do usuário
-        const fetchConsultas = async () => {
-            try {
-                const response = await fetch(
-                    "http://localhost:3001/api/consultas/historico",
-                    {
-                        headers: {
-                            Authorization: `Bearer ${token}`,
-                        },
-                    }
-                );
-
-                if (!response.ok) {
-                    throw new Error("Erro ao buscar consultas");
-                }
-
-                const data = await response.json();
-
-                const consultas = data.consultas || []; // Verifica se 'consultas' existe no objeto retornado
-
-                if (Array.isArray(consultas)) {
-                    setConsultas(consultas);
-                    setDatasConsultas(consultas.map((consulta) => consulta.data_para_calendario));
-                } else {
-                    setConsultas([]);
-                    setDatasConsultas([]);
-                }
-            } catch (error) {
-                console.error(error);
+        if (consultasProp) {
+            setConsultas(consultasProp);
+            setDatasConsultas(consultasProp.map((consulta) => consulta.data_para_calendario));
+        } else {
+            // Função para buscar as consultas do usuário
+            const token = localStorage.getItem("token");
+            if (!token) {
+                console.error("Token não encontrado");
+                return;
             }
-        };
-
-        fetchConsultas();
-    }, []);
+            const fetchConsultas = async () => {
+                try {
+                    const response = await fetch(
+                        "http://localhost:3001/api/consultas/historico",
+                        {
+                            headers: {
+                                Authorization: `Bearer ${token}`,
+                            },
+                        }
+                    );
+                    if (!response.ok) {
+                        throw new Error("Erro ao buscar consultas");
+                    }
+                    const data = await response.json();
+                    const consultas = data.consultas || [];
+                    if (Array.isArray(consultas)) {
+                        setConsultas(consultas);
+                        setDatasConsultas(consultas.map((consulta) => consulta.data_para_calendario));
+                    } else {
+                        setConsultas([]);
+                        setDatasConsultas([]);
+                    }
+                } catch (error) {
+                    console.error(error);
+                }
+            };
+            fetchConsultas();
+        }
+    }, [consultasProp]);
 
     const handleDateClick = (arg) => {
         const consultasNoDia = consultas.filter(

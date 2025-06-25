@@ -6,7 +6,7 @@ const {
   buscarProfissionalPorArea,
   buscarConsultas,
   atualizarRelatorioConsulta,
-  listarConsultasProfissionalAutenticado,
+  listarConsultasProfissional,
 } = require("../controllers/consultaController");
 const { verifyToken } = require("../middleware/authMiddleware");
 

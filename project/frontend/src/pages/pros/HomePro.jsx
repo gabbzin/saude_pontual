@@ -14,7 +14,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "../../styles/calendario.css";
 import "../../styles/homepro.css";
 // api
-import { buscarHistoricoConsultas, adicionarRelatorioConsulta } from "../../../api/api";
+import { buscarHistoricoConsultas, adicionarRelatorioConsulta, buscarConsultasProfissional} from "../../../api/api";
 
 export default function HomePro() {
     const [modalCalendarVisible, setModalCalendarVisible] = useState(false);
@@ -244,7 +244,7 @@ export default function HomePro() {
                 </section>
                 <section id="calendar_history_section">
                     <div id="calendar_pro">
-                        <Calendar showModal={showModal} />
+                        <Calendar consultas={consultas} showModal={showModal} />
                     </div>
                 </section>
             </main>
