@@ -1,6 +1,6 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import Dados from "../../dados.json";
+// import Dados from "../../dados.json";
 // Assets
 import BackButton from "../../assets/back_button.png";
 import Logo from "../../assets/logo_saude_pontual.png";
@@ -9,22 +9,70 @@ import Relatorio from "../../assets/relatorio.jpg";
 import Button from "../../components/Button";
 // Styles
 import "../../styles/historico.css";
+// Api
+import { buscarHistoricoConsultas } from "../../../api/api";
+import { generateSaudePontualPdf } from "../../utils/pdfGenerator";
 
 export default function HistoricoPro() {
-
     const navigate = useNavigate();
+    const [consultas, setConsultas] = useState([]);
+    const [selectedConsulta, setSelectedConsulta] = useState(null);
 
-    const [selectedConsulta, setSelectedConsulta] = useState(
-        Dados.consultas.length > 0 ? Dados.consultas[0] : null
-    );
+    const [mensagem, setMensagem] = useState("");
+    const [loading, setLoading] = useState(false);
+
+    useEffect(() => {
+        const fetchConsultas = async () => {
+            setLoading(true);
+            setMensagem("");
+            try {
+                const data = await buscarHistoricoConsultas();
+                if (data.consultas) {
+                    setConsultas(data.consultas);
+                    if (data.consultas.length > 0) {
+                        setSelectedConsulta(data.consultas[0]);
+                    }
+                }
+            } catch (error) {
+                console.error(
+                    "Erro ao buscar as consultas do profissional",
+                    error
+                );
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchConsultas();
+    }, []);
 
     function redirectToHome() {
         navigate("/homepro");
     }
 
+    const handleDownloadRelatorio = async () => {
+        if (!selectedConsulta || !selectedConsulta.relatorio) {
+            setMensagem("Selecione um relatório para baixar.");
+            return;
+        }
+
+        setLoading(true);
+        setMensagem("");
+
+        try {
+            const fileName = `Relatorio-${selectedConsulta.paciente_nome.replace(/\s/g, "_")}.pdf`;
+
+            await generateSaudePontualPdf(selectedConsulta.relatorio, fileName);
+        } catch (error) {
+            setMensagem("Erro ao gerar o PDF");
+            console.error(error);
+        } finally {
+            setLoading(false);
+        }
+    };
+
     function handleConsultaClick(consulta) {
         setSelectedConsulta(consulta);
-        console.log("Consulta selecionada: ", consulta);
     }
 
     return (
@@ -41,7 +89,9 @@ export default function HistoricoPro() {
                 >
                     <img src={BackButton} height={40} width={50} />
                 </Button>
-                <h1 className="text-uppercase fs-2">Histórico e Relatórios enviados</h1>
+                <h1 className="text-uppercase fs-2">
+                    Histórico e Relatórios enviados
+                </h1>
                 <img id="logo" src={Logo} height={40} width={40} />
             </header>
             <main id="history_wrapper">
@@ -55,10 +105,24 @@ export default function HistoricoPro() {
                         </tr>
                     </thead>
                     <tbody id="tbody">
-                        {Dados.consultas.map((consulta, index) => (
+                        {loading && consultas.length === 0 && (
+                            <tr>
+                                <td colSpan="4" className="text-center">
+                                    {mensagem || "Carregando histórico..."}
+                                </td>
+                            </tr>
+                        )}
+                        {!loading && consultas.length === 0 && (
+                            <tr>
+                                <td colSpan="4" className="text-center">
+                                    {mensagem || "Nenhum histórico encontrado."}
+                                </td>
+                            </tr>
+                        )}
+                        {consultas.map((consulta, index) => (
                             <tr
                                 id="tr"
-                                key={index}
+                                key={consulta.id || index}
                                 className={`tablerow ${
                                     selectedConsulta &&
                                     selectedConsulta.protocolo ===
@@ -69,9 +133,9 @@ export default function HistoricoPro() {
                                 onClick={() => handleConsultaClick(consulta)}
                             >
                                 <td className="td">{consulta.tipo}</td>
-                                <td className="td">Alfredo Ribeiro</td>
+                                <td className="td">{consulta.paciente}</td>
                                 <td className="td">{consulta.data}</td>
-                                <td className="td">{consulta.protocolo}</td>
+                                <td className="td">{consulta.id}</td>
                             </tr>
                         ))}
                     </tbody>
@@ -84,7 +148,19 @@ export default function HistoricoPro() {
                         width={200}
                         height={280}
                     />
-                    <Button id={"download_button"}>Download</Button>
+                    <Button
+                        id={"download_button"}
+                        onClick={handleDownloadRelatorio}
+                        disabled={
+                            !selectedConsulta || !selectedConsulta.relatorio
+                        }
+                    >
+                        Download
+                    </Button>
+
+                    {mensagem && !loading && (
+                        <p className="text-danger">{mensagem}</p>
+                    )}
                 </aside>
             </main>
         </div>

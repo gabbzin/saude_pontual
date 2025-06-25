@@ -13,11 +13,14 @@ import Calendar from "../../components/Calendar";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "../../styles/calendario.css";
 import "../../styles/homepro.css";
+// api
+import { buscarHistoricoConsultas, atualizarRelatorioConsulta } from "../../../api/api";
 
 export default function HomePro() {
     const [modalCalendarVisible, setModalCalendarVisible] = useState(false);
     const [selectedDate, setSelectedDate] = useState("");
     const [consultas, setConsultas] = useState([]);
+    const [loading, setLoading] = useState(false);
 
     const navigate = useNavigate();
 
@@ -52,14 +55,17 @@ export default function HomePro() {
     }, []);
 
     const handleEnviarRelatorio = async () => {
+
         if(!selectedConsultaId || !relatorioText){
             setMensagem("Por favor, selecione um paciente e escreva o relatório");
             return;
         }
 
         setMensagem("")
+        setLoading(true);
+
         try {
-            const result = await adicionarRelatorioConsulta(selectedConsultaId, {relatorio: relatorioText});
+            const result = await atualizarRelatorioConsulta(selectedConsultaId, {relatorio: relatorioText});
             if (result.mensagem){
                 setMensagem(result.mensagem);
                 setRelatorioText(""); // Limpando o text area
@@ -220,15 +226,20 @@ export default function HomePro() {
                         id="relatorio_write"
                         rows={12}
                         placeholder="Escrever relatório"
+                        value={relatorioText}
+                        onChange={(e) => setRelatorioText(e.target.value)}
+                        disabled={!selectedConsultaId || loading}
                     ></textarea>
+
+                    {mensagem && <p className="mt-2">{mensagem}</p>}
+
                     <Button
                         className={"button_homepro_page"}
                         type={"submit"}
-                        onClick={() => {
-                            console.log("Enviando relatório");
-                        }}
-                    >
-                        Enviar
+                        onClick={handleEnviarRelatorio}
+                        disabled={loading || !selectedConsultaId}>
+
+                        {loading ? "Salvando..." : "Salvar Relatório"}
                     </Button>
                 </section>
                 <section id="calendar_history_section">
