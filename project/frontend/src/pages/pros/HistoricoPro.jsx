@@ -98,9 +98,9 @@ export default function HistoricoPro() {
                 <table id="tabela">
                     <thead id="thead">
                         <tr id="tr">
-                            <th className="th">Tipo de Consulta</th>
                             <th className="th">Paciente</th>
                             <th className="th">Data</th>
+                            <th className="th">Hora</th>
                             <th className="th">Protocolo</th>
                         </tr>
                     </thead>
@@ -132,9 +132,9 @@ export default function HistoricoPro() {
                                 }`}
                                 onClick={() => handleConsultaClick(consulta)}
                             >
-                                <td className="td">{consulta.tipo}</td>
-                                <td className="td">{consulta.paciente}</td>
-                                <td className="td">{consulta.data}</td>
+                                <td className="td">{consulta.paciente_nome}</td>
+                                <td className="td">{consulta.data_para_exibicao}</td>
+                                <td className="td">{consulta.hora_para_exibicao}</td>
                                 <td className="td">{consulta.id}</td>
                             </tr>
                         ))}

@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { AuthContext } from "../../contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
 import { buscarHistoricoConsultas } from "../../../api/api";
@@ -10,13 +10,14 @@ import Relatorio from "../../assets/relatorio.jpg";
 import Button from "../../components/Button";
 // Styles
 import "../../styles/historico.css";
+import { generateSaudePontualPdf } from "../../utils/pdfGenerator";
 
 export default function Historico() {
     const navigate = useNavigate();
     const [consultas, setConsultas] = useState([]);
     const [selectedConsulta, setSelectedConsulta] = useState(null);
     const [loading, setLoading] = useState(true);
-    // const { usuario } = useContext(AuthContext);
+    const [mensagem, setMensagem] = useState("");
 
     useEffect(() => {
         async function fetchConsultas() {
@@ -36,8 +37,30 @@ export default function Historico() {
 
     function handleConsultaClick(consulta) {
         setSelectedConsulta(consulta);
+        setMensagem("");
         console.log("Consulta selecionada: ", consulta);
     }
+
+    const handleDownloadRelatorio = async () => {
+        if (!selectedConsulta || !selectedConsulta.descricao) {
+            setMensagem("Selecione um relatório para baixar.");
+            return;
+        }
+
+        setLoading(true);
+        setMensagem("");
+        try {
+            const nomeFormatado = selectedConsulta.paciente_nome.replace(/\s/g, "_");
+            const fileName = `Relatorio-${nomeFormatado}.pdf`;
+
+            await generateSaudePontualPdf(selectedConsulta.relatorio, fileName);
+        } catch (error) {
+            console.error("Erro ao gerar o PDF:", error);
+            setMensagem("Erro ao gerar o PDF. Tente novamente.");
+        } finally {
+            setLoading(false);
+        }
+    };
 
     return (
         <div id="history_container">
@@ -65,7 +88,6 @@ export default function Historico() {
                             <tr id="tr">
                                 <th className="th">Tipo de Consulta</th>
                                 <th className="th">Profissional Responsável</th>
-                                <th className="th">Especialidade</th>
                                 <th className="th">Data</th>
                                 <th className="th">Protocolo</th>
                             </tr>
@@ -81,12 +103,21 @@ export default function Historico() {
                                             ? "selected"
                                             : ""
                                     }`}
-                                    onClick={() => handleConsultaClick(consulta)}
+                                    onClick={() =>
+                                        handleConsultaClick(consulta)
+                                    }
                                 >
-                                    <td className="td">{consulta.area_medica_desejada || consulta.tipo_consulta}</td>
-                                    <td className="td">{consulta.profissional_nome || consulta.profissional}</td>
-                                    <td className="td">{consulta.profissional_especialidade || consulta.especialidade}</td>
-                                    <td className="td">{consulta.data_para_exibicao || "-"}</td>
+                                    <td className="td text-capitalize">
+                                        {consulta.area_medica_desejada ||
+                                            consulta.tipo_consulta}
+                                    </td>
+                                    <td className="td">
+                                        {consulta.profissional_nome ||
+                                            consulta.profissional}
+                                    </td>
+                                    <td className="td">
+                                        {consulta.data_para_exibicao || "-"}
+                                    </td>
                                     <td className="td">{consulta.id}</td>
                                 </tr>
                             ))}
@@ -101,7 +132,14 @@ export default function Historico() {
                         width={200}
                         height={280}
                     />
-                    <Button id={"download_button"}>Download</Button>
+                    <Button
+                        id={"download_button"}
+                        onClick={handleDownloadRelatorio}
+                        disabled={!selectedConsulta || loading}
+                    >
+                        {loading ? "Gerando PDF..." : "Baixar Relatório"}
+                    </Button>
+                    {mensagem && <p className="text-danger">{mensagem}</p>}
                 </aside>
             </main>
         </div>
