@@ -63,6 +63,7 @@ async function createTables() {
                 area_medica_desejada VARCHAR(255) NOT NULL,
                 data_e_hora TIMESTAMP NOT NULL,
                 motivo TEXT NOT NULL,
+                descricao TEXT,
                 created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
             );
         `);
