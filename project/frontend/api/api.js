@@ -108,3 +108,14 @@ export async function loginAdmin(data) {
     });
     return res.json();
 }
+
+export async function buscarConsultasProfissional() {
+    const token = localStorage.getItem("token");
+    const res = await fetch("http://localhost:3001/api/consultas/profissional", {
+        method: "GET",
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
+    });
+    return res.json();
+}
