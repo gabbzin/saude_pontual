@@ -85,6 +85,19 @@ export async function buscarHistoricoConsultas() {
     return res.json();
 }
 
+export async function adicionarRelatorioConsulta(idConsulta, dados) {
+    const token = localStorage.getItem("token");
+    const res = await fetch(`http://localhost:3001/api/consultas/${idConsulta}/relatorio`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(dados),
+    });
+    return res.json();
+}
+
 export async function loginAdmin(data) {
     const res = await fetch("http://localhost:3001/api/loginadm", {
         method: "POST",
