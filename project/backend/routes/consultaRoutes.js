@@ -4,6 +4,8 @@ const {
   criarConsulta,
   listarConsultasUsuario,
   buscarProfissionalPorArea,
+  buscarConsultas,
+  atualizarRelatorioConsulta,
 } = require("../controllers/consultaController");
 const { verifyToken } = require("../middleware/authMiddleware");
 
@@ -12,6 +14,9 @@ router.post("/fichapessoa", verifyToken, criarConsulta);
 
 // Rota para listar o histórico de consultas do usuário logado
 router.get("/consultas/historico", verifyToken, listarConsultasUsuario);
+
+router.get("/historico", verifyToken, buscarConsultas);
+router.put("/relatorio", verifyToken, atualizarRelatorioConsulta);
 
 router.get("/profissionais/buscar", buscarProfissionalPorArea);
 
