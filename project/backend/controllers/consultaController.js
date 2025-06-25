@@ -147,6 +147,7 @@ exports.listarConsultasUsuario = async (req, res) => {
                 c.profissional_id,
                 p.nome AS profissional_nome,
                 p.especialidade AS profissional_especialidade
+                c.descricao AS relatorio
             FROM
                 consultas c
             LEFT JOIN profissionais p ON c.profissional_id = p.id

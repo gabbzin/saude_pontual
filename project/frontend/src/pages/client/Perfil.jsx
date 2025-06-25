@@ -36,7 +36,6 @@ export default function Perfil() {
     
     useEffect(() => {
         const token = localStorage.getItem("token");
-        console.log(token);
 
         const carregarInformacoesAdicionais = async () => {
             if (!token) return;
@@ -46,7 +45,6 @@ export default function Perfil() {
                 
                 if (perfil?.usuario){
                     const dataNascimentoFormatada = formatarDataPtBr(perfil.usuario.data_nascimento);
-                    console.log(dataNascimentoFormatada);
 
                     setAdditionalInfo((prev) => ({
                         telefone: perfil.usuario.telefone ? `${perfil.usuario.telefone}` : prev.telefone,
