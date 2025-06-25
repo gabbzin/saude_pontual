@@ -6,6 +6,7 @@ const {
   buscarProfissionalPorArea,
   buscarConsultas,
   atualizarRelatorioConsulta,
+  listarConsultasProfissionalAutenticado,
 } = require("../controllers/consultaController");
 const { verifyToken } = require("../middleware/authMiddleware");
 
@@ -19,5 +20,8 @@ router.get("/historico", verifyToken, buscarConsultas);
 router.put("/relatorio", verifyToken, atualizarRelatorioConsulta);
 
 router.get("/profissionais/buscar", buscarProfissionalPorArea);
+
+// Rota para listar consultas do profissional autenticado
+router.get("/consultas/profissional", verifyToken, listarConsultasProfissionalAutenticado);
 
 module.exports = router;
