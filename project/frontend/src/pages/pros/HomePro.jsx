@@ -14,7 +14,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "../../styles/calendario.css";
 import "../../styles/homepro.css";
 // api
-import { buscarHistoricoConsultas, atualizarRelatorioConsulta } from "../../../api/api";
+import { buscarHistoricoConsultas, adicionarRelatorioConsulta } from "../../../api/api";
 
 export default function HomePro() {
     const [modalCalendarVisible, setModalCalendarVisible] = useState(false);
@@ -65,7 +65,7 @@ export default function HomePro() {
         setLoading(true);
 
         try {
-            const result = await atualizarRelatorioConsulta(selectedConsultaId, {relatorio: relatorioText});
+            const result = await adicionarRelatorioConsulta(selectedConsultaId, {relatorio: relatorioText});
             if (result.mensagem){
                 setMensagem(result.mensagem);
                 setRelatorioText(""); // Limpando o text area
