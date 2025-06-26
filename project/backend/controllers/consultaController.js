@@ -340,7 +340,9 @@ exports.cancelarConsulta = async (req, res) => {
             [consultaId, usuario_id]
         );
         if (rows.length === 0) {
-            return res.status(404).json({ mensagem: "Consulta não encontrada para este usuário." });
+          return res.status(404).json({
+            mensagem: "Consulta não encontrada para este usuário." 
+          });
         }
         const consulta = rows[0];
         const dataConsulta = new Date(consulta.data_e_hora);
@@ -348,13 +350,19 @@ exports.cancelarConsulta = async (req, res) => {
         const diffMs = dataConsulta - agora;
         const diffHoras = diffMs / (1000 * 60 * 60);
         if (diffHoras < 12) {
-            return res.status(400).json({ mensagem: "Só é possível cancelar consultas com pelo menos 12 horas de antecedência." });
+            return res.status(400).json({
+              mensagem: "Só é possível cancelar consultas com pelo menos 12 horas de antecedência." 
+            });
         }
         // Cancela (deleta) a consulta
         await db.query(`DELETE FROM consultas WHERE id = $1`, [consultaId]);
-        return res.status(200).json({ mensagem: "Consulta cancelada com sucesso." });
+        return res.status(200).json({ 
+          mensagem: "Consulta cancelada com sucesso." 
+        });
     } catch (err) {
         console.error("Erro ao cancelar consulta:", err);
-        return res.status(500).json({ mensagem: "Erro interno ao cancelar consulta." });
+        return res.status(500).json({ 
+          mensagem: "Erro interno ao cancelar consulta."
+        });
     }
 };
