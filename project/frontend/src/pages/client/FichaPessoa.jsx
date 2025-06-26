@@ -13,7 +13,6 @@ import "../../styles/fichas.css";
 export default function FichaPessoa() {
     const [formData, setFormData] = useState({
         nome: "",
-        idade: "",
         peso: "",
         altura: "",
         tipo_sanguineo: "",
@@ -89,17 +88,6 @@ export default function FichaPessoa() {
                         value={formData.nome}
                         onChange={handleChange}
                     />
-                    <FormInputSchedule
-                        id={"idade"}
-                        name={"idade"}
-                        required={true}
-                        iconrequired={"*"}
-                        label={"Idade:"}
-                        type={"text"}
-                        placeholder={"Digite sua idade"}
-                        value={formData.idade}
-                        onChange={handleChange}
-                    />
                     <div id="three_inputs">
                         <FormInputSchedule
                             id={"peso"}
@@ -111,6 +99,7 @@ export default function FichaPessoa() {
                             placeholder={"Digite seu peso"}
                             value={formData.peso}
                             onChange={handleChange}
+                            maxLength={3}
                         />
                         <FormInputSchedule
                             id={"altura"}
@@ -122,6 +111,7 @@ export default function FichaPessoa() {
                             placeholder={"Digite sua altura"}
                             value={formData.altura}
                             onChange={handleChange}
+                            maxLength={3}
                         />
                         <FormInputSchedule
                             id={"tipo_sanguineo"}

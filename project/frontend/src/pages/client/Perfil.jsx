@@ -193,9 +193,6 @@ export default function Perfil() {
                                     {additionalInfo.data_nascimento || ""}
                                 </span>
                             </div>
-                            <Button>
-                                <img src={ButtonEdit} alt="Editar" />
-                            </Button>
                         </div>
                     </main>
 

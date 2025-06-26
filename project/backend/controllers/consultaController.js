@@ -4,7 +4,6 @@ exports.criarConsulta = async (req, res) => {
     // data_e_hora é esperado como uma string combinada (ex: "YYYY-MM-DDTHH:mm")
     const {
         nome,
-        idade,
         peso,
         altura,
         tipo_sanguineo,
@@ -25,7 +24,6 @@ exports.criarConsulta = async (req, res) => {
     //campos "obrigatórios"
     if (
         !nome ||
-        !idade ||
         !peso ||
         !altura ||
         !tipo_sanguineo ||
@@ -87,7 +85,6 @@ exports.criarConsulta = async (req, res) => {
                 usuario_id,
                 profissional_id,
                 nome,
-                idade,
                 peso,
                 altura,
                 tipo_sanguineo,
@@ -96,13 +93,12 @@ exports.criarConsulta = async (req, res) => {
                 data_e_hora,
                 motivo
             )
-            VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)
+            VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)
             RETURNING *`,
             [
                 usuario_id,
                 profissionalDisponivel,
                 nome,
-                idade,
                 peso,
                 altura,
                 tipo_sanguineo,

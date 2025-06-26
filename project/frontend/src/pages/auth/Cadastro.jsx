@@ -121,7 +121,8 @@ export default function Cadastro() {
                             value={form.telefone}
                             onChange={handleChange}
                             required={false}
-                            min="10000000000"
+                            minLength={11}
+                            maxLength={11}
                         />
                         {/* Campo de e-mail */}
                         <FormInput
