@@ -79,6 +79,7 @@ export async function buscarHistoricoConsultas() {
     const res = await fetch("http://localhost:3001/api/consultas/historico", {
         method: "GET",
         headers: {
+            "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
         },
     });

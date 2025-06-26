@@ -60,7 +60,7 @@ export default function HistoricoPro() {
         setMensagem("");
 
         try {
-            const fileName = `Relatorio-${selectedConsulta.paciente_nome.replace(/\s/g, "_")}.pdf`;
+            const fileName = `Relatorio-${selectedConsulta.paciente_name.replace(/\s/g, "_")}.pdf`;
 
             await generateSaudePontualPdf(selectedConsulta.relatorio, fileName);
         } catch (error) {
@@ -132,7 +132,7 @@ export default function HistoricoPro() {
                                 }`}
                                 onClick={() => handleConsultaClick(consulta)}
                             >
-                                <td className="td">{consulta.paciente_nome}</td>
+                                <td className="td">{consulta.paciente_name}</td>
                                 <td className="td">{consulta.data_para_exibicao}</td>
                                 <td className="td">{consulta.hora_para_exibicao}</td>
                                 <td className="td">{consulta.id}</td>
