@@ -326,12 +326,8 @@ exports.listarConsultas = async (req, res) => {
 
 // Cancelar consulta (usuário)
 exports.cancelarConsulta = async (req, res) => {
-    const usuario_id = req.userId;
+    const usuario_id = req.userId; // Vem do middleware
     const consultaId = req.params.id;
-
-    if (!usuario_id) {
-        return res.status(401).json({ mensagem: "Acesso não autorizado." });
-    }
 
     try {
         // Busca a consulta e verifica se pertence ao usuário

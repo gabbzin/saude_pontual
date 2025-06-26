@@ -18,7 +18,7 @@ router.get("/consultas", verifyToken, listarConsultas);
 
 router.get("/historico", verifyToken, buscarConsultas);
 router.put("/consultas/relatorio/:id", verifyToken, atualizarRelatorioConsulta);
-router.delete("/consultas/:id/cancelar", verifyToken, cancelarConsulta);
+router.delete("/consultas/cancelar/:id", verifyToken, cancelarConsulta);
 
 router.get("/profissionais/buscar", buscarProfissionalPorArea);
 

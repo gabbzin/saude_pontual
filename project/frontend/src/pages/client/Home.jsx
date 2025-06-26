@@ -2,7 +2,7 @@ import { useContext, useState, useEffect } from "react";
 import { Modal } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../../contexts/AuthContext";
-import { buscarConsultas } from "../../../api/api";
+import { buscarConsultas, cancelarConsulta } from "../../../api/api";
 // Assets
 import FundoLaranja from "../../assets/background_orange.jpg";
 import ButtonExit from "../../assets/button_exit_1.jpeg";
@@ -60,6 +60,27 @@ export default function Home() {
         navigate("/login");
     }
 
+    const handleCancelarConsulta = async (consultaId) => {
+        if (!window.confirm("Você tem certeza que deseja cancelar esta consulta?")) {
+            return;
+        }
+
+        try {
+            const result = await cancelarConsulta(consultaId);
+
+            if (result.success) {
+                setConsultas(prevConsultas => prevConsultas.filter(c => c.id !== consultaId));
+                setConsultasCalendario(prevConsultas => prevConsultas.filter(c => c.id !== consultaId));
+                alert("Consulta cancelada com sucesso.");
+            } else {
+                alert("Erro ao cancelar a consulta: " + result.message);
+            }
+        } catch (error) {
+            console.error("Erro ao cancelar consulta:", error);
+            alert("Ocorreu um erro ao tentar cancelar a consulta. Tente novamente mais tarde.");
+        }
+    }
+
     useEffect(() => {
         async function fetchConsultas() {
             try {
@@ -98,9 +119,23 @@ export default function Home() {
                     {consultas.length > 0 ? (
                         <ul style={{ listStyleType: "none", paddingLeft: 0 }}>
                             {consultas.map((consulta, index) => (
-                                <li key={consulta.id || index} style={{}} className="text-capitalize">
-                                  <span>-----------------------------------</span>
-                                  <br />
+                                <li
+                                    key={consulta.id || index}
+                                    style={{ borderTop: "2px dashed black" }}
+                                    className="text-capitalize"
+                                >
+                                    <br />
+                                    <Button
+                                        style={{
+                                            float: "right",
+                                            backgroundColor: "red",
+                                            border: "none",
+                                            borderRadius: "50%"
+                                        }}
+                                        onClick={() => handleCancelarConsulta(consulta.id)}
+                                    >
+                                        X
+                                    </Button>
                                     <strong>Tipo de consulta:</strong>{" "}
                                     {consulta.area_medica_desejada ===
                                     "clinica_geral"
@@ -108,7 +143,8 @@ export default function Home() {
                                         : consulta.area_medica_desejada}{" "}
                                     <br />
                                     <strong>Profissional:</strong>{" "}
-                                    {consulta.profissional_nome || consulta.profissional}
+                                    {consulta.profissional_nome ||
+                                        consulta.profissional}
                                     <br />
                                     <strong>Horário:</strong>{" "}
                                     {consulta.hora_para_exibicao}
@@ -187,7 +223,10 @@ export default function Home() {
                         <LegendaCalendario />
                     </div>
                     <div id="calendar" style={{ height: "100%" }}>
-                        <Calendar consultas={consultasCalendario} showModal={showModal} />
+                        <Calendar
+                            consultas={consultasCalendario}
+                            showModal={showModal}
+                        />
                     </div>
                 </main>
 

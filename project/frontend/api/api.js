@@ -131,3 +131,15 @@ export async function buscarConsultas() {
     });
     return res.json();
 }
+
+export async function cancelarConsulta(idConsulta) {
+    const token = localStorage.getItem("token");
+    const res = await fetch(`http://localhost:3001/api/consultas/cancelar/${idConsulta}`, {
+        method: "DELETE",
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+        },
+    });
+    return res.json();
+}
