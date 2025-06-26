@@ -83,6 +83,13 @@ async function createTables() {
         `);
         console.log("Coluna 'relatorio' verificada/adicionada à tabela consultas.");
 
+        // remover coluna idade da tabela consultas, que foi removida do modelo
+        await client.query(`
+            ALTER TABLE consultas
+            DROP COLUMN IF EXISTS idade;
+        `);
+        console.log("Coluna 'idade' removida da tabela consultas, se existia.");
+
         // Criação da tabela de consultas_pet se não existir
         await client.query(`
             CREATE TABLE IF NOT EXISTS consultas_pet (
