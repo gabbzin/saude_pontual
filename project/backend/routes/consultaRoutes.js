@@ -6,6 +6,7 @@ const {
   buscarProfissionalPorArea,
   buscarConsultas,
   atualizarRelatorioConsulta,
+  cancelarConsulta,
 } = require("../controllers/consultaController");
 const { verifyToken } = require("../middleware/authMiddleware");
 
@@ -17,6 +18,7 @@ router.get("/consultas", verifyToken, listarConsultas);
 
 router.get("/historico", verifyToken, buscarConsultas);
 router.put("/consultas/relatorio/:id", verifyToken, atualizarRelatorioConsulta);
+router.delete("/consultas/:id/cancelar", verifyToken, cancelarConsulta);
 
 router.get("/profissionais/buscar", buscarProfissionalPorArea);
 
