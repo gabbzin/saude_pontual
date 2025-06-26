@@ -14,26 +14,32 @@ export default function Calendar({ showModal, consultas: consultasProp }) {
             setDatasConsultas(consultasProp.map((consulta) => consulta.data_para_calendario));
         } else {
             // Função para buscar as consultas do usuário
-            const token = localStorage.getItem("token");
-            if (!token) {
-                console.error("Token não encontrado");
-                return;
-            }
             const fetchConsultas = async () => {
+                const token = localStorage.getItem("token");
+
+                if (!token) {
+                    console.error("Token não encontrado");
+                    return;
+                }
+
                 try {
                     const response = await fetch(
                         "http://localhost:3001/api/consultas/historico",
                         {
                             headers: {
+                                "Content-Type": "application/json",
                                 Authorization: `Bearer ${token}`,
                             },
                         }
                     );
+
                     if (!response.ok) {
                         throw new Error("Erro ao buscar consultas");
                     }
+
                     const data = await response.json();
                     const consultas = data.consultas || [];
+
                     if (Array.isArray(consultas)) {
                         setConsultas(consultas);
                         setDatasConsultas(consultas.map((consulta) => consulta.data_para_calendario));
@@ -41,6 +47,7 @@ export default function Calendar({ showModal, consultas: consultasProp }) {
                         setConsultas([]);
                         setDatasConsultas([]);
                     }
+
                 } catch (error) {
                     console.error(error);
                 }

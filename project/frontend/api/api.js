@@ -79,6 +79,7 @@ export async function buscarHistoricoConsultas() {
     const res = await fetch("http://localhost:3001/api/consultas/historico", {
         method: "GET",
         headers: {
+            "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
         },
     });
@@ -112,6 +113,17 @@ export async function loginAdmin(data) {
 export async function buscarConsultasProfissional() {
     const token = localStorage.getItem("token");
     const res = await fetch("http://localhost:3001/api/consultas/profissional", {
+        method: "GET",
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
+    });
+    return res.json();
+}
+
+export async function buscarConsultas() {
+    const token = localStorage.getItem("token");
+    const res = await fetch("http://localhost:3001/api/consultas", {
         method: "GET",
         headers: {
             Authorization: `Bearer ${token}`,

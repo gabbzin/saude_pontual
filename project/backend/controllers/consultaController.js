@@ -147,7 +147,6 @@ exports.listarConsultasUsuario = async (req, res) => {
                 c.profissional_id,
                 p.nome AS profissional_nome,
                 p.especialidade AS profissional_especialidade
-                c.descricao AS relatorio
             FROM
                 consultas c
             LEFT JOIN profissionais p ON c.profissional_id = p.id
@@ -268,5 +267,65 @@ exports.listarConsultasProfissional = async (req, res) => {
         return res.status(500).json({
             mensagem: "Erro interno ao buscar histórico de consultas do profissional",
         });
+    }
+};
+
+// Endpoint único para listar consultas de usuário ou profissional
+exports.listarConsultas = async (req, res) => {
+    const userId = req.userId;
+    const userRole = req.userRole; // role extraído do token pelo middleware
+
+    if (!userId) {
+        return res.status(401).json({ mensagem: "Acesso não autorizado." });
+    }
+
+    try {
+        let query, params;
+        if (userRole === "profissional") {
+            query = `
+                SELECT
+                    c.id, c.nome, c.area_medica_desejada, c.data_e_hora,
+                    c.relatorio, c.usuario_id,
+                    u.nome AS usuario_nome
+                FROM consultas c
+                LEFT JOIN usuarios u ON c.usuario_id = u.id
+                WHERE c.profissional_id = $1
+                ORDER BY c.data_e_hora DESC
+            `;
+            params = [userId];
+        } else {
+            query = `
+                SELECT
+                    c.id, c.nome, c.area_medica_desejada, c.data_e_hora,
+                    c.relatorio, c.profissional_id,
+                    p.nome AS profissional_nome
+                FROM consultas c
+                LEFT JOIN profissionais p ON c.profissional_id = p.id
+                WHERE c.usuario_id = $1
+                ORDER BY c.data_e_hora DESC
+            `;
+            params = [userId];
+        }
+
+        const { rows } = await db.query(query, params);
+
+        // Adiciona campos de data formatada para o calendário
+        const consultas = rows.map(consulta => ({
+            ...consulta,
+            data_para_calendario: consulta.data_e_hora
+                ? consulta.data_e_hora.toISOString().split('T')[0]
+                : null,
+            data_para_exibicao: consulta.data_e_hora
+                ? new Date(consulta.data_e_hora).toLocaleDateString('pt-BR')
+                : null,
+            hora_para_exibicao: consulta.data_e_hora
+                ? new Date(consulta.data_e_hora).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })
+                : null,
+        }));
+
+        return res.status(200).json({ consultas });
+    } catch (err) {
+        console.error("Erro ao listar consultas:", err);
+        return res.status(500).json({ mensagem: "Erro interno ao buscar consultas" });
     }
 };

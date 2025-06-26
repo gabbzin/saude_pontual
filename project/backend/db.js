@@ -64,7 +64,7 @@ async function createTables() {
                 data_e_hora TIMESTAMP NOT NULL,
                 motivo TEXT NOT NULL,
                 descricao TEXT,
-                relatorio TEXT, // <-- nova coluna para relatório
+                relatorio TEXT,
                 created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
             );
         `);

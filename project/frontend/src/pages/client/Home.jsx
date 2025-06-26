@@ -1,7 +1,8 @@
-import { useContext, useState } from "react";
+import { useContext, useState, useEffect } from "react";
 import { Modal } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../../contexts/AuthContext";
+import { buscarConsultas } from "../../../api/api";
 // Assets
 import FundoLaranja from "../../assets/background_orange.jpg";
 import ButtonExit from "../../assets/button_exit_1.jpeg";
@@ -30,6 +31,7 @@ export default function Home() {
     const [modalButtons, setModalButtons] = useState(false);
     const [selectedDate, setSelectedDate] = useState("");
     const [consultas, setConsultas] = useState([]);
+    const [consultasCalendario, setConsultasCalendario] = useState([]);
 
     function showModal(dateStr, consultas) {
         const formattedDate = new Date(
@@ -56,6 +58,20 @@ export default function Home() {
         logout();
         navigate("/login");
     }
+
+    useEffect(() => {
+        async function fetchConsultas() {
+            try {
+                const data = await buscarConsultas();
+                if (data && data.consultas) {
+                    setConsultasCalendario(data.consultas);
+                }
+            } catch (error) {
+                console.error("Erro ao buscar consultas:", error);
+            }
+        }
+        fetchConsultas();
+    }, []);
 
     return (
         <div id="container">
@@ -167,7 +183,7 @@ export default function Home() {
                         </h1>
                     </div>
                     <div id="calendar" style={{ height: "100%" }}>
-                        <Calendar showModal={showModal} />
+                        <Calendar consultas={consultasCalendario} showModal={showModal} />
                     </div>
                 </main>
 
