@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-// import Dados from "../../dados.json";
 // Assets
 import BackButton from "../../assets/back_button.png";
 import Logo from "../../assets/logo_saude_pontual.png";
@@ -10,14 +9,13 @@ import Button from "../../components/Button";
 // Styles
 import "../../styles/historico.css";
 // Api
-import { buscarHistoricoConsultas } from "../../../api/api";
+import { buscarConsultas } from "../../../api/api";
 import { generateSaudePontualPdf } from "../../utils/pdfGenerator";
 
 export default function HistoricoPro() {
     const navigate = useNavigate();
     const [consultas, setConsultas] = useState([]);
     const [selectedConsulta, setSelectedConsulta] = useState(null);
-
     const [mensagem, setMensagem] = useState("");
     const [loading, setLoading] = useState(false);
 
@@ -26,7 +24,7 @@ export default function HistoricoPro() {
             setLoading(true);
             setMensagem("");
             try {
-                const data = await buscarHistoricoConsultas();
+                const data = await buscarConsultas();
                 if (data.consultas) {
                     setConsultas(data.consultas);
                     if (data.consultas.length > 0) {
@@ -34,10 +32,8 @@ export default function HistoricoPro() {
                     }
                 }
             } catch (error) {
-                console.error(
-                    "Erro ao buscar as consultas do profissional",
-                    error
-                );
+                setMensagem("Erro ao buscar consultas");
+                console.error("Erro ao buscar as consultas do profissional", error);
             } finally {
                 setLoading(false);
             }
@@ -60,7 +56,10 @@ export default function HistoricoPro() {
         setMensagem("");
 
         try {
-            const fileName = `Relatorio-${selectedConsulta.paciente_name.replace(/\s/g, "_")}.pdf`;
+            const nomeFormatado = (
+                selectedConsulta.usuario_nome || "paciente"
+            ).replace(/\s/g, "_");
+            const fileName = `Relatorio-${nomeFormatado}.pdf`;
 
             await generateSaudePontualPdf(selectedConsulta.relatorio, fileName);
         } catch (error) {
@@ -125,16 +124,19 @@ export default function HistoricoPro() {
                                 key={consulta.id || index}
                                 className={`tablerow ${
                                     selectedConsulta &&
-                                    selectedConsulta.protocolo ===
-                                        consulta.protocolo
+                                    selectedConsulta.id === consulta.id
                                         ? "selected"
                                         : ""
                                 }`}
                                 onClick={() => handleConsultaClick(consulta)}
                             >
-                                <td className="td">{consulta.paciente_name}</td>
-                                <td className="td">{consulta.data_para_exibicao}</td>
-                                <td className="td">{consulta.hora_para_exibicao}</td>
+                                <td className="td">{consulta.usuario_nome || "-"}</td>
+                                <td className="td">
+                                    {consulta.data_para_exibicao || "-"}
+                                </td>
+                                <td className="td">
+                                    {consulta.hora_para_exibicao || "-"}
+                                </td>
                                 <td className="td">{consulta.id}</td>
                             </tr>
                         ))}

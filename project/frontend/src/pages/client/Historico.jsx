@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { AuthContext } from "../../contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
-import { buscarHistoricoConsultas } from "../../../api/api";
+import { buscarConsultas } from "../../../api/api";
 // Assets
 import BackButton from "../../assets/back_button.png";
 import Logo from "../../assets/logo_saude_pontual.png";
@@ -22,7 +22,7 @@ export default function Historico() {
     useEffect(() => {
         async function fetchConsultas() {
             setLoading(true);
-            const data = await buscarHistoricoConsultas();
+            const data = await buscarConsultas();
             const lista = Array.isArray(data.consultas) ? data.consultas : [];
             setConsultas(lista);
             setSelectedConsulta(lista.length > 0 ? lista[0] : null);
@@ -42,17 +42,18 @@ export default function Historico() {
     }
 
     const handleDownloadRelatorio = async () => {
-        if (!selectedConsulta || !selectedConsulta.descricao) {
+        if (!selectedConsulta || !selectedConsulta.relatorio) {
             setMensagem("Selecione um relatório para baixar.");
             return;
         }
-
         setLoading(true);
         setMensagem("");
         try {
-            const nomeFormatado = selectedConsulta.paciente_nome.replace(/\s/g, "_");
+            const nomeFormatado = (selectedConsulta.nome || "consulta").replace(
+                /\s/g,
+                "_"
+            );
             const fileName = `Relatorio-${nomeFormatado}.pdf`;
-
             await generateSaudePontualPdf(selectedConsulta.relatorio, fileName);
         } catch (error) {
             console.error("Erro ao gerar o PDF:", error);
@@ -113,7 +114,8 @@ export default function Historico() {
                                     </td>
                                     <td className="td">
                                         {consulta.profissional_nome ||
-                                            consulta.profissional}
+                                            consulta.profissional ||
+                                            "-"}
                                     </td>
                                     <td className="td">
                                         {consulta.data_para_exibicao || "-"}
