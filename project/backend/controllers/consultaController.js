@@ -325,7 +325,7 @@ exports.cancelarConsulta = async (req, res) => {
         // Cancela (deleta) a consulta
         await db.query(`DELETE FROM consultas WHERE id = $1`, [consultaId]);
         return res.status(200).json({
-            mensagem: "Consulta cancelada com sucesso.",
+            id: Number(consultaId)
         });
     } catch (err) {
         console.error("Erro ao cancelar consulta:", err);

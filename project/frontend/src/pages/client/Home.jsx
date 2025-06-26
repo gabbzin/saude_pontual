@@ -68,12 +68,14 @@ export default function Home() {
         try {
             const result = await cancelarConsulta(consultaId);
 
-            if (result.success) {
+            if (result.id) {
                 setConsultas(prevConsultas => prevConsultas.filter(c => c.id !== consultaId));
                 setConsultasCalendario(prevConsultas => prevConsultas.filter(c => c.id !== consultaId));
                 alert("Consulta cancelada com sucesso.");
+            } else if (result.error) {
+                alert("Erro ao cancelar a consulta: " + result.error);
             } else {
-                alert("Erro ao cancelar a consulta: " + result.message);
+                alert("Erro desconhecido ao cancelar a consulta.");
             }
         } catch (error) {
             console.error("Erro ao cancelar consulta:", error);

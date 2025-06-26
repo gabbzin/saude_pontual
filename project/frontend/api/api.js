@@ -141,7 +141,21 @@ export async function cancelarConsulta(idConsulta) {
             Authorization: `Bearer ${token}`,
         },
     });
-    return res.json();
+    let data;
+    try {
+        data = await res.json();
+    } catch (e) {
+        return { error: "Resposta inválida do servidor." };
+    }
+    if (res.ok && data && data.id) {
+        return { id: data.id };
+    } else if (data && data.mensagem) {
+        return { error: data.mensagem };
+    } else if (data && data.error) {
+        return { error: data.error };
+    } else {
+        return { error: "Erro desconhecido ao cancelar consulta." };
+    }
 }
 
 export async function listarTodosUsuarios() {
