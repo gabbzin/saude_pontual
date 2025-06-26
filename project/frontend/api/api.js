@@ -120,3 +120,14 @@ export async function buscarConsultasProfissional() {
     });
     return res.json();
 }
+
+export async function buscarConsultas() {
+    const token = localStorage.getItem("token");
+    const res = await fetch("http://localhost:3001/api/consultas", {
+        method: "GET",
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
+    });
+    return res.json();
+}

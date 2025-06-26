@@ -14,7 +14,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "../../styles/calendario.css";
 import "../../styles/homepro.css";
 // api
-import { buscarHistoricoConsultas, adicionarRelatorioConsulta} from "../../../api/api";
+import { buscarConsultas, adicionarRelatorioConsulta } from "../../../api/api";
 
 export default function HomePro() {
     const [modalCalendarVisible, setModalCalendarVisible] = useState(false);
@@ -31,6 +31,7 @@ export default function HomePro() {
     const [selectedConsultaId, setSelectedConsultaId] = useState("");
     const [relatorioText, setRelatorioText] = useState("");
     const [mensagem, setMensagem] = useState("");
+    const [consultasCalendario, setConsultasCalendario] = useState([]);
 
     function logoutUser() {
         logout();
@@ -41,15 +42,14 @@ export default function HomePro() {
     useEffect(() => {
         const fetchConsultas = async () => {
             try {
-                const data = await buscarHistoricoConsultas();
-                if(data.consultas){
-                    setConsultasDoDia(data.consultas);
+                const data = await buscarConsultas();
+                if (data && data.consultas) {
+                    setConsultasCalendario(data.consultas);
                 }
-            }
-            catch (error) {
+            } catch (error) {
                 console.error("Erro ao buscar as consultas do profissional", error);
             }
-        }
+        };
 
         fetchConsultas();
     }, []);
@@ -244,7 +244,7 @@ export default function HomePro() {
                 </section>
                 <section id="calendar_history_section">
                     <div id="calendar_pro">
-                        <Calendar consultas={consultas} showModal={showModal} />
+                        <Calendar consultas={consultasCalendario} showModal={showModal} />
                     </div>
                 </section>
             </main>
