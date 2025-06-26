@@ -131,3 +131,14 @@ export async function buscarConsultas() {
     });
     return res.json();
 }
+
+export async function buscarConsultasPet() {
+    const token = localStorage.getItem("token");
+    const res = await fetch("http://localhost:3001/api/consultas-pet/me", {
+        method: "GET",
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
+    });
+    return res.json();
+}
