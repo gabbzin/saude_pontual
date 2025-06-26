@@ -2,26 +2,22 @@ const express = require("express");
 const router = express.Router();
 const {
   criarConsulta,
-  listarConsultasUsuario,
+  listarConsultas,
   buscarProfissionalPorArea,
   buscarConsultas,
   atualizarRelatorioConsulta,
-  listarConsultasProfissional,
 } = require("../controllers/consultaController");
 const { verifyToken } = require("../middleware/authMiddleware");
 
 // Rota para criar uma nova consulta (mantendo o endpoint /fichapessoa por compatibilidade com o frontend)
 router.post("/fichapessoa", verifyToken, criarConsulta);
 
-// Rota para listar o histórico de consultas do usuário logado
-router.get("/consultas/historico", verifyToken, listarConsultasUsuario);
+// Rota única para listar consultas do usuário ou profissional autenticado
+router.get("/consultas", verifyToken, listarConsultas);
 
 router.get("/historico", verifyToken, buscarConsultas);
 router.put("/relatorio", verifyToken, atualizarRelatorioConsulta);
 
 router.get("/profissionais/buscar", buscarProfissionalPorArea);
-
-// Rota para listar consultas do profissional autenticado
-router.get("/consultas/profissional", verifyToken, listarConsultasProfissional);
 
 module.exports = router;
