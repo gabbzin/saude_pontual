@@ -211,7 +211,7 @@ exports.buscarConsultas = async (req, res) => {
 exports.atualizarRelatorioConsulta = async (req, res) => {
     const idConsulta = req.params.id;
     const { relatorio } = req.body;
-    const query = "UPDATE tb_consulta SET `descricao` = ? where ID = ?";
+    const query = "UPDATE consultas SET relatorio = $1 where ID = $2";
 
     db.query(query, [relatorio, idConsulta], (err, data) => {
         if (err) {

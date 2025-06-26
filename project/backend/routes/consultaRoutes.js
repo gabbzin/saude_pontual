@@ -16,7 +16,7 @@ router.post("/fichapessoa", verifyToken, criarConsulta);
 router.get("/consultas", verifyToken, listarConsultas);
 
 router.get("/historico", verifyToken, buscarConsultas);
-router.put("/relatorio", verifyToken, atualizarRelatorioConsulta);
+router.put("/consultas/relatorio/:id", verifyToken, atualizarRelatorioConsulta);
 
 router.get("/profissionais/buscar", buscarProfissionalPorArea);
 

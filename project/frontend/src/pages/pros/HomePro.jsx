@@ -95,6 +95,11 @@ export default function HomePro() {
             const result = await adicionarRelatorioConsulta(selectedConsultaId, { relatorio: relatorioText });
             setMensagem(result.mensagem);
             if (result.mensagem && result.mensagem.toLowerCase().includes('sucesso')) {
+
+                setRelatorioText("");
+                setSelectedConsultaId("");
+                setNomePacienteInput("");
+
                 // Atualiza a lista local para o relatório aparecer sem precisar recarregar a página
                 const consultasAtualizadas = consultas.map(c => 
                     c.id.toString() === selectedConsultaId ? { ...c, relatorio: relatorioText } : c
@@ -200,7 +205,7 @@ export default function HomePro() {
                         disabled={!selectedConsultaId || loading}
                     ></textarea>
 
-                    {mensagem && <p className="mt-2" style={{ color: mensagem.includes('sucesso') ? 'green' : 'red' }}>{mensagem}</p>}
+                    {mensagem && <p className="mt-2 text-center fs-5" style={{ color: mensagem.includes('sucesso') ? 'green' : 'red' }}>{mensagem}</p>}
 
                     <div style={{ display: 'flex', justifyContent: "center" }}>
                         <Button

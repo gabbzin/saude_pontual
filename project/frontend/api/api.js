@@ -88,7 +88,7 @@ export async function buscarHistoricoConsultas() {
 
 export async function adicionarRelatorioConsulta(idConsulta, dados) {
     const token = localStorage.getItem("token");
-    const res = await fetch(`http://localhost:3001/api/consultas/${idConsulta}/relatorio`, {
+    const res = await fetch(`http://localhost:3001/api/consultas/relatorio/${idConsulta}`, {
         method: "PUT",
         headers: {
             "Content-Type": "application/json",
