@@ -11,7 +11,6 @@ import Dados from "../../dados.json";
 import "../../styles/fichas.css";
 
 export default function FichaPessoa() {
-
     function getDataHojeLocal() {
         const hoje = new Date();
         const ano = hoje.getFullYear();
@@ -33,40 +32,97 @@ export default function FichaPessoa() {
         data_e_hora: "", // Para data + hora combinadas
         motivo: "",
     });
+    const [erro, setErro] = useState("");
+    const [tentouSubmit, setTentouSubmit] = useState(false);
 
     const navigate = useNavigate();
 
     function handleChange(e) {
         let { name, value } = e.target;
-
-        if(name === "peso" || name === "altura"){ // Pode dar erro, caso os números flutuantes venham com virgula
+        if(name === "peso" || name === "altura"){
             value = value.replace(",", ".");
         }
-
         setFormData((prev) => ({ ...prev, [name]: value }));
+        // Limpa erro ao corrigir campo
+        if (tentouSubmit) {
+            setErro("");
+        }
+    }
+
+    function validarCampos() {
+        const obrigatorios = [
+            "nome",
+            "peso",
+            "altura",
+            "tipo_sanguineo",
+            "historico_de_saude",
+            "area_medica_desejada",
+            "motivo",
+            "data_e_hora",
+            "horario"
+        ];
+        for (const campo of obrigatorios) {
+            if (!formData[campo] || String(formData[campo]).trim() === "") {
+                setErro(`O campo '${campo.replace(/_/g, ' ')}' é obrigatório.`);
+                return false;
+            }
+        }
+        const data = formData.data_e_hora;
+        const hora = formData.horario;
+        if (!/^\d{4}-\d{2}-\d{2}$/.test(data)) {
+            setErro("Data inválida. Use o formato AAAA-MM-DD.");
+            return false;
+        }
+        if (!/^\d{2}:\d{2}$/.test(hora)) {
+            setErro("Horário inválido. Use o formato HH:mm.");
+            return false;
+        }
+        if (isNaN(Number(formData.peso)) || isNaN(Number(formData.altura))) {
+            setErro("Peso e altura devem ser números válidos.");
+            return false;
+        }
+        setErro("");
+        return true;
+    }
+
+    function camposObrigatoriosPreenchidos() {
+        const obrigatorios = [
+            "nome",
+            "peso",
+            "altura",
+            "tipo_sanguineo",
+            "historico_de_saude",
+            "area_medica_desejada",
+            "motivo",
+            "data_e_hora",
+            "horario"
+        ];
+        return obrigatorios.every((campo) => formData[campo] && String(formData[campo]).trim() !== "");
     }
 
     async function handleSubmit(e) {
         e.preventDefault();
-
-        const dataHora = formData.data_e_hora || "";
-        const horario = formData.horario || "";
-        const dataHoraCompleta = horario ? `${dataHora}T${horario}` : dataHora;
-
+        setTentouSubmit(true);
+        if (!validarCampos()) return;
+        const dataHoraCompleta = `${formData.data_e_hora}T${formData.horario}`;
         try {
             const result = await cadastrarConsulta({
                 ...formData,
+                peso: Number(formData.peso),
+                altura: Number(formData.altura),
                 data_e_hora: dataHoraCompleta,
             });
-
-            if (result.mensagem) {
-                alert(result.mensagem);
-                navigate("/"); // Navega para a home (ou onde quiser)
+            if (result.consulta || result.mensagem) {
+                setErro("");
+                alert(result.mensagem || "Consulta cadastrada com sucesso!");
+                navigate("/");
+            } else if (result.error || result.erro) {
+                setErro(result.error || result.erro);
             } else {
-                alert("Erro ao cadastrar a consulta");
+                setErro("Erro ao cadastrar a consulta");
             }
         } catch (error) {
-            alert("Erro na requisição: " + error.message);
+            setErro("Erro na requisição: " + error.message);
         }
     }
 
@@ -87,6 +143,9 @@ export default function FichaPessoa() {
             </div>
             <main id="ficha">
                 <h1>PREENCHA A FICHA:</h1>
+                {tentouSubmit && erro && (
+                    <div style={{ color: "red", marginBottom: 10 }}>{erro}</div>
+                )}
                 <form method="POST" onSubmit={handleSubmit}>
                     <FormInputSchedule
                         id={"nome"}
@@ -214,7 +273,10 @@ export default function FichaPessoa() {
                                 fontFamily: "Passion One",
                                 fontSize: "1.5em",
                                 width: "50%",
+                                opacity: camposObrigatoriosPreenchidos() ? 1 : 0.5,
+                                cursor: camposObrigatoriosPreenchidos() ? "pointer" : "not-allowed"
                             }}
+                            disabled={!camposObrigatoriosPreenchidos()}
                         />
                     </div>
                 </form>
