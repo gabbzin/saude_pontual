@@ -11,8 +11,7 @@ exports.criarConsulta = async (req, res) => {
         area_medica_desejada,
         data_e_hora,
         motivo,
-    } = req.body; // Alterado de motivo: motivo_da_consulta para motivo
-
+    } = req.body;
     const usuario_id = req.userId;
 
     if (!usuario_id) {
@@ -37,7 +36,6 @@ exports.criarConsulta = async (req, res) => {
             .json({ error: "Preencha todos os campos obrigatórios." });
     }
 
-    // verifica se já tem consulta marcada no mesmo horário para o profissional
     try {
         // Buscar profissional disponível para a especialidade e horário
         const { rows: profissionais } = await db.query(
