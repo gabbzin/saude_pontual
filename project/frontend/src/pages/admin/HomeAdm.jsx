@@ -156,16 +156,16 @@ export default function HomeAdm() {
     };
 
     // Lógica para abrir o modal de edição
-    const handleEditarUsuario = () => {
-        if (!usuarioSelecionado) return;
-        // Futuramente, você pode pré-preencher um formulário de edição aqui.
-        if (usuarioSelecionado.crm) {
-            setShowModalProEdit(true);
-        } else {
-            alert("A edição de cliente ainda não foi implementada.");
-            // setShowModalClientEdit(true);
-        }
-    };
+    // const handleEditarUsuario = () => {
+    //     if (!usuarioSelecionado) return;
+    //     // Futuramente, você pode pré-preencher um formulário de edição aqui.
+    //     if (usuarioSelecionado.crm) {
+    //         setShowModalProEdit(true);
+    //     } else {
+    //         alert("A edição de cliente ainda não foi implementada.");
+    //         // setShowModalClientEdit(true);
+    //     }
+    // };
 
     return (
         <>
@@ -345,7 +345,7 @@ export default function HomeAdm() {
                         >
                             Deletar Profissional
                         </Button>
-                        <Button
+                        {/* <Button
                             id="action-button-adm"
                             onClick={handleEditarUsuario}
                             disabled={
@@ -355,7 +355,7 @@ export default function HomeAdm() {
                             }
                         >
                             Editar Profissional
-                        </Button>
+                        </Button> */}
                     </div>
                 </section>
             </main>

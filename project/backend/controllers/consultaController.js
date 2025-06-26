@@ -1,7 +1,6 @@
 const { db } = require("../db");
 
 exports.criarConsulta = async (req, res) => {
-    // data_e_hora é esperado como uma string combinada (ex: "YYYY-MM-DDTHH:mm")
     const {
         nome,
         peso,
@@ -14,109 +13,66 @@ exports.criarConsulta = async (req, res) => {
     } = req.body;
     const usuario_id = req.userId;
 
-    if (!usuario_id) {
-        return res.status(401).json({
-            error: "Acesso não autorizado. Token inválido ou ausente.",
-        });
-    }
-
-    //campos "obrigatórios"
-    if (
-        !nome ||
-        !peso ||
-        !altura ||
-        !tipo_sanguineo ||
-        !historico_de_saude ||
-        !area_medica_desejada ||
-        !data_e_hora ||
-        !motivo
-    ) {
+    if (!area_medica_desejada || !data_e_hora) {
         return res
             .status(400)
-            .json({ error: "Preencha todos os campos obrigatórios." });
+            .json({ mensagem: "Área médica e data/hora são obrigatórios." });
     }
 
     try {
-        // Buscar profissional disponível para a especialidade e horário
-        const { rows: profissionais } = await db.query(
-            `SELECT id FROM profissionais WHERE especialidade ILIKE $1`,
-            [`%${area_medica_desejada}%`]
+        // Lógica para encontrar profissional disponível (continua a mesma)
+        const { rows: profissionaisDisponiveis } = await db.query(
+            `
+            SELECT p.id FROM profissionais p
+            LEFT JOIN consultas c ON p.id = c.profissional_id AND c.data_e_hora = $2
+            WHERE p.especialidade ILIKE $1 AND c.id IS NULL
+            LIMIT 1;
+            `,
+            [`%${area_medica_desejada}%`, data_e_hora]
         );
-        if (profissionais.length === 0) {
-            return res.status(404).json({
+
+        if (profissionaisDisponiveis.length === 0) {
+            return res.status(409).json({
                 mensagem:
-                    "Nenhum profissional disponível para essa especialidade.",
+                    "Nenhum profissional desta especialidade está disponível neste horário.",
             });
         }
 
-        // Verifica disponibilidade de cada profissional
-        let profissionalDisponivel = null;
-        for (const prof of profissionais) {
-            const { rows: consultasProf } = await db.query(
-                `SELECT id FROM consultas WHERE profissional_id = $1 AND data_e_hora = $2`,
-                [prof.id, data_e_hora]
-            );
-            if (consultasProf.length === 0) {
-                profissionalDisponivel = prof.id;
-                break;
-            }
-        }
-        if (!profissionalDisponivel) {
-            return res
-                .status(409)
-                .json({
-                    mensagem: "Nenhum profissional disponível nesse horário.",
-                });
-        }
+        const profissionalId = profissionaisDisponiveis[0].id;
 
-        // Validação de horário: só permite agendamento entre 08:00 e 18:00 (exemplo)
-        const hora = new Date(data_e_hora).getHours();
-        if (hora < 8 || hora > 18) {
-            return res.status(400).json({
-                mensagem: "Horário fora do expediente (08:00-18:00).",
-            });
-        }
-
-        // Insere consulta no banco
+        // INSERÇÃO CORRIGIDA: sem o campo 'idade'
         const { rows } = await db.query(
             `INSERT INTO consultas (
-                usuario_id,
-                profissional_id,
-                nome,
-                peso,
-                altura,
-                tipo_sanguineo,
-                historico_de_saude,
-                area_medica_desejada,
-                data_e_hora,
-                motivo
+                usuario_id, profissional_id, nome, peso, altura, tipo_sanguineo,
+                historico_de_saude, area_medica_desejada, data_e_hora, motivo
             )
             VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)
             RETURNING *`,
             [
-                usuario_id,
-                profissionalDisponivel,
-                nome,
-                peso,
-                altura,
-                tipo_sanguineo,
-                historico_de_saude,
-                area_medica_desejada,
-                data_e_hora,
-                motivo,
+                usuario_id, // $1
+                profissionalId, // $2
+                nome, // $3
+                peso, // $4
+                altura, // $5
+                tipo_sanguineo, // $6
+                historico_de_saude, // $7
+                area_medica_desejada, // $8
+                data_e_hora, // $9
+                motivo, // $10
             ]
         );
 
-        // retorna a consulta criada
-        return res.status(201).json({ consulta: rows[0] });
+        return res.status(201).json({
+            mensagem: "Consulta agendada com sucesso!",
+            consulta: rows[0],
+        });
     } catch (err) {
-        console.error("Erro ao criar consulta:", err);
-        if (err.code === "23505") {
-            return res.status(409).json({ mensagem: "Horário já agendado" });
-        }
+        console.error("Erro CRÍTICO ao criar consulta:", err);
         return res
             .status(500)
-            .json({ mensagem: "Erro interno ao criar consulta" });
+            .json({
+                mensagem: "Erro interno no servidor ao agendar consulta.",
+            });
     }
 };
 
@@ -202,9 +158,12 @@ exports.buscarConsultas = async (req, res) => {
             WHERE c.id_profissional = ? ORDER BY c.data_consulta DESC, c.hora_consulta ASC`;
 
     db.query(query, [profissional_id], (err, data) => {
-        if (err) return res.status(500).json({mensagem: "Erro ao buscar consultas."});
+        if (err)
+            return res
+                .status(500)
+                .json({ mensagem: "Erro ao buscar consultas." });
 
-        return res.status(200).json({consultas: data})
+        return res.status(200).json({ consultas: data });
     });
 };
 
@@ -216,14 +175,20 @@ exports.atualizarRelatorioConsulta = async (req, res) => {
     db.query(query, [relatorio, idConsulta], (err, data) => {
         if (err) {
             console.error("Erro ao atualizar relatório da consulta:", err);
-            return res.status(500).json({ mensagem: "Erro ao atualizar relatório." });
+            return res
+                .status(500)
+                .json({ mensagem: "Erro ao atualizar relatório." });
         }
 
         if (data.affectedRows === 0) {
-            return res.status(404).json({ mensagem: "Consulta não encontrada." });
+            return res
+                .status(404)
+                .json({ mensagem: "Consulta não encontrada." });
         }
 
-        return res.status(200).json({ mensagem: "Relatório atualizado com sucesso." });
+        return res
+            .status(200)
+            .json({ mensagem: "Relatório atualizado com sucesso." });
     });
 };
 
@@ -259,7 +224,8 @@ exports.listarConsultasProfissional = async (req, res) => {
     } catch (err) {
         console.error("Erro ao listar consultas do profissional:", err);
         return res.status(500).json({
-            mensagem: "Erro interno ao buscar histórico de consultas do profissional",
+            mensagem:
+                "Erro interno ao buscar histórico de consultas do profissional",
         });
     }
 };
@@ -304,23 +270,28 @@ exports.listarConsultas = async (req, res) => {
         const { rows } = await db.query(query, params);
 
         // Adiciona campos de data formatada para o calendário
-        const consultas = rows.map(consulta => ({
+        const consultas = rows.map((consulta) => ({
             ...consulta,
             data_para_calendario: consulta.data_e_hora
-                ? consulta.data_e_hora.toISOString().split('T')[0]
+                ? consulta.data_e_hora.toISOString().split("T")[0]
                 : null,
             data_para_exibicao: consulta.data_e_hora
-                ? new Date(consulta.data_e_hora).toLocaleDateString('pt-BR')
+                ? new Date(consulta.data_e_hora).toLocaleDateString("pt-BR")
                 : null,
             hora_para_exibicao: consulta.data_e_hora
-                ? new Date(consulta.data_e_hora).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })
+                ? new Date(consulta.data_e_hora).toLocaleTimeString("pt-BR", {
+                      hour: "2-digit",
+                      minute: "2-digit",
+                  })
                 : null,
         }));
 
         return res.status(200).json({ consultas });
     } catch (err) {
         console.error("Erro ao listar consultas:", err);
-        return res.status(500).json({ mensagem: "Erro interno ao buscar consultas" });
+        return res
+            .status(500)
+            .json({ mensagem: "Erro interno ao buscar consultas" });
     }
 };
 
@@ -336,9 +307,9 @@ exports.cancelarConsulta = async (req, res) => {
             [consultaId, usuario_id]
         );
         if (rows.length === 0) {
-          return res.status(404).json({
-            mensagem: "Consulta não encontrada para este usuário." 
-          });
+            return res.status(404).json({
+                mensagem: "Consulta não encontrada para este usuário.",
+            });
         }
         const consulta = rows[0];
         const dataConsulta = new Date(consulta.data_e_hora);
@@ -347,18 +318,19 @@ exports.cancelarConsulta = async (req, res) => {
         const diffHoras = diffMs / (1000 * 60 * 60);
         if (diffHoras < 12) {
             return res.status(400).json({
-              mensagem: "Só é possível cancelar consultas com pelo menos 12 horas de antecedência." 
+                mensagem:
+                    "Só é possível cancelar consultas com pelo menos 12 horas de antecedência.",
             });
         }
         // Cancela (deleta) a consulta
         await db.query(`DELETE FROM consultas WHERE id = $1`, [consultaId]);
-        return res.status(200).json({ 
-          mensagem: "Consulta cancelada com sucesso." 
+        return res.status(200).json({
+            mensagem: "Consulta cancelada com sucesso.",
         });
     } catch (err) {
         console.error("Erro ao cancelar consulta:", err);
-        return res.status(500).json({ 
-          mensagem: "Erro interno ao cancelar consulta."
+        return res.status(500).json({
+            mensagem: "Erro interno ao cancelar consulta.",
         });
     }
 };

@@ -75,46 +75,49 @@ exports.cadastrarProfissional = async (req, res) => {
 };
 
 // Função para fazer login do profissional
+// No seu arquivo profissionalController.js
+
 exports.loginProfissional = async (req, res) => {
     const { email, senha } = req.body;
+    console.log(`\n--- [DEBUG] Tentativa de login para o profissional: ${email} ---`);
 
     if (!email || !senha) {
-        return res
-            .status(400)
-            .json({ mensagem: "Email e senha são obrigatórios." });
+        return res.status(400).json({ mensagem: "Email e senha são obrigatórios." });
     }
 
     try {
+        // 1. Buscando o profissional pelo email
         const { rows } = await db.query(
-            "SELECT id, nome, email, senha, especialidade, crm, telefone FROM profissionais WHERE email = $1",
+            "SELECT id, nome, email, senha FROM profissionais WHERE email = $1",
             [email]
         );
         const profissional = rows[0];
 
+        // 2. Verificando se o profissional foi encontrado
         if (!profissional) {
-            return res
-                .status(401)
-                .json({ mensagem: "Email ou senha inválidos." });
+            console.log("[DEBUG] Resultado: NENHUM profissional encontrado com esse email.");
+            return res.status(401).json({ mensagem: "Email ou senha inválidos." });
         }
+        console.log(`[DEBUG] Resultado: Profissional encontrado -> ${profissional.nome} (ID: ${profissional.id})`);
 
+        // 3. Comparando a senha enviada com a senha "hasheada" no banco
+        console.log("[DEBUG] Comparando senhas agora...");
         const senhaValida = await bcrypt.compare(senha, profissional.senha);
+
+        // 4. Verificando se a senha bate
         if (!senhaValida) {
-            return res
-                .status(401)
-                .json({ mensagem: "Email ou senha inválidos." });
+            console.log("[DEBUG] Resultado: A comparação de senhas FALHOU. Senha incorreta.");
+            return res.status(401).json({ mensagem: "Email ou senha inválidos." });
         }
 
-        const { senha: _, ...prof } = profissional;
+        console.log("[DEBUG] Resultado: Senha CORRETA! Login autorizado, gerando token...");
 
+        // Se passou por tudo, o login é um sucesso
+        const { senha: _, ...prof } = profissional;
         const token = jwt.sign(
-            {
-                id: prof.id,
-                email: prof.email,
-                nome: prof.nome,
-                role: "profissional",
-            },
+            { id: prof.id, email: prof.email, nome: prof.nome, role: "profissional" },
             SECRET_KEY,
-            { expiresIn: "1h" } // Token para profissionais pode ter uma expiração diferente se necessário
+            { expiresIn: "1h" }
         );
 
         return res.status(200).json({
@@ -122,11 +125,10 @@ exports.loginProfissional = async (req, res) => {
             profissional: prof,
             token,
         });
+
     } catch (err) {
-        console.error("Erro ao fazer login do profissional:", err);
-        return res
-            .status(500)
-            .json({ mensagem: "Erro interno ao realizar login." });
+        console.error("Erro CRÍTICO no login do profissional:", err);
+        return res.status(500).json({ mensagem: "Erro interno ao realizar login." });
     }
 };
 
