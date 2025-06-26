@@ -2,7 +2,7 @@ const express = require("express");
 const cors = require("cors");
 const dotenv = require("dotenv");
 const usuarioRoutes = require("./routes/usuarioRoutes.js");
-const consultaPetRoutes = require("./routes/consultaPetRoutes.js");
+// const consultaPetRoutes = require("./routes/consultaPetRoutes.js");
 const profissionalRoutes = require("./routes/profissionalRoutes.js");
 const consultaRoutes = require("./routes/consultaRoutes.js");
 const adminRoutes = require("./routes/adminRoutes.js");
@@ -23,7 +23,7 @@ app.use("/health", (req, res) => {
 app.use(cors());
 app.use(express.json());
 app.use("/api", usuarioRoutes);
-app.use("/api", consultaPetRoutes);
+// app.use("/api", consultaPetRoutes);
 app.use("/api", profissionalRoutes);
 app.use("/api", consultaRoutes);
 app.use("/api", adminRoutes)
