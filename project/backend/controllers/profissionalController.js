@@ -130,6 +130,8 @@ exports.loginProfissional = async (req, res) => {
     }
 };
 
+// No seu arquivo profissionalController.js
+
 exports.deletarProfissional = async (req, res) => {
     const profissionalId = req.params.id;
     if (!profissionalId) {
@@ -139,18 +141,19 @@ exports.deletarProfissional = async (req, res) => {
     }
 
     try {
-        const { rows } = await db.query(
+        const { rowCount } = await db.query(
             "DELETE FROM profissionais WHERE id = $1",
             [profissionalId]
         );
-        if (rows.length === 0) {
+
+        if (rowCount === 0) {
             return res.status(404).json({
                 mensagem: "Profissional não encontrado.",
             });
         }
-        return res.status(200).json({
-            mensagem: "Profissional deletado com sucesso.",
-        });
+
+        return res.status(204).send();
+
     } catch (err) {
         console.error("Erro ao deletar profissional:", err);
         return res.status(500).json({

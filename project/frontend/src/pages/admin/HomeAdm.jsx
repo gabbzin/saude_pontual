@@ -336,17 +336,25 @@ export default function HomeAdm() {
                     <div id="button-actions-adm">
                         <Button
                             id="action-button-adm"
-                            onClick={handleEditarUsuario}
-                            disabled={!usuarioSelecionado || loading}
-                            >
-                            Editar
+                            onClick={handleDeletarUsuario}
+                            disabled={
+                                !usuarioSelecionado ||
+                                loading ||
+                                !usuarioSelecionado.crm
+                            }
+                        >
+                            Deletar Profissional
                         </Button>
                         <Button
                             id="action-button-adm"
-                            onClick={handleDeletarUsuario}
-                            disabled={!usuarioSelecionado || loading}
-                            >
-                            Deletar
+                            onClick={handleEditarUsuario}
+                            disabled={
+                                !usuarioSelecionado ||
+                                loading ||
+                                !usuarioSelecionado.crm
+                            }
+                        >
+                            Editar Profissional
                         </Button>
                     </div>
                 </section>

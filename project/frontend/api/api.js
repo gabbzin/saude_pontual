@@ -158,14 +158,48 @@ export async function listarTodosUsuarios() {
 
 export async function deletarProfissional(idProfissional) {
     const token = localStorage.getItem("token");
-    const res = await fetch(`http://localhost:3001/api/profissionais/${idProfissional}`, {
-        method: "DELETE",
-        headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "application/json",
+    console.log(`1. ENVIANDO DELETE para /profissionais/${idProfissional}`);
+
+    try {
+        const res = await fetch(`http://localhost:3001/api/profissionais/${idProfissional}`, {
+            method: "DELETE",
+            headers: {
+                Authorization: `Bearer ${token}`,
+            }
+        });
+
+        console.log(`2. RESPOSTA RECEBIDA! Status: ${res.status} (${res.statusText})`);
+
+        // Vamos clonar a resposta para poder ler de duas formas diferentes
+        const resClone = res.clone();
+
+        try {
+            // Tenta ler o texto da resposta
+            const text = await resClone.text();
+            console.log("3. CONTEÚDO DA RESPOSTA (TEXTO):", `"${text}"`); // Aspas para ver se é uma string vazia
+
+            // Agora tenta ler como JSON
+            const json = await res.json();
+            console.log("4. CONTEÚDO DA RESPOSTA (JSON):", json);
+            return json; // Retorna o JSON se conseguir ler
+
+        } catch (jsonError) {
+            // Se falhar ao ler o JSON (provavelmente porque o corpo é vazio),
+            // mas o status for de sucesso, nós consideramos sucesso.
+            console.error("5. ERRO AO LER JSON:", jsonError.message);
+            if (res.ok) { // res.ok é true para status 200-299
+                console.log("6. A RESPOSTA ERA VAZIA, MAS O STATUS FOI OK. Consideramos SUCESSO.");
+                return { sucesso: true, message: "Operação bem-sucedida." };
+            } else {
+                // Se o status for de erro, lançamos um erro.
+                throw new Error("Resposta do servidor não era JSON e o status era de erro.");
+            }
         }
-    });
-    return res.json();
+
+    } catch (networkError) {
+        console.error("ERRO DE REDE:", networkError);
+        throw networkError; // Re-lança o erro para o componente pegar
+    }
 }
 
 // export async function buscarConsultasPet() {
