@@ -64,6 +64,7 @@ async function createTables() {
                 data_e_hora TIMESTAMP NOT NULL,
                 motivo TEXT NOT NULL,
                 descricao TEXT,
+                relatorio TEXT, // <-- nova coluna para relatório
                 created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
             );
         `);
@@ -75,6 +76,13 @@ async function createTables() {
             ADD COLUMN IF NOT EXISTS profissional_id INTEGER REFERENCES profissionais(id);
         `);
         console.log("Coluna 'profissional_id' verificada/adicionada à tabela consultas.");
+
+        // Adiciona coluna relatorio se não existir
+        await client.query(`
+            ALTER TABLE consultas
+            ADD COLUMN IF NOT EXISTS relatorio TEXT;
+        `);
+        console.log("Coluna 'relatorio' verificada/adicionada à tabela consultas.");
 
         // Criação da tabela de consultas_pet se não existir
         await client.query(`
