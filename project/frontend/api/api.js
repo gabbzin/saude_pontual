@@ -144,6 +144,30 @@ export async function cancelarConsulta(idConsulta) {
     return res.json();
 }
 
+export async function listarTodosUsuarios() {
+    const token = localStorage.getItem("token");
+    const res = await fetch(`http://localhost:3001/api/usuarios`, {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`
+        },
+    });
+    return res.json();
+};
+
+export async function deletarProfissional(idProfissional) {
+    const token = localStorage.getItem("token");
+    const res = await fetch(`http://localhost:3001/api/profissionais/${idProfissional}`, {
+        method: "DELETE",
+        headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+        }
+    });
+    return res.json();
+}
+
 // export async function buscarConsultasPet() {
 //     const token = localStorage.getItem("token");
 //     const res = await fetch("http://localhost:3001/api/consultas-pet/me", {

@@ -1,49 +1,59 @@
-import { useState } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { Modal } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
-import { cadastrarProfissional } from "../../../api/api";
-// Assets
+
+import {
+    cadastrarProfissional,
+    listarTodosUsuarios,
+    deletarProfissional,
+} from "../../../api/api";
+
+// Assets, Components, Styles
 import BackButton from "../../assets/back_button.png";
 import FundoVerde from "../../assets/background_green.jpg";
-// Components
 import Background from "../../components/Background";
 import Button from "../../components/Button";
 import FormInput from "../../components/FormInput";
-// Styles
+import Dados from "../../dados.json"; // Usado no formulário
 import "./homeadm.css";
-import Dados from "../../dados.json";
 
 export default function HomeAdm() {
     const navigate = useNavigate();
 
-    const [showModalProEdit, setShowModalProEdit] = useState(false);
-    const [showModalClientEdit, setShowModalClientEdit] = useState(false);
-
-    // Estado para os campos do formulário de cadastro de profissional
+    // --- ESTADOS PARA O CADASTRO DE PROFISSIONAL ---
     const [form, setForm] = useState({
         nome: "",
         area: "",
         telefone: "",
         email: "",
         crm: "",
-        senha: ""
+        senha: "",
     });
     const [cadastroMsg, setCadastroMsg] = useState("");
     const [cadastroErro, setCadastroErro] = useState("");
 
-    // Atualiza campo do formulário
+    // --- ESTADOS PARA A BUSCA E GERENCIAMENTO DE USUÁRIOS ---
+    const [loading, setLoading] = useState(false);
+    const [todosUsuarios, setTodosUsuarios] = useState([]);
+    const [termoBusca, setTermoBusca] = useState("");
+    const [usuarioSelecionado, setUsuarioSelecionado] = useState(null);
+
+    // --- ESTADOS DOS MODAIS ---
+    const [showModalProEdit, setShowModalProEdit] = useState(false);
+    // const [showModalClientEdit, setShowModalClientEdit] = useState(false); // Descomente se for usar
+
+    // --- LÓGICA DE CADASTRO (EXISTENTE) ---
     function handleChange(e) {
         const { name, value } = e.target;
         setForm((prev) => ({ ...prev, [name]: value }));
     }
 
-    // Submete cadastro de profissional
     async function handleSubmit(e) {
         e.preventDefault();
         setCadastroMsg("");
         setCadastroErro("");
+        setLoading(true);
         try {
-            // Limpa o telefone para conter apenas dígitos
             const telefoneLimpo = form.telefone.replace(/\D/g, "");
             const result = await cadastrarProfissional({
                 nome: form.nome,
@@ -51,45 +61,128 @@ export default function HomeAdm() {
                 crm: form.crm,
                 email: form.email,
                 senha: form.senha,
-                telefone: telefoneLimpo
+                telefone: telefoneLimpo,
             });
             if (result.profissional) {
                 setCadastroMsg("Profissional cadastrado com sucesso!");
-                setForm({ nome: "", area: "", telefone: "", email: "", crm: "", senha: "" });
+                setForm({
+                    nome: "",
+                    area: "",
+                    telefone: "",
+                    email: "",
+                    crm: "",
+                    senha: "",
+                });
+                // Atualiza a lista de usuários para incluir o novo profissional
+                setTodosUsuarios((prev) => [...prev, result.profissional]);
             } else {
-                setCadastroErro(result.mensagem || "Erro ao cadastrar profissional");
+                setCadastroErro(
+                    result.mensagem || "Erro ao cadastrar profissional"
+                );
             }
         } catch (err) {
             setCadastroErro("Erro ao cadastrar profissional");
+            console.error(err);
+        } finally {
+            setLoading(false);
         }
     }
 
-    function showModalPro() {
-        setShowModalProEdit(true);
-    }
+    // --- LÓGICA DE BUSCA E GERENCIAMENTO ---
 
+    // Busca todos os usuários quando a página carrega
+    useEffect(() => {
+        const fetchUsuarios = async () => {
+            setLoading(true);
+            try {
+                const data = await listarTodosUsuarios();
+                if (data.usuarios) {
+                    setTodosUsuarios(data.usuarios);
+                } else {
+                    setCadastroErro(
+                        "Nenhum usuário encontrado ou falha ao buscar."
+                    );
+                }
+            } catch (err) {
+                console.error("Erro ao buscar usuários", err);
+                setCadastroErro("Erro de rede ao buscar usuários.");
+            } finally {
+                setLoading(false);
+            }
+        };
+        fetchUsuarios();
+    }, []);
 
+    // Filtra os usuários conforme o admin digita
+    const usuariosFiltrados = useMemo(() => {
+        if (!termoBusca) {
+            return todosUsuarios;
+        }
+        return todosUsuarios.filter(
+            (user) =>
+                user.nome.toLowerCase().includes(termoBusca.toLowerCase()) ||
+                user.email.toLowerCase().includes(termoBusca.toLowerCase())
+        );
+    }, [termoBusca, todosUsuarios]);
+
+    // Lógica para deletar um usuário
+    const handleDeletarUsuario = async () => {
+        if (!usuarioSelecionado) return;
+
+        if (
+            window.confirm(
+                `Tem certeza que deseja deletar o usuário ${usuarioSelecionado.nome}? Esta ação não pode ser desfeita.`
+            )
+        ) {
+            setLoading(true);
+            try {
+                const result = await deletarProfissional(usuarioSelecionado.id);
+                if (result.sucesso) {
+                    setTodosUsuarios((prev) =>
+                        prev.filter((user) => user.id !== usuarioSelecionado.id)
+                    );
+                    setUsuarioSelecionado(null);
+                    alert("Usuário deletado com sucesso.");
+                } else {
+                    alert(result.message || "Erro ao deletar usuário.");
+                }
+            } catch (err) {
+                alert("Erro na requisição para deletar usuário.");
+                console.error(err);
+            } finally {
+                setLoading(false);
+            }
+        }
+    };
+
+    // Lógica para abrir o modal de edição
+    const handleEditarUsuario = () => {
+        if (!usuarioSelecionado) return;
+        // Futuramente, você pode pré-preencher um formulário de edição aqui.
+        if (usuarioSelecionado.crm) {
+            setShowModalProEdit(true);
+        } else {
+            alert("A edição de cliente ainda não foi implementada.");
+            // setShowModalClientEdit(true);
+        }
+    };
 
     return (
         <>
             <Background imageUrl={FundoVerde} />
             <div id="back">
                 <Button
-                    style={{
-                        backgroundColor: "transparent",
-                        border: "none",
-                    }}
-                    onClick={() => {
-                        navigate("/loginadm");
-                    }}
+                    style={{ backgroundColor: "transparent", border: "none" }}
+                    onClick={() => navigate("/loginadm")}
                 >
-                    <img src={BackButton} width={40} height={40} />
+                    <img src={BackButton} width={40} height={40} alt="Voltar" />
                 </Button>
             </div>
             <main id="container-adm-wrapper">
                 <section id="cadastrar-profissional">
                     <h2>Cadastrar Profissional</h2>
                     <form onSubmit={handleSubmit}>
+                        {/* Seus FormInputs para cadastro aqui... */}
                         <FormInput
                             id="nome"
                             name="nome"
@@ -109,16 +202,6 @@ export default function HomeAdm() {
                             placeholder="Digite a área de atuação"
                             required={true}
                             value={form.area}
-                            onChange={handleChange}
-                        />
-                        <FormInput
-                            id="nascimento"
-                            name="nascimento"
-                            label="Data de Nascimento"
-                            type="date"
-                            placeholder="Digite a data de nascimento"
-                            required={true}
-                            value={form.nascimento}
                             onChange={handleChange}
                         />
                         <FormInput
@@ -145,7 +228,7 @@ export default function HomeAdm() {
                             id="crm"
                             name="crm"
                             label="CRM"
-                            type=""
+                            type="text"
                             placeholder="Digite o CRM"
                             required={true}
                             value={form.crm}
@@ -164,12 +247,17 @@ export default function HomeAdm() {
                         <Button
                             id={"botao-cadastrar-adm"}
                             type="submit"
+                            disabled={loading}
                         >
-                            Cadastrar
+                            {loading ? "Cadastrando..." : "Cadastrar"}
                         </Button>
                     </form>
-                    {cadastroMsg && <p className="text-success">{cadastroMsg}</p>}
-                    {cadastroErro && <p className="text-danger">{cadastroErro}</p>}
+                    {cadastroMsg && (
+                        <p className="text-success mt-2">{cadastroMsg}</p>
+                    )}
+                    {cadastroErro && (
+                        <p className="text-danger mt-2">{cadastroErro}</p>
+                    )}
                 </section>
 
                 <h1 id="plataform-name">
@@ -177,53 +265,103 @@ export default function HomeAdm() {
                     <br />
                     Pontual
                 </h1>
+
                 <section id="buscar-usuarios">
                     <div>
-                        <h2 id="title-buscar-usuarios">Buscar Usuarios</h2>
+                        <h2 id="title-buscar-usuarios">Gerenciar Usuários</h2>
                         <div className="pesquisar_pacientes mt-4">
                             <input
                                 type="text"
                                 className="input_pesquisar_pacientes"
-                                placeholder="PESQUISAR"
+                                placeholder="PESQUISAR POR NOME OU EMAIL"
+                                value={termoBusca}
+                                onChange={(e) => {
+                                    setTermoBusca(e.target.value);
+                                    setUsuarioSelecionado(null); // Limpa a seleção ao pesquisar
+                                }}
                             />
-                            <button className="botao_pesquisa">
-                                <svg
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    width="18"
-                                    height="18"
-                                    fill="#757575"
-                                    class="bi bi-search"
-                                    viewBox="0 0 16 16"
-                                >
-                                    <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
-                                </svg>
-                            </button>
                         </div>
                     </div>
+
+                    <div className="lista-usuarios-container mt-3">
+                        <table className="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Nome</th>
+                                    <th>Email</th>
+                                    <th>Tipo</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {loading && todosUsuarios.length === 0 && (
+                                    <tr>
+                                        <td colSpan="3" className="text-center">
+                                            Carregando...
+                                        </td>
+                                    </tr>
+                                )}
+                                {!loading && usuariosFiltrados.length === 0 && (
+                                    <tr>
+                                        <td colSpan="3" className="text-center">
+                                            Nenhum usuário encontrado.
+                                        </td>
+                                    </tr>
+                                )}
+                                {usuariosFiltrados.map((user) => (
+                                    <tr
+                                        key={user.id}
+                                        onClick={() =>
+                                            setUsuarioSelecionado(user)
+                                        }
+                                        className={
+                                            usuarioSelecionado?.id === user.id
+                                                ? "table-active"
+                                                : ""
+                                        }
+                                        style={{ cursor: "pointer" }}
+                                    >
+                                        <td>{user.nome}</td>
+                                        <td>{user.email}</td>
+                                        <td>
+                                            {user.crm
+                                                ? "Profissional"
+                                                : "Paciente"}
+                                        </td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                    </div>
+
                     <div id="button-actions-adm">
-                        <Button id="action-button-adm">Deletar</Button>
-                        <Button id="action-button-adm" onClick={showModalPro}>
+                        <Button
+                            id="action-button-adm"
+                            onClick={handleEditarUsuario}
+                            disabled={!usuarioSelecionado || loading}
+                            >
                             Editar
+                        </Button>
+                        <Button
+                            id="action-button-adm"
+                            onClick={handleDeletarUsuario}
+                            disabled={!usuarioSelecionado || loading}
+                            >
+                            Deletar
                         </Button>
                     </div>
                 </section>
             </main>
+
+            {/* O Modal para editar profissional */}
             <Modal
                 show={showModalProEdit}
                 onHide={() => setShowModalProEdit(false)}
                 centered
             >
-                <Modal.Header
-                    closeButton
-                    style={{
-                        color: "#004D3E",
-                        fontFamily: "Passion One",
-                        fontSize: "2em",
-                        justifyContent: "center",
-                    }}
-                >
+                {/* ... conteúdo do seu modal de edição ... */}
+                <Modal.Header closeButton style={{ justifyContent: "center" }}>
                     <h2 style={{ margin: "auto", position: "absolute" }}>
-                        Editar Cadastro
+                        Editar Profissional
                     </h2>
                 </Modal.Header>
                 <Modal.Body
@@ -233,126 +371,9 @@ export default function HomeAdm() {
                         alignItems: "center",
                     }}
                 >
-                    <FormInput
-                        id="nome"
-                        name="nome"
-                        label="Nome"
-                        type="text"
-                        placeholder="Digite o nome"
-                        required={true}
-                    />
-                    <FormInput
-                        id="area"
-                        name="area"
-                        type="select"
-                        label="Área Médica"
-                        options={Dados.areasMedicas}
-                        placeholder="Digite a área de atuação"
-                        required={true}
-                    />
-                    <FormInput
-                        id="nascimento"
-                        name="nascimento"
-                        label="Data de Nascimento"
-                        type="date"
-                        placeholder="Digite a data de nascimento"
-                        required={true}
-                    />
-                    <FormInput
-                        id="telefone"
-                        name="telefone"
-                        label="Telefone"
-                        type="tel"
-                        placeholder="Digite o telefone"
-                        required={true}
-                    />
-                    <FormInput
-                        id="email"
-                        name="email"
-                        label="Email"
-                        type="email"
-                        placeholder="Digite o email"
-                        required={true}
-                    />
-                    <FormInput
-                        id="crm"
-                        name="crm"
-                        label="CRM"
-                        type="text"
-                        placeholder="Digite o CRM"
-                        required={true}
-                    />
-                    <FormInput
-                        id="senha"
-                        name="senha"
-                        label="Senha"
-                        type="password"
-                        placeholder="Digite a senha"
-                        required={true}
-                    />
+                    <form action=""></form>
                 </Modal.Body>
                 <Modal.Footer style={{ justifyContent: "center" }}>
-                    <Button id={"button-confirm-edit"}>Confirmar Edição</Button>
-                </Modal.Footer>
-            </Modal>
-            <Modal
-                show={showModalClientEdit}
-                onHide={() => setShowModalClientEdit(false)}
-                centered
-            >
-                <Modal.Header
-                    closeButton
-                    style={{
-                        color: "#004D3E",
-                        fontFamily: "Passion One",
-                        fontSize: "2em",
-                    }}
-                >
-                    <h2>Editar Cadastro</h2>
-                </Modal.Header>
-                <Modal.Body>
-                    <FormInput
-                        id="nome"
-                        name="nome"
-                        label="Nome"
-                        type="text"
-                        placeholder="Digite o nome"
-                        required={true}
-                    />
-                    <FormInput
-                        id="email"
-                        name="email"
-                        label="Email"
-                        type="email"
-                        placeholder="Digite o email"
-                        required={true}
-                    />
-                    <FormInput
-                        id="nascimento"
-                        name="nascimento"
-                        label="Data de Nascimento"
-                        type="date"
-                        placeholder="Digite a data de nascimento"
-                        required={true}
-                    />
-                    <FormInput
-                        id="telefone"
-                        name="telefone"
-                        label="Telefone"
-                        type="tel"
-                        placeholder="Digite o telefone"
-                        required={true}
-                    />
-                    <FormInput
-                        id="senha"
-                        name="senha"
-                        label="Senha"
-                        type="password"
-                        placeholder="Digite a senha"
-                        required={true}
-                    />
-                </Modal.Body>
-                <Modal.Footer>
                     <Button id={"button-confirm-edit"}>Confirmar Edição</Button>
                 </Modal.Footer>
             </Modal>

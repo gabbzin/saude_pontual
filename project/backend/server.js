@@ -24,7 +24,7 @@ app.use(cors());
 app.use(express.json());
 app.use("/api", usuarioRoutes);
 // app.use("/api", consultaPetRoutes);
-app.use("/api", profissionalRoutes);
+app.use("/api/profissionais", profissionalRoutes);
 app.use("/api", consultaRoutes);
 app.use("/api", adminRoutes)
 

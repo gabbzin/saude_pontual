@@ -5,9 +5,10 @@ const {
     loginProfissional,
     deletarProfissional,
 } = require("../controllers/profissionalController");
+const {verifyToken} = require("../middleware/authMiddleware")
 
-router.post("/profissionais/cadastrar", cadastrarProfissional);
-router.post("/profissionais/login", loginProfissional);
-router.delete("/profissionais/:id", deletarProfissional);
+router.post("/cadastrar", cadastrarProfissional);
+router.post("/login", verifyToken, loginProfissional);
+router.delete("/:id", verifyToken, deletarProfissional);
 
 module.exports = router;
