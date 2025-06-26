@@ -24,7 +24,7 @@ export const generateSaudePontualPdf = async (
     const lineHeight = 7; // Altura da linha para espaçamento
 
     // --- CABEÇALHO ---
-    doc.setFont("Passion One", "bold");
+    doc.setFont("Helvetica", "bold");
     doc.setFontSize(22);
     doc.setTextColor(0, 0, 0); // Cor preta
     doc.text("SAÚDE PONTUAL", doc.internal.pageSize.getWidth() / 2, yOffset, {
@@ -33,7 +33,7 @@ export const generateSaudePontualPdf = async (
     yOffset += 15; // Espaço adicional pós-titulo
 
     const logoWidth = 40;
-    const logoHeight = 40;
+    const logoHeight = 20;
     const logoX = doc.internal.pageSize.getWidth() - marginX - logoWidth;
     const logoY = 5;
 
@@ -47,8 +47,8 @@ export const generateSaudePontualPdf = async (
     doc.setFontSize(12);
     doc.setTextColor(0, 0, 0);
 
-    const addListItem = (label, value) => {
-        const fullText = `${label}: ${value || ""}`;
+    const addListItem = (value) => {
+        const fullText = `${value || ""}`;
         const splitText = doc.splitTextToSize(
             fullText,
             doc.internal.pageSize.getWidth - 2 * marginX - 10
@@ -57,7 +57,7 @@ export const generateSaudePontualPdf = async (
         yOffset += splitText.length * lineHeight;
     };
 
-    addListItem("Relatório", reportData);
+    addListItem(reportData);
 
     doc.save(fileName);
 };
