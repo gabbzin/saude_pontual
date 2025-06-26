@@ -122,7 +122,7 @@ export default function HomePro() {
                                         : consulta.area_medica_desejada}{" "}
                                     <br />
                                     <strong>Nome do Paciente:</strong>{" "}
-                                    {consulta.paciente} <br />
+                                    {consulta.usuario_nome || "-"} <br />
                                     <strong>Horário:</strong>{" "}
                                     {consulta.hora_para_exibicao}
                                 </li>
