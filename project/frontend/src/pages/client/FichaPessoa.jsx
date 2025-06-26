@@ -11,6 +11,17 @@ import Dados from "../../dados.json";
 import "../../styles/fichas.css";
 
 export default function FichaPessoa() {
+
+    function getDataHojeLocal() {
+        const hoje = new Date();
+        const ano = hoje.getFullYear();
+        const mes = String(hoje.getMonth() + 1).padStart(2, "0");
+        const dia = String(hoje.getDate()).padStart(2, "0");
+        return `${ano}-${mes}-${dia}`;
+    }
+
+    const dataAtual = getDataHojeLocal();
+
     const [formData, setFormData] = useState({
         nome: "",
         peso: "",
@@ -99,7 +110,7 @@ export default function FichaPessoa() {
                             placeholder={"Digite seu peso"}
                             value={formData.peso}
                             onChange={handleChange}
-                            maxLength={3}
+                            maxLength={5}
                         />
                         <FormInputSchedule
                             id={"altura"}
@@ -111,7 +122,7 @@ export default function FichaPessoa() {
                             placeholder={"Digite sua altura"}
                             value={formData.altura}
                             onChange={handleChange}
-                            maxLength={3}
+                            maxLength={4}
                         />
                         <FormInputSchedule
                             id={"tipo_sanguineo"}
@@ -176,6 +187,7 @@ export default function FichaPessoa() {
                             type={"date"}
                             value={formData.data_e_hora}
                             onChange={handleChange}
+                            min={dataAtual} // Impede datas anteriores
                         />
                     </div>
                     <div style={{ display: "flex", flexDirection: "column" }}>

@@ -14,13 +14,23 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "../../styles/login_cadastro.css";
 
 export default function Cadastro() {
+    
+    function getDataHojeLocal() {
+        const hoje = new Date();
+        const ano = hoje.getFullYear();
+        const mes = String(hoje.getMonth() + 1).padStart(2, "0");
+        const dia = String(hoje.getDate()).padStart(2, "0");
+        return `${ano}-${mes}-${dia}`;
+    }
+
+    const dataAtual = getDataHojeLocal();
 
     const estiloModalPadrao = {
         fontFamily: "Passion One",
         fontWeight: 400,
         fontSize: "1.7em",
         textAlign: "center",
-    }
+    };
 
     const [form, setForm] = useState({
         nome: "",
@@ -30,7 +40,7 @@ export default function Cadastro() {
         senha: "",
     });
     const [modalVisible, setModalVisible] = useState(false);
-    const [msgError, setmsgError] = useState("")
+    const [msgError, setmsgError] = useState("");
     const [modalErrorSignUp, setModalErrorSignUp] = useState(false);
     const navigate = useNavigate();
 
@@ -40,7 +50,7 @@ export default function Cadastro() {
         setForm((prev) => ({ ...prev, [name]: value }));
     };
 
-    function showModalVisible(){
+    function showModalVisible() {
         setModalVisible(true);
     }
 
@@ -52,7 +62,7 @@ export default function Cadastro() {
             const result = await cadastrarUsuario(form);
 
             if (result.usuario) {
-                showModalVisible()
+                showModalVisible();
 
                 setTimeout(() => {
                     setModalVisible(false);
@@ -60,11 +70,11 @@ export default function Cadastro() {
                 }, 2000);
             } else {
                 setmsgError(result.mensagem || "Erro ao cadastrar");
-                setModalErrorSignUp(true)
+                setModalErrorSignUp(true);
             }
         } catch (err) {
             setmsgError(err.message || "Erro ao cadastrar");
-            setModalErrorSignUp(true)
+            setModalErrorSignUp(true);
         }
     };
 
@@ -112,6 +122,7 @@ export default function Cadastro() {
                             onChange={handleChange}
                             required={true}
                             iconrequired={"*"}
+                            max={dataAtual} // Impede datas futuras
                         />
                         <FormInput
                             id="floatingPhoneNumber"
@@ -187,7 +198,7 @@ export default function Cadastro() {
                     show={modalErrorSignUp}
                     onClose={() => setModalErrorSignUp(false)}
                     text={msgError}
-                    styleBody={{...estiloModalPadrao, color: "#F00"}}
+                    styleBody={{ ...estiloModalPadrao, color: "#F00" }}
                 />
             </main>
         </div>
