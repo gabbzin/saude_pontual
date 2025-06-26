@@ -10,6 +10,7 @@ import ProfileIcon from "../../assets/logo_medico.jpg";
 import ButtonExit from "../../assets/button_exit.png";
 import Button from "../../components/Button";
 import Calendar from "../../components/Calendar";
+import LegendaCalendario from "../../components/LegendaCalendar";
 // Styles
 import "bootstrap/dist/css/bootstrap.min.css";
 import "../../styles/calendario.css";
@@ -201,7 +202,7 @@ export default function HomePro() {
 
                     {mensagem && <p className="mt-2" style={{ color: mensagem.includes('sucesso') ? 'green' : 'red' }}>{mensagem}</p>}
 
-                    <div style={{ display: 'flex', gap: '1rem', marginTop: '1rem' }}>
+                    <div style={{ display: 'flex', justifyContent: "center" }}>
                         <Button
                             className={"button_homepro_page"}
                             onClick={handleEnviarRelatorio}
@@ -213,6 +214,7 @@ export default function HomePro() {
                 </section>
 
                 <section id="calendar_history_section">
+                    <LegendaCalendario/>
                     <div id="calendar_pro">
                         <Calendar consultas={consultas} showModal={showModal} />
                     </div>

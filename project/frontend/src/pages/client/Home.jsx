@@ -13,6 +13,7 @@ import ProfileButton from "../../assets/profile_button.png";
 import Background from "../../components/Background";
 import Button from "../../components/Button";
 import Calendar from "../../components/Calendar";
+import LegendaCalendario from "../../components/LegendaCalendar";
 import ScheduleButtons from "../../components/ScheduleButtons";
 // Styles
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -24,8 +25,8 @@ export default function Home() {
 
     const navigate = useNavigate();
 
-    const resolucaoLogoXY = 140;
-    const resolucaoProfileXY = 85;
+    const resolucaoLogoXY = 130;
+    const resolucaoProfileXY = 70;
 
     const [modalCalendarVisible, setModalCalendarVisible] = useState(false);
     const [modalButtons, setModalButtons] = useState(false);
@@ -181,6 +182,9 @@ export default function Home() {
                         <h1 className="text-capitalize">
                             SEJA BEM-VINDO(A), {usuario?.nome}
                         </h1>
+                    </div>
+                    <div>
+                        <LegendaCalendario />
                     </div>
                     <div id="calendar" style={{ height: "100%" }}>
                         <Calendar consultas={consultasCalendario} showModal={showModal} />
