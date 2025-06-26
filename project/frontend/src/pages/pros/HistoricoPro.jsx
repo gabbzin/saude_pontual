@@ -130,7 +130,7 @@ export default function HistoricoPro() {
                                 }`}
                                 onClick={() => handleConsultaClick(consulta)}
                             >
-                                <td className="td">{consulta.usuario_nome || "-"}</td>
+                                <td className="td">{consulta.nome || "-"}</td>
                                 <td className="td">
                                     {consulta.data_para_exibicao || "-"}
                                 </td>
