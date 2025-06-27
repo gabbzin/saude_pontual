@@ -5,6 +5,7 @@ import { cadastrarConsulta } from "../../../api/api";
 import Button from "../../components/Button";
 import FormInputSchedule from "../../components/FormInputSchedule";
 import BackButton from "../../assets/back_button.png";
+import MoModal from "../../components/MoModal";
 
 import Dados from "../../dados.json";
 
@@ -34,6 +35,9 @@ export default function FichaPessoa() {
     });
     const [erro, setErro] = useState("");
     const [tentouSubmit, setTentouSubmit] = useState(false);
+    const [modalMsg, setModalMsg] = useState("");
+    const [modalShow, setModalShow] = useState(false);
+    const [modalType, setModalType] = useState("success"); // "success" ou "error"
 
     const navigate = useNavigate();
 
@@ -114,15 +118,23 @@ export default function FichaPessoa() {
             });
             if (result.consulta || result.mensagem) {
                 setErro("");
-                alert(result.mensagem || "Consulta cadastrada com sucesso!");
-                navigate("/");
+                setModalType("success");
+                setModalMsg(result.mensagem || "Consulta cadastrada com sucesso!");
+                setModalShow(true);
+                setTimeout(() => navigate("/"), 1500);
             } else if (result.error || result.erro) {
-                setErro(result.error || result.erro);
+                setModalType("error");
+                setModalMsg(result.error || result.erro);
+                setModalShow(true);
             } else {
-                setErro("Erro ao cadastrar a consulta");
+                setModalType("error");
+                setModalMsg("Erro ao cadastrar a consulta");
+                setModalShow(true);
             }
         } catch (error) {
-            setErro("Erro na requisição: " + error.message);
+            setModalType("error");
+            setModalMsg("Erro na requisição: " + error.message);
+            setModalShow(true);
         }
     }
 
@@ -280,6 +292,12 @@ export default function FichaPessoa() {
                         />
                     </div>
                 </form>
+                <MoModal
+                    show={modalShow}
+                    onClose={() => setModalShow(false)}
+                    text={modalMsg}
+                    styleBody={{ color: modalType === "error" ? "#b30000" : "#004D3E", fontSize: 18 }}
+                />
             </main>
         </div>
     );
