@@ -5,7 +5,8 @@ import { AuthContext } from "../../contexts/AuthContext";
 import { 
   buscarConsultas,
   buscarConsultasPetUsuario, 
-  cancelarConsulta 
+  cancelarConsulta,
+  cancelarConsultaPet
 } from "../../../api/api";
 // Assets
 import FundoLaranja from "../../assets/background_orange.jpg";
@@ -68,21 +69,27 @@ export default function Home() {
         navigate("/login");
     }
 
-    const handleCancelarConsulta = async (consultaId) => {
+    const handleCancelarConsulta = async (consultaId, tipo) => {
         if (!window.confirm("Você tem certeza que deseja cancelar esta consulta?")) {
             return;
         }
 
         try {
-            const result = await cancelarConsulta(consultaId);
+            let result;
+            if (tipo === "pet") {
+                result = await cancelarConsultaPet(consultaId);
+            } else {
+                result = await cancelarConsulta(consultaId);
+            }
 
-            if (result.id) {
+            // Para pet, result === true se sucesso
+            if ((tipo === "pet" && result === true) || (tipo !== "pet" && result.id)) {
                 setConsultas(prevConsultas => prevConsultas.filter(c => c.id !== consultaId));
                 setConsultasCalendario(prevConsultas => prevConsultas.filter(c => c.id !== consultaId));
                 setModalType("success");
                 setModalMsg("Consulta cancelada com sucesso.");
                 setModalShow(true);
-            } else if (result.error) {
+            } else if (result && result.error) {
                 setModalType("error");
                 setModalMsg("Erro ao cancelar a consulta: " + result.error);
                 setModalShow(true);
@@ -153,19 +160,19 @@ export default function Home() {
                                             border: "none",
                                             borderRadius: "50%"
                                         }}
-                                        onClick={() => handleCancelarConsulta(consulta.id)}
+                                        onClick={() => handleCancelarConsulta(consulta.id, consulta.tipo)}
                                     >
                                         X
                                     </Button>
                                     <strong>Tipo de consulta:</strong>{" "}
-                                    {consulta.area_medica_desejada ===
-                                    "clinica_geral"
-                                        ? "Clínica Geral"
-                                        : consulta.area_medica_desejada}{" "}
+                                    {consulta.tipo === "pet"
+                                        ? "Consulta Pet"
+                                        : consulta.area_medica_desejada === "clinica_geral"
+                                            ? "Clínica Geral"
+                                            : consulta.area_medica_desejada} {" "}
                                     <br />
                                     <strong>Profissional:</strong>{" "}
-                                    {consulta.profissional_nome ||
-                                        consulta.profissional}
+                                    {consulta.profissional_nome || consulta.profissional || (consulta.tipo === "pet" ? "-" : "")}
                                     <br />
                                     <strong>Horário:</strong>{" "}
                                     {consulta.hora_para_exibicao}
