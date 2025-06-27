@@ -316,15 +316,6 @@ export default function HomePro() {
                                 ).toLocaleDateString("pt-br")}
                             </p>
                             <p>
-                                <strong>Hora:</strong>{" "}
-                                {new Date(
-                                    fichaSelecionada.data_e_hora
-                                ).toLocaleTimeString("pt-br", {
-                                    hour: "2-digit",
-                                    minute: "2-digit",
-                                })}
-                            </p>
-                            <p>
                                 <strong>Área Médica:</strong>{" "}
                                 {fichaSelecionada.area_medica_desejada}
                             </p>
