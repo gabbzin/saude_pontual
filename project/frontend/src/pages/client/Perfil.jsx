@@ -45,7 +45,7 @@ export default function Perfil() {
                 
                 if (perfil?.usuario){
                     const dataNascimentoFormatada = formatarDataPtBr(perfil.usuario.data_nascimento);
-
+                    
                     setAdditionalInfo((prev) => ({
                         telefone: perfil.usuario.telefone ? `${perfil.usuario.telefone}` : prev.telefone,
                         data_nascimento: dataNascimentoFormatada ? `${dataNascimentoFormatada}` : prev.data_nascimento,
@@ -184,7 +184,7 @@ export default function Perfil() {
                             <h2 className="text-capitalize">{usuario?.nome}</h2>
                             <div id="informations">
                                 <span>Email: {usuario?.email}</span>
-                                <span>Telefone: {usuario?.telefone || "Não informado"}</span>   
+                                <span>Telefone: {additionalInfo.telefone || "Não informado"}</span>   
                                 <span>
                                     Matrícula: 00{usuario?.id || ""}
                                 </span>

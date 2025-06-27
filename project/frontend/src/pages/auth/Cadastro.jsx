@@ -124,10 +124,11 @@ export default function Cadastro() {
                             iconrequired={"*"}
                             max={dataAtual} // Impede datas futuras
                         />
+                        {/* Campo de Telefone */}
                         <FormInput
                             id="floatingPhoneNumber"
                             name="telefone"
-                            label="Telefone"
+                            label="Telefone (Somente números)"
                             type="tel"
                             value={form.telefone}
                             onChange={handleChange}

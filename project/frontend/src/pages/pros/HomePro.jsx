@@ -1,4 +1,5 @@
-import { useContext, useEffect, useState } from "react";
+/* eslint-disable no-unused-vars */ // Desativa as reclamações com variáveis não usadas
+import { useContext, useEffect, useState, useMemo, useRef } from "react";
 import { Modal } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../../contexts/AuthContext";
@@ -38,6 +39,9 @@ export default function HomePro() {
     const [selectedDate, setSelectedDate] = useState("");
     const [consultasParaModal, setConsultasParaModal] = useState([]);
 
+    const [termoBusca, setTermoBusca] = useState(""); // O que o usuário digita
+    const [dropdownVisivel, setDropdownVisivel] = useState(false); // Controla se o dropdown aparece
+
     // --- FUNÇÕES DE LÓGICA ---
 
     function logoutUser() {
@@ -64,25 +68,21 @@ export default function HomePro() {
         fetchConsultas();
     }, []);
 
-    // Função para o campo de busca com autocomplete
-    const handleSelecaoPaciente = (event) => {
-        const valorInput = event.target.value;
-        setNomePacienteInput(valorInput);
-
-        const options = document.querySelectorAll("#lista-pacientes option");
-        const opcaoSelecionada = Array.from(options).find(opt => opt.value === valorInput);
-
-        if (opcaoSelecionada) {
-            const id = opcaoSelecionada.getAttribute('data-id');
-            const consulta = consultas.find(c => c.id.toString() === id);
-
-            setSelectedConsultaId(id);
-            setRelatorioText(consulta?.relatorio || "");
-            setModalFeedbackVisible(false); 
-        } else {
-            setSelectedConsultaId("");
-            setRelatorioText("");
+    const resultadosFiltrados = useMemo(() => {
+        if (termoBusca.length === 0) {
+            return []; // Não mostra nada se o campo estiver vazio
         }
+        return consultas.filter(c =>
+            (c.paciente_nome || c.nome).toLowerCase().includes(termoBusca.toLowerCase())
+        );
+    }, [termoBusca, consultas]);
+
+    // Função chamada quando o usuário seleciona um item no dropdown
+    const handleSelecionarPaciente = (consulta) => {
+        setTermoBusca(`${consulta.paciente_nome || consulta.nome} - ${consulta.data_para_exibicao}`); // Preenche o input com o nome selecionado
+        setSelectedConsultaId(consulta.id);
+        setRelatorioText(consulta.relatorio || "");
+        setDropdownVisivel(false);
     };
 
     // Função para o botão "Salvar Relatório"
@@ -123,6 +123,20 @@ export default function HomePro() {
         setConsultasParaModal(consultasDoDia); 
         setModalCalendarVisible(true);
     }
+
+    // Fechando o dropdown
+    const wrapperRef = useRef(null); // Cria uma referência para o nosso container
+    useEffect(() => {
+        function handleClickFora(event) {
+            if (wrapperRef.current && !wrapperRef.current.contains(event.target)) {
+                setDropdownVisivel(false);
+            }
+        }
+        document.addEventListener("mousedown", handleClickFora);
+        return () => {
+            document.removeEventListener("mousedown", handleClickFora); // Limpa o listener
+        };
+    }, [wrapperRef]);
 
     return (
         <div id="pro_container_home">
@@ -180,25 +194,33 @@ export default function HomePro() {
                             </div>
                         </div>
 
-                        <div>
-                            <input 
+                        <div className="autocomplete-wrapper" ref={wrapperRef}>
+                            <input
                                 className="form-control mt-2"
                                 type="text"
-                                list="lista-pacientes"
-                                value={nomePacienteInput}
-                                onChange={handleSelecaoPaciente}
                                 placeholder="Digite o nome do paciente para buscar..."
+                                value={termoBusca}
+                                onChange={(e) => {
+                                    setTermoBusca(e.target.value);
+                                    setDropdownVisivel(true); // Mostra o dropdown ao digitar
+                                }}
+                                onFocus={() => setDropdownVisivel(true)} // Mostra também ao focar
                                 disabled={loading}
                             />
-                            <datalist id="lista-pacientes">
-                                {consultas.map(c => (
-                                    <option 
-                                        key={c.id} 
-                                        value={`${c.paciente_nome || c.nome} - ${c.data_para_exibicao}`}
-                                        data-id={c.id}
-                                    />
-                                ))}
-                            </datalist>
+                            
+                            {/* O Dropdown customizado */}
+                            {dropdownVisivel && resultadosFiltrados.length > 0 && (
+                                <ul className="autocomplete-results">
+                                    {resultadosFiltrados.map(consulta => (
+                                        <li
+                                            key={consulta.id}
+                                            onClick={() => handleSelecionarPaciente(consulta)}
+                                        >
+                                            {consulta.paciente_nome || consulta.nome} ({consulta.data_para_exibicao})
+                                        </li>
+                                    ))}
+                                </ul>
+                            )}
                         </div>
                     </div>
                     

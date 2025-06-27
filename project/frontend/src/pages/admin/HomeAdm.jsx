@@ -185,8 +185,7 @@ export default function HomeAdm() {
             <main id="container-adm-wrapper">
                 <section id="cadastrar-profissional">
                     <h2>Cadastrar Profissional</h2>
-                    <form onSubmit={handleSubmit}>
-                        {/* Seus FormInputs para cadastro aqui... */}
+                    <form onSubmit={handleSubmit} style={{display: "flex", alignItems: "center", justifyContent: "center", flexDirection: "column"}}>
                         <FormInput
                             id="nome"
                             name="nome"
@@ -213,10 +212,12 @@ export default function HomeAdm() {
                             name="telefone"
                             label="Telefone"
                             type="tel"
-                            placeholder="Digite o telefone (com DDD)"
+                            placeholder="Digite o telefone (com DDD) somente números"
                             required={true}
                             value={form.telefone}
                             onChange={handleChange}
+                            minLength={11}
+                            maxLength={11}
                         />
                         <FormInput
                             id="email"
@@ -237,6 +238,8 @@ export default function HomeAdm() {
                             required={true}
                             value={form.crm}
                             onChange={handleChange}
+                            minLength={6}
+                            maxLength={6}
                         />
                         <FormInput
                             id="senha"
@@ -256,12 +259,14 @@ export default function HomeAdm() {
                             {loading ? "Cadastrando..." : "Cadastrar"}
                         </Button>
                     </form>
-                    {cadastroMsg && (
-                        <p className="text-success mt-2">{cadastroMsg}</p>
-                    )}
-                    {cadastroErro && (
-                        <p className="text-danger mt-2">{cadastroErro}</p>
-                    )}
+                    <div>
+                        {cadastroMsg && (
+                            <p className="text-success mt-2">{cadastroMsg}</p>
+                        )}
+                        {cadastroErro && (
+                            <p className="text-danger mt-2">{cadastroErro}</p>
+                        )}
+                    </div>
                 </section>
 
                 <h1 id="plataform-name">
