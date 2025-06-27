@@ -16,8 +16,14 @@ export default function Historico() {
     const navigate = useNavigate();
     const [consultas, setConsultas] = useState([]);
     const [selectedConsulta, setSelectedConsulta] = useState(null);
+    const [selectedConsultaKey, setSelectedConsultaKey] = useState(null);
     const [loading, setLoading] = useState(true);
     const [mensagem, setMensagem] = useState("");
+
+    // Função para gerar uma chave única para cada consulta
+    function getConsultaKey(consulta) {
+        return `${consulta.tipo}-${consulta.id}`;
+    }
 
     useEffect(() => {
         async function fetchConsultas() {
@@ -49,7 +55,10 @@ export default function Historico() {
                 return dA < dB ? 1 : -1;
             });
             setConsultas(lista);
-            setSelectedConsulta(lista.length > 0 ? lista[0] : null);
+            if (lista.length > 0) {
+                setSelectedConsulta(lista[0]);
+                setSelectedConsultaKey(getConsultaKey(lista[0]));
+            }
             setLoading(false);
         }
         fetchConsultas();
@@ -61,6 +70,7 @@ export default function Historico() {
 
     function handleConsultaClick(consulta) {
         setSelectedConsulta(consulta);
+        setSelectedConsultaKey(getConsultaKey(consulta));
         setMensagem("");
         console.log("Consulta selecionada: ", consulta);
     }
@@ -121,10 +131,9 @@ export default function Historico() {
                             {consultas.map((consulta, index) => (
                                 <tr
                                     id="tr"
-                                    key={consulta.id || index}
+                                    key={getConsultaKey(consulta)}
                                     className={`tablerow ${
-                                        selectedConsulta &&
-                                        selectedConsulta.id === consulta.id
+                                        selectedConsultaKey === getConsultaKey(consulta)
                                             ? "selected"
                                             : ""
                                     }`}
@@ -144,7 +153,11 @@ export default function Historico() {
                                     <td className="td">
                                         {consulta.data_para_exibicao || "-"}
                                     </td>
-                                    <td className="td">{consulta.id}</td>
+                                    <td className="td">
+                                        {consulta.tipo === "pet"
+                                            ? `PET-${consulta.id}`
+                                            : consulta.id}
+                                    </td>
                                 </tr>
                             ))}
                         </tbody>
