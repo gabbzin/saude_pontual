@@ -223,13 +223,27 @@ export async function deletarUsuario(idUsuario) {
     return { error: "Erro desconhecido ao deletar usuário." };
 }
 
-// export async function buscarConsultasPet() {
-//     const token = localStorage.getItem("token");
-//     const res = await fetch("http://localhost:3001/api/consultas-pet/me", {
-//         method: "GET",
-//         headers: {
-//             Authorization: `Bearer ${token}`,
-//         },
-//     });
-//     return res.json();
-// }
+export async function cadastrarConsultaPet(data) {
+    const token = localStorage.getItem("token");
+    const res = await fetch("http://localhost:3001/api/pet/fichapet", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(data),
+    });
+    return res.json();
+}
+
+export async function buscarConsultasPetUsuario() {
+    const token = localStorage.getItem("token");
+    const res = await fetch("http://localhost:3001/api/pet/consultas", {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+        },
+    });
+    return res.json();
+}

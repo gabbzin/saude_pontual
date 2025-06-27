@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 // API
-import { cadastrarConsulta } from "../../../api/api"; // Verifique se o caminho para seu api.js está correto
+import { cadastrarConsultaPet } from "../../../api/api"; // Verifique se o caminho para seu api.js está correto
 
 // Assets
 import BackButton from "../../assets/back_button.png";
@@ -30,7 +30,6 @@ export default function FichaPessoa() {
         identificacao: "",
         data: "", // Data e hora separados para os inputs
         horario: "",
-        area_medica_desejada: "", // Adicionado, pois é necessário para a lógica
         historico_de_saude: "",
         motivo: "",
     });
@@ -52,43 +51,65 @@ export default function FichaPessoa() {
         setErro("");
 
         for (const campo in formData) {
-            // O campo 'identificacao' pode ser opcional
             if (campo !== 'identificacao' && formData[campo].trim() === "") {
                 const nomeAmigavel = campo.replace(/_/g, " ");
                 setErro(`O campo '${nomeAmigavel}' é obrigatório.`);
                 return;
             }
         }
-        
         setLoading(true);
-
         const dataHoraCompleta = `${formData.data}T${formData.horario}`;
-
         try {
-            // Monta o objeto com todos os dados do formulário para enviar à API
             const dadosParaApi = {
-                ...formData,
+                nome_pet: formData.nome,
+                especie: formData.especie,
+                raca: formData.raca,
+                sexo: formData.sexo,
+                esterilizacao: formData.esterilizacao,
+                cor: formData.cor,
+                peso_pet: formData.peso,
+                identificacao_pet: formData.identificacao,
+                historico_saude_pet: formData.historico_de_saude,
+                motivo_consulta_pet: formData.motivo,
                 data_e_hora: dataHoraCompleta,
             };
-            // Remove os campos de data e horario que foram combinados
-            delete dadosParaApi.data;
-            delete dadosParaApi.horario;
-
-            const result = await cadastrarConsulta(dadosParaApi);
-            
-            if (result.consulta) {
+            const token = localStorage.getItem("token");
+            const res = await fetch("http://localhost:3001/api/pet/fichapet", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${token}`,
+                },
+                body: JSON.stringify(dadosParaApi),
+            });
+            const text = await res.text();
+            let result;
+            try {
+                result = JSON.parse(text);
+            } catch (jsonErr) {
+                setErro(`Erro HTTP ${res.status}: ${text}`);
+                setLoading(false);
+                return;
+            }
+            if (result.consultaPet) {
                 alert("Consulta para o seu pet agendada com sucesso!");
                 navigate("/");
             } else {
-                setErro(result.mensagem || "Erro ao agendar a consulta.");
+                setErro(result.mensagem || result.error || JSON.stringify(result) || "Erro ao agendar a consulta.");
             }
-
         } catch (error) {
-            console.error("Erro na requisição:", error)
-            setErro("Falha na comunicação com o servidor.");
+            setErro("Falha na comunicação com o servidor: " + (error?.message || error));
         } finally {
             setLoading(false);
         }
+    }
+
+    // Função para checar se todos os campos obrigatórios estão preenchidos
+    function camposObrigatoriosPreenchidos() {
+        // identificacao é opcional
+        return Object.entries(formData).every(([campo, valor]) =>
+            campo === 'identificacao' ? true : valor.trim() !== ''
+        );
     }
 
     return (
@@ -152,13 +173,6 @@ export default function FichaPessoa() {
                             value={formData.peso} onChange={handleChange}
                         />
                     </div>
-                    
-                    <FormInputSchedule
-                        id={"area_medica_desejada"} name={"area_medica_desejada"} required={true}
-                        label={"Área Médica Desejada:"} type={"select"}
-                        options={Dados.areasMedicas}
-                        value={formData.area_medica_desejada} onChange={handleChange}
-                    />
 
                     <div id="three_inputs">
                         <FormInputSchedule
@@ -203,11 +217,21 @@ export default function FichaPessoa() {
 
                     <div id="container_button_submit">
                         <Button
-                            text={loading ? "AGENDANDO..." : "AGENDAR CONSULTA"}
                             type={"submit"}
-                            disabled={loading}
-                            style={{ /* Estilos do botão */ }}
-                        />
+                            disabled={!camposObrigatoriosPreenchidos() || loading}
+                            style={{
+                                backgroundColor: "#043C40",
+                                border: "None",
+                                borderRadius: 37.5,
+                                fontFamily: "Passion One",
+                                fontSize: "1.5em",
+                                width: "50%",
+                                opacity: camposObrigatoriosPreenchidos() && !loading ? 1 : 0.5,
+                                cursor: camposObrigatoriosPreenchidos() && !loading ? "pointer" : "not-allowed"
+                            }}
+                        >
+                            {loading ? "AGENDANDO..." : "AGENDAR CONSULTA"}
+                        </Button>
                     </div>
                 </form>
             </main>
