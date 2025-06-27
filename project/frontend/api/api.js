@@ -199,6 +199,30 @@ export async function deletarProfissional(idProfissional) {
     }
 }
 
+export async function deletarUsuario(idUsuario) {
+    const token = localStorage.getItem("token");
+    const res = await fetch(`http://localhost:3001/api/usuarios/${idUsuario}`, {
+        method: "DELETE",
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+        },
+    });
+    if (res.status === 204) {
+        return { sucesso: true };
+    }
+    let data;
+    try {
+        data = await res.json();
+    } catch (e) {
+        return { error: "Resposta inválida do servidor." };
+    }
+    if (data && data.mensagem) {
+        return { error: data.mensagem };
+    }
+    return { error: "Erro desconhecido ao deletar usuário." };
+}
+
 // export async function buscarConsultasPet() {
 //     const token = localStorage.getItem("token");
 //     const res = await fetch("http://localhost:3001/api/consultas-pet/me", {

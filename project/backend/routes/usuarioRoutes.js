@@ -1,14 +1,14 @@
 const express = require("express");
 const router = express.Router();
 const {
-    cadastrarUsuario,
-    loginUsuario,
-    pegarPerfilDoToken,
-    adicionarInfoPerfil,
-    listarTodosUsuarios,
-    deletrarUsuario
+  cadastrarUsuario,
+  loginUsuario,
+  pegarPerfilDoToken,
+  adicionarInfoPerfil,
+  listarTodosUsuarios,
+  deletrarUsuario
 } = require("../controllers/usuarioController");
-const {verifyToken} = require("../middleware/authMiddleware");
+const { verifyToken } = require("../middleware/authMiddleware");
 
 router.post("/usuarios", cadastrarUsuario);
 router.post("/login", loginUsuario);
