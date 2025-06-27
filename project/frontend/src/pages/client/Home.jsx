@@ -15,6 +15,7 @@ import Button from "../../components/Button";
 import Calendar from "../../components/Calendar";
 import LegendaCalendario from "../../components/LegendaCalendar";
 import ScheduleButtons from "../../components/ScheduleButtons";
+import MoModal from "../../components/MoModal";
 // Styles
 import "bootstrap/dist/css/bootstrap.min.css";
 import "../../styles/home.css";
@@ -33,6 +34,9 @@ export default function Home() {
     const [selectedDate, setSelectedDate] = useState("");
     const [consultas, setConsultas] = useState([]);
     const [consultasCalendario, setConsultasCalendario] = useState([]);
+    const [modalMsg, setModalMsg] = useState("");
+    const [modalShow, setModalShow] = useState(false);
+    const [modalType, setModalType] = useState("success"); // "success" ou "error"
 
     function showModal(dateStr, consultas) {
         const formattedDate = new Date(
@@ -71,15 +75,23 @@ export default function Home() {
             if (result.id) {
                 setConsultas(prevConsultas => prevConsultas.filter(c => c.id !== consultaId));
                 setConsultasCalendario(prevConsultas => prevConsultas.filter(c => c.id !== consultaId));
-                alert("Consulta cancelada com sucesso.");
+                setModalType("success");
+                setModalMsg("Consulta cancelada com sucesso.");
+                setModalShow(true);
             } else if (result.error) {
-                alert("Erro ao cancelar a consulta: " + result.error);
+                setModalType("error");
+                setModalMsg("Erro ao cancelar a consulta: " + result.error);
+                setModalShow(true);
             } else {
-                alert("Erro desconhecido ao cancelar a consulta.");
+                setModalType("error");
+                setModalMsg("Erro desconhecido ao cancelar a consulta.");
+                setModalShow(true);
             }
         } catch (error) {
             console.error("Erro ao cancelar consulta:", error);
-            alert("Ocorreu um erro ao tentar cancelar a consulta. Tente novamente mais tarde.");
+            setModalType("error");
+            setModalMsg("Ocorreu um erro ao tentar cancelar a consulta. Tente novamente mais tarde.");
+            setModalShow(true);
         }
     }
 
@@ -261,6 +273,12 @@ export default function Home() {
                     setModalButtons={setModalButtons}
                 />
             </div>
+            <MoModal
+                show={modalShow}
+                onClose={() => setModalShow(false)}
+                text={modalMsg}
+                styleBody={{ color: modalType === "error" ? "#b30000" : "#004D3E", fontSize: 18 }}
+            />
         </div>
     );
 }
