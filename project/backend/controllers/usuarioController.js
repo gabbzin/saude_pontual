@@ -192,8 +192,10 @@ exports.deletrarUsuario = async (req, res) => {
     return res.status(400).json({ mensagem: "ID do usuário é obrigatório." });
   }
   try {
-    // Deleta todas as consultas relacionadas ao usuário
+    // Deleta todas as consultas relacionadas ao usuário (consultas humanas)
     await db.query('DELETE FROM consultas WHERE usuario_id = $1', [usuarioId]);
+    // Deleta todas as consultas de pet relacionadas ao usuário (se existir essa tabela)
+    await db.query('DELETE FROM consultas_pet WHERE usuario_id = $1', [usuarioId]);
     // Agora deleta o usuário
     await db.query('DELETE FROM usuarios WHERE id = $1', [usuarioId]);
     return res.status(200).json({ mensagem: "Usuário e consultas relacionadas deletados com sucesso." });
