@@ -247,3 +247,17 @@ export async function buscarConsultasPetUsuario() {
     });
     return res.json();
 }
+
+export async function cancelarConsultaPet(idConsulta) {
+    const token = localStorage.getItem("token");
+    const res = await fetch(`http://localhost:3001/api/pet/consultas/${idConsulta}`, {
+        method: "DELETE",
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+        },
+    });
+    // Retorna true se deletou com sucesso (204), senão retorna o json de erro
+    if (res.status === 204) return true;
+    return res.json();
+}
