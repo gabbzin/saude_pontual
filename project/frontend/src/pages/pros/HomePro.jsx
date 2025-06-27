@@ -206,6 +206,9 @@ export default function HomePro() {
                                 }}
                                 onFocus={() => setDropdownVisivel(true)} // Mostra também ao focar
                                 disabled={loading}
+                                style={{
+                                    fontFamily: "Inter"
+                                }}
                             />
                             
                             {/* O Dropdown customizado */}

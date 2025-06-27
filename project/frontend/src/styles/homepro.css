@@ -147,6 +147,7 @@
 }
 
 .autocomplete-results {
+    font-family: "Inter";
     position: absolute;
     top: 100%; /* Começa logo abaixo do input */
     left: 0;
