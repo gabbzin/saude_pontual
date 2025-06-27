@@ -2,7 +2,11 @@ import { useContext, useState, useEffect } from "react";
 import { Modal } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../../contexts/AuthContext";
-import { buscarConsultas, cancelarConsulta } from "../../../api/api";
+import { 
+  buscarConsultas,
+  buscarConsultasPetUsuario, 
+  cancelarConsulta 
+} from "../../../api/api";
 // Assets
 import FundoLaranja from "../../assets/background_orange.jpg";
 import ButtonExit from "../../assets/button_exit_1.jpeg";
@@ -98,10 +102,13 @@ export default function Home() {
     useEffect(() => {
         async function fetchConsultas() {
             try {
-                const data = await buscarConsultas();
-                if (data && data.consultas) {
-                    setConsultasCalendario(data.consultas);
-                }
+                const [humanData, petData] = await Promise.all([
+                    buscarConsultas(),
+                    buscarConsultasPetUsuario()
+                ]);
+                const listaHuman = Array.isArray(humanData.consultas) ? humanData.consultas.map(c => ({ ...c, tipo: "humano" })) : [];
+                const listaPet = Array.isArray(petData.consultas) ? petData.consultas.map(c => ({ ...c, tipo: "pet" })) : [];
+                setConsultasCalendario([...listaHuman, ...listaPet]);
             } catch (error) {
                 console.error("Erro ao buscar consultas:", error);
             }
