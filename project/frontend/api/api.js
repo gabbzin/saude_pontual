@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 export async function cadastrarUsuario(dados) {
     const res = await fetch(`http://localhost:3001/api/usuarios`, {
         method: "POST",
@@ -259,5 +260,13 @@ export async function cancelarConsultaPet(idConsulta) {
     });
     // Retorna true se deletou com sucesso (204), senão retorna o json de erro
     if (res.status === 204) return true;
+    return res.json();
+}
+
+export async function buscarDetalhesConsulta(idConsulta) {
+    const token = localStorage.getItem("token");
+    const res = await fetch(`http://localhost:3001/api/consultas/${idConsulta}`, {
+        headers: { "Authorization": `Bearer ${token}` },
+    });
     return res.json();
 }

@@ -172,3 +172,17 @@
 .autocomplete-results li:hover {
     background-color: #f0f0f0;
 }
+
+#abrir_ficha {
+    background-color: #08bfac;
+    color: white;
+    border: 1px solid rgba(0, 0, 0, 0.314);
+    border-radius: 5px;
+    margin-top: 3px;
+    font-weight: 600;
+    transition: background-color 0.3s ease-in-out;
+}
+
+#abrir_ficha:hover {
+    background-color: #043c40;
+}

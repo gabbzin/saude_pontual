@@ -334,3 +334,39 @@ exports.cancelarConsulta = async (req, res) => {
         });
     }
 };
+
+exports.buscarConsultaPorId = async (req, res) => {
+    const { id } = req.params; // Pega o ID da URL
+
+    try {
+        // Query que busca a consulta e já junta os nomes do paciente e do profissional
+        const { rows } = await db.query(
+            `SELECT 
+                c.*, 
+                u.nome AS paciente_nome,
+                u.data_nascimento,
+                u.alergias_conhecidas,
+                u.remedio_continuo,
+                p.nome AS profissional_nome 
+            FROM 
+                consultas c
+            LEFT JOIN 
+                usuarios u ON c.usuario_id = u.id
+            LEFT JOIN 
+                profissionais p ON c.profissional_id = p.id
+            WHERE 
+                c.id = $1`,
+            [id]
+        );
+
+        if (rows.length === 0) {
+            return res.status(404).json({ mensagem: "Consulta não encontrada." });
+        }
+
+        return res.status(200).json({ consulta: rows[0] });
+
+    } catch (err) {
+        console.error("Erro ao buscar detalhes da consulta:", err);
+        return res.status(500).json({ mensagem: "Erro interno do servidor." });
+    }
+};

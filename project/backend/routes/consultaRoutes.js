@@ -7,12 +7,13 @@ const {
   buscarConsultas,
   atualizarRelatorioConsulta,
   cancelarConsulta,
+  buscarConsultaPorId
 } = require("../controllers/consultaController");
 const { verifyToken } = require("../middleware/authMiddleware");
 
 // Rota para criar uma nova consulta (mantendo o endpoint /fichapessoa por compatibilidade com o frontend)
 router.post("/fichapessoa", verifyToken, criarConsulta);
-
+router.get("/consultas/:id", verifyToken, buscarConsultaPorId);
 // Rota única para listar consultas do usuário ou profissional autenticado
 router.get("/consultas", verifyToken, listarConsultas);
 
