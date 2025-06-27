@@ -281,7 +281,7 @@ export default function HomePro() {
                     {loadingFicha && <p>Carregando ficha do paciente...</p>}
                     {!loadingFicha && fichaSelecionada && (
                         <div>
-                            <h4>Detalhes do Paciente</h4>
+                            <h3 style={{fontFamily: "Passion One"}}>Detalhes do Paciente</h3>
                             <p>
                                 <strong>Nome:</strong>{" "}
                                 {fichaSelecionada.paciente_nome}
@@ -304,7 +304,7 @@ export default function HomePro() {
 
                             <hr />
 
-                            <h4>Detalhes da Consulta</h4>
+                            <h3 style={{fontFamily: "Passion One"}}>Detalhes da Consulta</h3>
                             <p>
                                 <strong>Data:</strong>{" "}
                                 {new Date(
@@ -327,7 +327,7 @@ export default function HomePro() {
 
                             <hr />
 
-                            <h4>Extras</h4>
+                            <h3 style={{fontFamily: "Passion One"}}>Extras</h3>
                             <p>
                                 <strong>Motivo da Consulta:</strong>{" "}
                                 {fichaSelecionada.motivo}
