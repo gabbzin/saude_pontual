@@ -2,57 +2,58 @@ import React, { useEffect, useState } from "react";
 import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import InteractionPlugin from "@fullcalendar/interaction";
+import { buscarConsultasPetUsuario } from "../../api/api";
 import "../styles/calendario.css";
 
 export default function Calendar({ showModal, consultas: consultasProp }) {
     const [consultas, setConsultas] = useState(consultasProp || []);
     const [datasConsultas, setDatasConsultas] = useState([]);
+    const [loading, setLoading] = useState(false);
 
     useEffect(() => {
-        if (consultasProp) {
-            setConsultas(consultasProp);
-            setDatasConsultas(consultasProp.map((consulta) => consulta.data_para_calendario));
-        } else {
-            // Função para buscar as consultas do usuário
-            const fetchConsultas = async () => {
-                const token = localStorage.getItem("token");
-
-                if (!token) {
-                    console.error("Token não encontrado");
-                    return;
-                }
-
-                try {
-                    const response = await fetch(
-                        "http://localhost:3001/api/consultas/historico",
-                        {
+        async function fetchConsultas() {
+            setLoading(true);
+            try {
+                const [human, pet] = await Promise.all([
+                    (async () => {
+                        const token = localStorage.getItem("token");
+                        const res = await fetch("http://localhost:3001/api/consultas/historico", {
+                            method: "GET",
                             headers: {
                                 "Content-Type": "application/json",
                                 Authorization: `Bearer ${token}`,
                             },
-                        }
-                    );
-
-                    if (!response.ok) {
-                        throw new Error("Erro ao buscar consultas");
-                    }
-
-                    const data = await response.json();
-                    const consultas = data.consultas || [];
-
-                    if (Array.isArray(consultas)) {
-                        setConsultas(consultas);
-                        setDatasConsultas(consultas.map((consulta) => consulta.data_para_calendario));
-                    } else {
-                        setConsultas([]);
-                        setDatasConsultas([]);
-                    }
-
-                } catch (error) {
-                    console.error(error);
-                }
-            };
-            fetchConsultas();
+                        });
+                        const data = await res.json();
+                        return data.consultas || [];
+                    })(),
+                    buscarConsultasPetUsuario().then(data => data.consultas || [])
+                ]);
+                // Unifica e normaliza os campos para o calendário
+                const todasConsultas = [
+                    ...human.map(c => ({
+                        ...c,
+                        tipo: "humano",
+                        data_para_calendario: c.data_para_calendario,
+                    })),
+                    ...pet.map(c => ({
+                        ...c,
+                        tipo: "pet",
+                        data_para_calendario: c.data_para_calendario,
+                    }))
+                ];
+                setConsultas(todasConsultas);
+                setDatasConsultas(todasConsultas.map(c => c.data_para_calendario));
+            } catch (error) {
+                console.error(error);
+            } finally {
+                setLoading(false);
+            }
+        }
+        if (!consultasProp) fetchConsultas();
+        else {
+            setConsultas(consultasProp);
+            setDatasConsultas(consultasProp.map((consulta) => consulta.data_para_calendario));
         }
     }, [consultasProp]);
 

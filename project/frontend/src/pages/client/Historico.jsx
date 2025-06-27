@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { AuthContext } from "../../contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
-import { buscarConsultas } from "../../../api/api";
+import { buscarConsultas, buscarConsultasPetUsuario } from "../../../api/api";
 // Assets
 import BackButton from "../../assets/back_button.png";
 import Logo from "../../assets/logo_saude_pontual.png";
@@ -22,8 +22,32 @@ export default function Historico() {
     useEffect(() => {
         async function fetchConsultas() {
             setLoading(true);
-            const data = await buscarConsultas();
-            const lista = Array.isArray(data.consultas) ? data.consultas : [];
+            const [humanData, petData] = await Promise.all([
+                buscarConsultas(),
+                buscarConsultasPetUsuario(),
+            ]);
+            const listaHuman =
+                Array.isArray(humanData.consultas) &&
+                humanData.consultas.length > 0
+                    ? humanData.consultas.map((c) => ({ ...c, tipo: "humano" }))
+                    : [];
+            const listaPet =
+                Array.isArray(petData.consultas) && petData.consultas.length > 0
+                    ? petData.consultas.map((c) => ({
+                          ...c,
+                          tipo: "pet",
+                          area_medica_desejada: "Consulta Pet",
+                          profissional_nome: "-",
+                          data_para_exibicao: c.data_para_exibicao,
+                          id: c.id,
+                      }))
+                    : [];
+            const lista = [...listaHuman, ...listaPet].sort((a, b) => {
+                // Ordena por data decrescente
+                const dA = a.data_para_calendario || a.data_para_exibicao || "";
+                const dB = b.data_para_calendario || b.data_para_exibicao || "";
+                return dA < dB ? 1 : -1;
+            });
             setConsultas(lista);
             setSelectedConsulta(lista.length > 0 ? lista[0] : null);
             setLoading(false);
