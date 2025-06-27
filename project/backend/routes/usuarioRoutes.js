@@ -5,7 +5,8 @@ const {
     loginUsuario,
     pegarPerfilDoToken,
     adicionarInfoPerfil,
-    listarTodosUsuarios
+    listarTodosUsuarios,
+    deletrarUsuario
 } = require("../controllers/usuarioController");
 const {verifyToken} = require("../middleware/authMiddleware");
 
@@ -14,5 +15,6 @@ router.post("/login", loginUsuario);
 router.get("/perfil", verifyToken, pegarPerfilDoToken);
 router.put("/perfil/info", verifyToken, adicionarInfoPerfil);
 router.get("/usuarios", listarTodosUsuarios);
+router.delete("/usuarios/:id", deletrarUsuario);
 
 module.exports = router;
