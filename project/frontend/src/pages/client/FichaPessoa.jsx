@@ -1,6 +1,6 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { cadastrarConsulta } from "../../../api/api";
+import { cadastrarConsulta, buscarPerfil } from "../../../api/api";
 // Components
 import Button from "../../components/Button";
 import FormInputSchedule from "../../components/FormInputSchedule";
@@ -40,6 +40,32 @@ export default function FichaPessoa() {
     const [modalType, setModalType] = useState("success"); // "success" ou "error"
 
     const navigate = useNavigate();
+    
+    useEffect(() => {
+        const token = localStorage.getItem("token");
+
+        const carregarInformacoesAdicionais = async () => {
+            if (!token) return;
+            
+            try {
+                const perfil = await buscarPerfil(token);
+                
+                if (perfil?.usuario){
+                    setFormData((prev) => ({
+                        altura: perfil.usuario.altura ? `${perfil.usuario.altura}` : prev.altura,
+                        peso: perfil.usuario.peso ? `${perfil.usuario.peso}` : prev.peso,
+                        tipo_sanguineo: perfil.usuario.tipo_sanguineo ? `${perfil.usuario.tipo_sanguineo}` : prev.tipo_sanguineo
+                    }));    
+                }
+            }
+            catch (error) {
+                console.error("Erro ao carregar as informações adicionais do perfil: ", error);
+            };
+        }
+
+        carregarInformacoesAdicionais()
+
+    }, []);
 
     function handleChange(e) {
         let { name, value } = e.target;
