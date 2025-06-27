@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import {
     cadastrarProfissional,
     listarTodosUsuarios,
-    deletarProfissional,
+    deletarUsuario,
 } from "../../../api/api";
 
 // Assets, Components, Styles
@@ -15,6 +15,7 @@ import Background from "../../components/Background";
 import Button from "../../components/Button";
 import FormInput from "../../components/FormInput";
 import Dados from "../../dados.json"; // Usado no formulário
+import MoModal from "../../components/MoModal";
 import "./homeadm.css";
 
 export default function HomeAdm() {
@@ -40,7 +41,8 @@ export default function HomeAdm() {
 
     // --- ESTADOS DOS MODAIS ---
     const [showModalProEdit, setShowModalProEdit] = useState(false);
-    // const [showModalClientEdit, setShowModalClientEdit] = useState(false); // Descomente se for usar
+    const [modalMsg, setModalMsg] = useState("");
+    const [modalShow, setModalShow] = useState(false);
 
     // --- LÓGICA DE CADASTRO (EXISTENTE) ---
     function handleChange(e) {
@@ -128,7 +130,6 @@ export default function HomeAdm() {
     // Lógica para deletar um usuário
     const handleDeletarUsuario = async () => {
         if (!usuarioSelecionado) return;
-
         if (
             window.confirm(
                 `Tem certeza que deseja deletar o usuário ${usuarioSelecionado.nome}? Esta ação não pode ser desfeita.`
@@ -136,18 +137,21 @@ export default function HomeAdm() {
         ) {
             setLoading(true);
             try {
-                const result = await deletarProfissional(usuarioSelecionado.id);
+                const result = await deletarUsuario(usuarioSelecionado.id);
                 if (result.sucesso) {
                     setTodosUsuarios((prev) =>
                         prev.filter((user) => user.id !== usuarioSelecionado.id)
                     );
                     setUsuarioSelecionado(null);
-                    alert("Usuário deletado com sucesso.");
+                    setModalMsg("Usuário deletado com sucesso.");
+                    setModalShow(true);
                 } else {
-                    alert(result.message || "Erro ao deletar usuário.");
+                    setModalMsg(result.error || "Erro ao deletar usuário.");
+                    setModalShow(true);
                 }
             } catch (err) {
-                alert("Erro na requisição para deletar usuário.");
+                setModalMsg("Erro na requisição para deletar usuário.");
+                setModalShow(true);
                 console.error(err);
             } finally {
                 setLoading(false);
@@ -385,6 +389,12 @@ export default function HomeAdm() {
                     <Button id={"button-confirm-edit"}>Confirmar Edição</Button>
                 </Modal.Footer>
             </Modal>
+
+            <MoModal
+                show={modalShow}
+                onClose={() => setModalShow(false)}
+                text={modalMsg}
+            />
         </>
     );
 }
