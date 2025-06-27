@@ -185,3 +185,11 @@ exports.listarTodosUsuarios = async (req, res) => {
         });
     }
 };
+
+exports.deletrarUsuario = async (req, res) => {]
+  const usuarioId = req.params.id;
+  if (!usuarioId) {
+    return res.status(400).json({
+      mensagem: "ID do usuário é obrigatório.",
+    });
+  }
