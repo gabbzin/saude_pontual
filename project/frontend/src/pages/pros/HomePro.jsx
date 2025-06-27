@@ -11,6 +11,7 @@ import ButtonExit from "../../assets/button_exit.png";
 import Button from "../../components/Button";
 import Calendar from "../../components/Calendar";
 import LegendaCalendario from "../../components/LegendaCalendar";
+import MoModal from "../../components/MoModal";
 // Styles
 import "bootstrap/dist/css/bootstrap.min.css";
 import "../../styles/calendario.css";
@@ -29,7 +30,8 @@ export default function HomePro() {
     const [relatorioText, setRelatorioText] = useState("");
     const [nomePacienteInput, setNomePacienteInput] = useState(""); // Para o campo de busca
     const [loading, setLoading] = useState(false);
-    const [mensagem, setMensagem] = useState("");
+    const [modalFeedbackVisible, setModalFeedbackVisible] = useState(false);
+    const [modalFeedbackText, setModalFeedbackText] = useState("");
 
     // --- ESTADOS QUE CONTROLAM O MODAL DO CALENDÁRIO ---
     const [modalCalendarVisible, setModalCalendarVisible] = useState(false);
@@ -53,8 +55,8 @@ export default function HomePro() {
                     setConsultas(data.consultas);
                 }
             } catch (error) {
-                console.error("Erro ao buscar as consultas do profissional", error);
-                setMensagem("Erro ao carregar consultas.");
+                setModalFeedbackText("Erro ao carregar consultas.");
+                setModalFeedbackVisible(true);
             } finally {
                 setLoading(false);
             }
@@ -76,7 +78,7 @@ export default function HomePro() {
 
             setSelectedConsultaId(id);
             setRelatorioText(consulta?.relatorio || "");
-            setMensagem(""); 
+            setModalFeedbackVisible(false); 
         } else {
             setSelectedConsultaId("");
             setRelatorioText("");
@@ -86,29 +88,27 @@ export default function HomePro() {
     // Função para o botão "Salvar Relatório"
     const handleEnviarRelatorio = async () => {
         if (!selectedConsultaId || !relatorioText) {
-            setMensagem("Selecione um paciente e escreva o relatório.");
+            setModalFeedbackText("Selecione um paciente e escreva o relatório.");
+            setModalFeedbackVisible(true);
             return;
         }
         setLoading(true);
-        setMensagem("");
         try {
             const result = await adicionarRelatorioConsulta(selectedConsultaId, { relatorio: relatorioText });
-            setMensagem(result.mensagem);
+            setModalFeedbackText(result.mensagem);
+            setModalFeedbackVisible(true);
             if (result.mensagem && result.mensagem.toLowerCase().includes('sucesso')) {
-
                 setRelatorioText("");
                 setSelectedConsultaId("");
                 setNomePacienteInput("");
-
-                // Atualiza a lista local para o relatório aparecer sem precisar recarregar a página
                 const consultasAtualizadas = consultas.map(c => 
                     c.id.toString() === selectedConsultaId ? { ...c, relatorio: relatorioText } : c
                 );
                 setConsultas(consultasAtualizadas);
             }
         } catch (error) {
-            setMensagem("Erro na requisição ao salvar.");
-            console.error(error);
+            setModalFeedbackText("Erro na requisição ao salvar.");
+            setModalFeedbackVisible(true);
         } finally {
             setLoading(false);
         }
@@ -126,6 +126,11 @@ export default function HomePro() {
 
     return (
         <div id="pro_container_home">
+            <MoModal
+                show={modalFeedbackVisible}
+                onClose={() => setModalFeedbackVisible(false)}
+                text={modalFeedbackText}
+            />
             <Modal show={modalCalendarVisible} onHide={() => setModalCalendarVisible(false)} centered>
                 <Modal.Header closeButton style={{ color: "#004D3E", fontFamily: "Passion One", fontSize: "2em" }}>
                     Consulta Agendada
@@ -204,8 +209,6 @@ export default function HomePro() {
                         onChange={(e) => setRelatorioText(e.target.value)}
                         disabled={!selectedConsultaId || loading}
                     ></textarea>
-
-                    {mensagem && <p className="mt-2 text-center fs-5" style={{ color: mensagem.includes('sucesso') ? 'green' : 'red' }}>{mensagem}</p>}
 
                     <div style={{ display: 'flex', justifyContent: "center" }}>
                         <Button
