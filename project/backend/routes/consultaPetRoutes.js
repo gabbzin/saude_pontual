@@ -8,4 +8,8 @@ router.post('/pet/fichapet', verifyToken, petConsultaController.criarConsultaPet
 
 // Rota para listar consultas de pet do usuário (protegida)
 router.get('/pet/consultas', verifyToken, petConsultaController.listarConsultasPetUsuario);
+
+// Rota para deletar consulta de pet do usuário (protegida)
+router.delete('/pet/consultas/:id', verifyToken, petConsultaController.deletarConsultaPet);
+
 module.exports = router;

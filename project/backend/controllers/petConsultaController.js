@@ -158,3 +158,30 @@ exports.listarTodasConsultasPet = async (req, res) => {
         return res.status(500).json({ error: "Erro interno do servidor ao buscar todas as consultas de pet." });
     }
 };
+
+// Deletar consulta de pet
+exports.deletarConsultaPet = async (req, res) => {
+    const usuario_id = req.userId;
+    const consultaId = req.params.id;
+
+    if (!usuario_id) {
+        return res.status(401).json({ error: "Acesso não autorizado. Token inválido ou ausente." });
+    }
+    if (!consultaId) {
+        return res.status(400).json({ error: "ID da consulta é obrigatório." });
+    }
+    try {
+        // Só permite deletar se a consulta for do usuário
+        const { rowCount } = await db.query(
+            `DELETE FROM consultas_pet WHERE id = $1 AND usuario_id = $2`,
+            [consultaId, usuario_id]
+        );
+        if (rowCount === 0) {
+            return res.status(404).json({ error: "Consulta de pet não encontrada ou não pertence ao usuário." });
+        }
+        return res.status(204).send();
+    } catch (error) {
+        console.error("Erro ao deletar consulta de pet:", error);
+        return res.status(500).json({ error: "Erro interno ao deletar consulta de pet." });
+    }
+};
