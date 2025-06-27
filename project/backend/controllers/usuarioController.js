@@ -189,28 +189,16 @@ exports.listarTodosUsuarios = async (req, res) => {
 exports.deletrarUsuario = async (req, res) => {
   const usuarioId = req.params.id;
   if (!usuarioId) {
-    return res.status(400).json({
-      mensagem: "ID do usuário é obrigatório.",
-    });
+    return res.status(400).json({ mensagem: "ID do usuário é obrigatório." });
   }
   try {
-    const { rowCount } = await db.query(
-      "DELETE FROM usuarios WHERE id = $1",
-      [usuarioId]
-    );
-
-    if (rowCount === 0) {
-      return res.status(404).json({
-        mensagem: "Usuário não encontrado.",
-      });
-    }
-
-    return res.status(204).send();
-
+    // Deleta todas as consultas relacionadas ao usuário
+    await db.query('DELETE FROM consultas WHERE usuario_id = $1', [usuarioId]);
+    // Agora deleta o usuário
+    await db.query('DELETE FROM usuarios WHERE id = $1', [usuarioId]);
+    return res.status(200).json({ mensagem: "Usuário e consultas relacionadas deletados com sucesso." });
   } catch (err) {
     console.error("Erro ao deletar usuário:", err);
-    return res.status(500).json({
-      mensagem: "Erro interno ao deletar usuário.",
-    });
+    return res.status(500).json({ mensagem: "Erro ao deletar usuário." });
   }
 };
