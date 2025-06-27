@@ -55,7 +55,7 @@ export default function HomePro() {
 
     function logoutUser() {
         logout();
-        navigate("/");
+        navigate("/loginpro");
     }
 
     // Busca os dados e salva na nossa ÚNICA fonte da verdade: 'consultas'
@@ -259,7 +259,7 @@ export default function HomePro() {
                     )}
                 </Modal.Body>
             </Modal>
-            
+
             {/* MODAL DA FICHA DO PACIENTE */}
             <Modal
                 show={modalFichaVisible}
@@ -281,7 +281,9 @@ export default function HomePro() {
                     {loadingFicha && <p>Carregando ficha do paciente...</p>}
                     {!loadingFicha && fichaSelecionada && (
                         <div>
-                            <h3 style={{fontFamily: "Passion One"}}>Detalhes do Paciente</h3>
+                            <h3 style={{ fontFamily: "Passion One" }}>
+                                Detalhes do Paciente
+                            </h3>
                             <p>
                                 <strong>Nome:</strong>{" "}
                                 {fichaSelecionada.paciente_nome}
@@ -304,7 +306,9 @@ export default function HomePro() {
 
                             <hr />
 
-                            <h3 style={{fontFamily: "Passion One"}}>Detalhes da Consulta</h3>
+                            <h3 style={{ fontFamily: "Passion One" }}>
+                                Detalhes da Consulta
+                            </h3>
                             <p>
                                 <strong>Data:</strong>{" "}
                                 {new Date(
@@ -327,7 +331,9 @@ export default function HomePro() {
 
                             <hr />
 
-                            <h3 style={{fontFamily: "Passion One"}}>Extras</h3>
+                            <h3 style={{ fontFamily: "Passion One" }}>
+                                Extras
+                            </h3>
                             <p>
                                 <strong>Motivo da Consulta:</strong>{" "}
                                 {fichaSelecionada.motivo}
@@ -436,20 +442,35 @@ export default function HomePro() {
                             {dropdownVisivel &&
                                 resultadosFiltrados.length > 0 && (
                                     <ul className="autocomplete-results">
-                                        {resultadosFiltrados.map((consulta) => (
-                                            <li
-                                                key={consulta.id}
-                                                onClick={() =>
-                                                    handleSelecionarPaciente(
-                                                        consulta
-                                                    )
-                                                }
-                                            >
-                                                {consulta.paciente_nome ||
-                                                    consulta.nome}{" "}
-                                                ({consulta.data_para_exibicao})
+                                        {/* Se há resultados, mostre a lista de pacientes */}
+                                        {resultadosFiltrados.length > 0 ? (
+                                            resultadosFiltrados.map(
+                                                (consulta) => (
+                                                    <li
+                                                        key={consulta.id}
+                                                        onClick={() =>
+                                                            handleSelecionarPaciente(
+                                                                consulta
+                                                            )
+                                                        }
+                                                    >
+                                                        {consulta.paciente_nome ||
+                                                            consulta.nome}{" "}
+                                                        (
+                                                        {
+                                                            consulta.data_para_exibicao
+                                                        }
+                                                        )
+                                                    </li>
+                                                )
+                                            )
+                                        ) : (
+                                            /* Senão, mostre a mensagem de 'não encontrado' */
+                                            <li className="autocomplete-no-results">
+                                                Nenhum paciente encontrado com
+                                                esse nome.
                                             </li>
-                                        ))}
+                                        )}
                                     </ul>
                                 )}
                         </div>

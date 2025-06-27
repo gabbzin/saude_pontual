@@ -352,7 +352,7 @@ export default function HomeAdm() {
                                 !usuarioSelecionado.crm
                             }
                         >
-                            Deletar Profissional
+                            Deletar Usuario
                         </Button>
                         {/* <Button
                             id="action-button-adm"

@@ -38,7 +38,13 @@ exports.cadastrarUsuario = async (req, res) => {
             `INSERT INTO usuarios (nome, email, telefone, data_nascimento, senha)
        VALUES ($1, $2, $3, $4, $5)
        RETURNING id, nome, email`,
-            [nomeFormatado, email, telefone || null, data_nascimento || null, senha_hash]
+            [
+                nomeFormatado,
+                email,
+                telefone || null,
+                data_nascimento || null,
+                senha_hash,
+            ]
         );
         const usuario = rows[0];
 
@@ -97,13 +103,11 @@ exports.loginUsuario = async (req, res) => {
         );
 
         // retorna dados do usuário autenticado
-        return res
-            .status(200)
-            .json({
-                mensagem: "Login realizado com sucesso",
-                usuario: user,
-                token,
-            });
+        return res.status(200).json({
+            mensagem: "Login realizado com sucesso",
+            usuario: user,
+            token,
+        });
     } catch (err) {
         console.error("Erro ao fazer login:", err);
         return res
@@ -113,7 +117,7 @@ exports.loginUsuario = async (req, res) => {
 };
 
 exports.pegarPerfilDoToken = async (req, res) => {
-    const usuario_id = req.userId; 
+    const usuario_id = req.userId;
 
     if (!usuario_id) {
         return res.status(401).json({ mensagem: "Usuário não autenticado." });
@@ -130,7 +134,6 @@ exports.pegarPerfilDoToken = async (req, res) => {
         }
 
         return res.json({ usuario: rows[0] });
-
     } catch (err) {
         console.error("Erro ao buscar perfil:", err);
         return res
@@ -148,6 +151,23 @@ exports.adicionarInfoPerfil = async (req, res) => {
         remedio_continuo,
     } = req.body;
     const usuario_id = req.userId;
+
+    const alturaNumerica = altura
+        ? parseFloat(String(altura).replace(",", "."))
+        : null;
+    // O mesmo para 'peso'
+    const pesoNumerico = peso
+        ? parseFloat(String(peso).replace(",", "."))
+        : null;
+
+    // Segurança extra para o caso do usuário digitar "abc" em vez de um número
+    if ((altura && isNaN(alturaNumerica)) || (peso && isNaN(pesoNumerico))) {
+        return res
+            .status(400)
+            .json({
+                mensagem: "Altura e peso devem ser valores numéricos válidos.",
+            });
+    }
 
     try {
         await db.query(
@@ -176,31 +196,44 @@ exports.adicionarInfoPerfil = async (req, res) => {
 
 exports.listarTodosUsuarios = async (req, res) => {
     try {
-        const { rows } = await db.query("SELECT id, nome, email, telefone, data_nascimento FROM usuarios ORDER BY id ASC");
+        const { rows } = await db.query(
+            "SELECT id, nome, email, telefone, data_nascimento FROM usuarios ORDER BY id ASC"
+        );
         return res.status(200).json({ usuarios: rows });
     } catch (err) {
         console.error("Erro ao listar todos os usuários:", err);
-        return res.status(500).json({ 
-          mensagem: "Erro interno ao buscar usuários" 
+        return res.status(500).json({
+            mensagem: "Erro interno ao buscar usuários",
         });
     }
 };
 
 exports.deletrarUsuario = async (req, res) => {
-  const usuarioId = req.params.id;
-  if (!usuarioId) {
-    return res.status(400).json({ mensagem: "ID do usuário é obrigatório." });
-  }
-  try {
-    // Deleta todas as consultas relacionadas ao usuário (consultas humanas)
-    await db.query('DELETE FROM consultas WHERE usuario_id = $1', [usuarioId]);
-    // Deleta todas as consultas de pet relacionadas ao usuário (se existir essa tabela)
-    await db.query('DELETE FROM consultas_pet WHERE usuario_id = $1', [usuarioId]);
-    // Agora deleta o usuário
-    await db.query('DELETE FROM usuarios WHERE id = $1', [usuarioId]);
-    return res.status(200).json({ mensagem: "Usuário e consultas relacionadas deletados com sucesso." });
-  } catch (err) {
-    console.error("Erro ao deletar usuário:", err);
-    return res.status(500).json({ mensagem: "Erro ao deletar usuário." });
-  }
+    const usuarioId = req.params.id;
+    if (!usuarioId) {
+        return res
+            .status(400)
+            .json({ mensagem: "ID do usuário é obrigatório." });
+    }
+    try {
+        // Deleta todas as consultas relacionadas ao usuário (consultas humanas)
+        await db.query("DELETE FROM consultas WHERE usuario_id = $1", [
+            usuarioId,
+        ]);
+        // Deleta todas as consultas de pet relacionadas ao usuário (se existir essa tabela)
+        await db.query("DELETE FROM consultas_pet WHERE usuario_id = $1", [
+            usuarioId,
+        ]);
+        // Agora deleta o usuário
+        await db.query("DELETE FROM usuarios WHERE id = $1", [usuarioId]);
+        return res
+            .status(200)
+            .json({
+                mensagem:
+                    "Usuário e consultas relacionadas deletados com sucesso.",
+            });
+    } catch (err) {
+        console.error("Erro ao deletar usuário:", err);
+        return res.status(500).json({ mensagem: "Erro ao deletar usuário." });
+    }
 };
