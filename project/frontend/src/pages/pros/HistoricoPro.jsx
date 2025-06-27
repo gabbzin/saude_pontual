@@ -6,6 +6,7 @@ import Logo from "../../assets/logo_saude_pontual.png";
 import Relatorio from "../../assets/relatorio.jpg";
 // Components
 import Button from "../../components/Button";
+import MoModal from "../../components/MoModal";
 // Styles
 import "../../styles/historico.css";
 // Api
@@ -16,13 +17,14 @@ export default function HistoricoPro() {
     const navigate = useNavigate();
     const [consultas, setConsultas] = useState([]);
     const [selectedConsulta, setSelectedConsulta] = useState(null);
-    const [mensagem, setMensagem] = useState("");
+    const [modalFeedbackVisible, setModalFeedbackVisible] = useState(false);
+    const [modalFeedbackText, setModalFeedbackText] = useState("");
     const [loading, setLoading] = useState(false);
 
     useEffect(() => {
         const fetchConsultas = async () => {
             setLoading(true);
-            setMensagem("");
+            setModalFeedbackText("");
             try {
                 const data = await buscarConsultas();
                 if (data.consultas) {
@@ -32,8 +34,8 @@ export default function HistoricoPro() {
                     }
                 }
             } catch (error) {
-                setMensagem("Erro ao buscar consultas");
-                console.error("Erro ao buscar as consultas do profissional", error);
+                setModalFeedbackText("Erro ao buscar consultas");
+                setModalFeedbackVisible(true);
             } finally {
                 setLoading(false);
             }
@@ -48,12 +50,13 @@ export default function HistoricoPro() {
 
     const handleDownloadRelatorio = async () => {
         if (!selectedConsulta || !selectedConsulta.relatorio) {
-            setMensagem("Selecione um relatório para baixar.");
+            setModalFeedbackText("Selecione um relatório para baixar.");
+            setModalFeedbackVisible(true);
             return;
         }
 
         setLoading(true);
-        setMensagem("");
+        setModalFeedbackText("");
 
         try {
             const nomeFormatado = (
@@ -63,8 +66,8 @@ export default function HistoricoPro() {
 
             await generateSaudePontualPdf(selectedConsulta.relatorio, fileName);
         } catch (error) {
-            setMensagem("Erro ao gerar o PDF");
-            console.error(error);
+            setModalFeedbackText("Erro ao gerar o PDF");
+            setModalFeedbackVisible(true);
         } finally {
             setLoading(false);
         }
@@ -76,6 +79,11 @@ export default function HistoricoPro() {
 
     return (
         <div id="history_container">
+            <MoModal
+                show={modalFeedbackVisible}
+                onClose={() => setModalFeedbackVisible(false)}
+                text={modalFeedbackText}
+            />
             <header id="box_history">
                 <Button
                     style={{
@@ -107,14 +115,14 @@ export default function HistoricoPro() {
                         {loading && consultas.length === 0 && (
                             <tr>
                                 <td colSpan="4" className="text-center">
-                                    {mensagem || "Carregando histórico..."}
+                                    {modalFeedbackText || "Carregando histórico..."}
                                 </td>
                             </tr>
                         )}
                         {!loading && consultas.length === 0 && (
                             <tr>
                                 <td colSpan="4" className="text-center">
-                                    {mensagem || "Nenhum histórico encontrado."}
+                                    {modalFeedbackText || "Nenhum histórico encontrado."}
                                 </td>
                             </tr>
                         )}
@@ -159,10 +167,6 @@ export default function HistoricoPro() {
                     >
                         Download
                     </Button>
-
-                    {mensagem && !loading && (
-                        <p className="text-danger">{mensagem}</p>
-                    )}
                 </aside>
             </main>
         </div>
